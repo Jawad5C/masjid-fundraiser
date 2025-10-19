@@ -1,0 +1,31 @@
+# Consolidated Cursor Project Rules (React/Next.js/Tailwind Stack)
+
+## 🚀 General
+- Always provide full, valid code that runs without errors.
+- Add plain-English comments explaining each major block of code.
+- Default Stack: Use React for components, Next.js for routing/structure/APIs, and Tailwind CSS for all styling.
+- Prefer TypeScript for all code files (e.g., .tsx for components).
+
+## ⚛️ React / Next.js
+- All UI code must be written as React Functional Components.
+- Use JSX syntax (not plain HTML) for components.
+- Use standard Next.js directory and file conventions (e.g., app/page.tsx for a route).
+- Use the App Router pattern for new projects.
+- Use server components by default unless client-side interactivity is strictly required (i.e., using the 'use client' directive).
+- Components must be defined using PascalCase (e.g., UserProfileCard).
+- End every statement with a semicolon.
+
+## 🎨 Styling (Tailwind CSS)
+- All styling must be done using Tailwind CSS utility classes.
+- Never use a separate `<style>` block in the component file.
+- Never use inline CSS styles unless absolutely necessary for dynamic values not supported by Tailwind.
+- Add hover effects using Tailwind's standard modifiers (e.g., hover:bg-blue-600) when appropriate.
+
+## ⚙️ JavaScript / TypeScript
+- Use const and let, never var.
+- Use camelCase for variables and functions (e.g., userName, handleClick).
+- Add a one-line comment above each function describing its purpose.
+
+## 📜 Learning Support
+- Always explain new or tricky code with a short comment in plain English.
+- When introducing something advanced, keep the code beginner-friendly unless told otherwise.
