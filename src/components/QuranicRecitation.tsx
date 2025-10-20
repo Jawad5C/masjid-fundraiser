@@ -21,7 +21,7 @@ export default function QuranicRecitation({ onDonationClick, children, className
       text: 'وَمَا تُنفِقُوا مِنْ خَيْرٍ فَإِنَّ اللَّهَ بِهِ عَلِيمٌ',
       translation: 'And whatever you spend in charity or devotion, be sure Allah knows it all',
       source: 'Quran 2:273',
-      audio: '/audio/omar-hisham-quran-2-273.mp3', // Omar Hisham recitation
+      audio: '/audio/test-quran-2-273.mp3', // Test audio - replace with Omar Hisham file
       reciter: 'Omar Hisham Al Arabi'
     }
   ];
@@ -72,7 +72,10 @@ export default function QuranicRecitation({ onDonationClick, children, className
   // Handle donation click with recitation
   const handleDonationClick = () => {
     playQuranicRecitation();
-    onDonationClick();
+    // Delay the redirect to allow popup to show
+    setTimeout(() => {
+      onDonationClick();
+    }, 3000); // 3 second delay to show popup
   };
 
   return (

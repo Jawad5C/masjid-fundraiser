@@ -1,0 +1,9 @@
+This is a placeholder for the Omar Hisham Quran 2:273 audio file.
+
+To add the real audio:
+1. Find Omar Hisham's recitation of Quran 2:273 on YouTube
+2. Download as MP3
+3. Rename to: omar-hisham-quran-2-273.mp3
+4. Place in this directory
+
+The component will work with text display until the audio file is added.
