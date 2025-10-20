@@ -14,14 +14,14 @@ export default function QuranicRecitation({ onDonationClick, children, className
   const [currentRecitation, setCurrentRecitation] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Quranic verse from your project - Abu Huraira hadith
+  // Quranic verse from your project - Used in donation receipt
   const quranicVerses = [
     {
       id: 'project-verse',
-      text: 'مَنْ بَنَى مَسْجِدًا لِلَّهِ بَنَى اللَّهُ لَهُ مِثْلَهُ فِي الْجَنَّةِ',
-      translation: 'Whoever builds a Masjid for Allah, Allah will build for him a house like it in Paradise',
-      source: 'Hadith - Abu Huraira (RA) • Sunan Ibn Majah 242',
-      audio: '/audio/omar-hisham-masjid-verse.mp3', // Omar Hisham recitation
+      text: 'وَمَا تُنفِقُوا مِنْ خَيْرٍ فَإِنَّ اللَّهَ بِهِ عَلِيمٌ',
+      translation: 'And whatever you spend in charity or devotion, be sure Allah knows it all',
+      source: 'Quran 2:273',
+      audio: '/audio/omar-hisham-quran-2-273.mp3', // Omar Hisham recitation
       reciter: 'Omar Hisham Al Arabi'
     }
   ];
