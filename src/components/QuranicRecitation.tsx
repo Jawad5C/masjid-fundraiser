@@ -14,28 +14,15 @@ export default function QuranicRecitation({ onDonationClick, children, className
   const [currentRecitation, setCurrentRecitation] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Quranic verses for donation context
+  // Quranic verse from your project - Abu Huraira hadith
   const quranicVerses = [
     {
-      id: 'verse-1',
-      text: 'وَمَا أَنْفَقْتُمْ مِنْ شَيْءٍ فَهُوَ يُخْلِفُهُ',
-      translation: 'And whatever you spend of anything, He will replace it',
-      source: 'Quran 34:39',
-      audio: '/audio/quran-34-39.mp3' // You'll need to add this audio file
-    },
-    {
-      id: 'verse-2', 
-      text: 'مَنْ ذَا الَّذِي يُقْرِضُ اللَّهَ قَرْضًا حَسَنًا فَيُضَاعِفَهُ لَهُ أَضْعَافًا كَثِيرَةً',
-      translation: 'Who is it that would loan Allah a goodly loan so He may multiply it for him many times over',
-      source: 'Quran 2:245',
-      audio: '/audio/quran-2-245.mp3' // You'll need to add this audio file
-    },
-    {
-      id: 'verse-3',
-      text: 'إِنَّ الْمُصَّدِّقِينَ وَالْمُصَّدِّقَاتِ وَأَقْرَضُوا اللَّهَ قَرْضًا حَسَنًا يُضَاعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ',
-      translation: 'Indeed, the men who practice charity and the women who practice charity and loan Allah a goodly loan, it will be multiplied for them, and they will have a noble reward',
-      source: 'Quran 57:18',
-      audio: '/audio/quran-57-18.mp3' // You'll need to add this audio file
+      id: 'project-verse',
+      text: 'مَنْ بَنَى مَسْجِدًا لِلَّهِ بَنَى اللَّهُ لَهُ مِثْلَهُ فِي الْجَنَّةِ',
+      translation: 'Whoever builds a Masjid for Allah, Allah will build for him a house like it in Paradise',
+      source: 'Hadith - Abu Huraira (RA) • Sunan Ibn Majah 242',
+      audio: '/audio/omar-hisham-masjid-verse.mp3', // Omar Hisham recitation
+      reciter: 'Omar Hisham Al Arabi'
     }
   ];
 
@@ -101,16 +88,19 @@ export default function QuranicRecitation({ onDonationClick, children, className
       
       {/* Quranic text display */}
       {isPlaying && currentRecitation && (
-        <div className="absolute -top-20 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-800 to-green-600 text-white p-3 rounded-lg shadow-lg z-50 max-w-xs text-center">
-          <div className="text-sm font-bold mb-1">📖 Quranic Recitation</div>
-          <div className="text-xs">
+        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-800 to-green-600 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm text-center">
+          <div className="text-sm font-bold mb-2">📖 Quranic Recitation</div>
+          <div className="text-lg font-bold mb-2" style={{ fontFamily: 'Amiri, serif' }}>
             {quranicVerses.find(v => v.id === currentRecitation)?.text}
           </div>
-          <div className="text-xs mt-1 opacity-90">
+          <div className="text-sm mt-2 opacity-90">
             {quranicVerses.find(v => v.id === currentRecitation)?.translation}
           </div>
-          <div className="text-xs mt-1 font-semibold">
+          <div className="text-xs mt-2 font-semibold">
             {quranicVerses.find(v => v.id === currentRecitation)?.source}
+          </div>
+          <div className="text-xs mt-1 opacity-80">
+            Recited by: {quranicVerses.find(v => v.id === currentRecitation)?.reciter}
           </div>
         </div>
       )}

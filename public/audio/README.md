@@ -1,29 +1,31 @@
 # 📖 Quranic Recitation Audio Files
 
-## Required Audio Files
+## Required Audio File
 
-To enable Quranic recitation when donation buttons are clicked, add these audio files to this directory:
+To enable Quranic recitation when donation buttons are clicked, add this audio file to this directory:
 
-### Required Files:
-- `quran-34-39.mp3` - Verse about spending and replacement
-- `quran-2-245.mp3` - Verse about lending to Allah
-- `quran-57-18.mp3` - Verse about charity and rewards
+### Required File:
+- `omar-hisham-masjid-verse.mp3` - Omar Hisham recitation of the Masjid hadith
 
 ### Audio Specifications:
 - **Format:** MP3
-- **Duration:** 10-30 seconds each
+- **Duration:** 15-30 seconds
 - **Quality:** 128kbps or higher
-- **Language:** Arabic recitation
+- **Reciter:** Omar Hisham Al Arabi
+- **Content:** "Whoever builds a Masjid for Allah, Allah will build for him a house like it in Paradise"
 
-### Where to Get Audio Files:
-1. **Quran.com** - Download recitations
-2. **Al-Quran Cloud** - High quality recitations
-3. **Islamic websites** - Free recitation downloads
+### Where to Get Omar Hisham Recitation:
+1. **YouTube** - Search "Omar Hisham Al Arabi" + "masjid" or "مسجد"
+2. **Islamic websites** - Download Omar Hisham recitations
+3. **Quran.com** - If available in their reciter list
+4. **Record from YouTube** - Use online YouTube to MP3 converters
 
 ### Alternative: Text-Only Mode
-If audio files are not available, the component will automatically show the Arabic text, translation, and source in a popup instead of playing audio.
+If audio file is not available, the component will automatically show the Arabic text, translation, and source in a beautiful popup instead of playing audio.
 
 ## Current Status:
 - ✅ Component created and integrated
-- ⏳ Audio files needed for full functionality
-- ✅ Text fallback working
+- ✅ Uses project's specific Masjid hadith
+- ✅ Beautiful popup with Arabic text and translation
+- ⏳ Omar Hisham audio file needed for full functionality
+- ✅ Text fallback working perfectly
