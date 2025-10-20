@@ -3,6 +3,7 @@
 import MinaretThermometer from '@/components/MinaretThermometer';
 import StarryBackground from '@/components/StarryBackground';
 import FireworksCelebration from '@/components/FireworksCelebration';
+import QuranicRecitation from '@/components/QuranicRecitation';
 import { useDonations } from '@/contexts/DonationContext';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -358,7 +359,10 @@ function HomeContent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 px-4">
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <a href="/donate" className="w-40 sm:w-48 h-24 sm:h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block" style={{
+              <QuranicRecitation 
+                onDonationClick={() => window.location.href = '/donate'}
+                className="w-40 sm:w-48 h-24 sm:h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
+                style={{
                 transform: 'perspective(1000px) rotateX(5deg) rotateY(-2deg)',
                 boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
                 border: '2px solid rgba(34, 197, 94, 0.8)'
@@ -389,12 +393,15 @@ function HomeContent() {
                 }}>
                   DONATE
                 </div>
-              </a>
+              </QuranicRecitation>
             </div>
 
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <a href="/donate" className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block" style={{
+              <QuranicRecitation 
+                onDonationClick={() => window.location.href = '/donate'}
+                className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
+                style={{
                 transform: 'perspective(1000px) rotateX(5deg) rotateY(2deg)',
                 boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
                 border: '2px solid rgba(34, 197, 94, 0.8)'
@@ -421,12 +428,15 @@ function HomeContent() {
                 }}>
                   DONATE
                 </div>
-              </a>
+              </QuranicRecitation>
             </div>
 
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <a href="/donate" className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block" style={{
+              <QuranicRecitation 
+                onDonationClick={() => window.location.href = '/donate'}
+                className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
+                style={{
                 transform: 'perspective(1000px) rotateX(-5deg) rotateY(-2deg)',
                 boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
                 border: '2px solid rgba(34, 197, 94, 0.8)'
@@ -453,12 +463,15 @@ function HomeContent() {
                 }}>
                   DONATE
                 </div>
-              </a>
+              </QuranicRecitation>
             </div>
 
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <a href="/donate" className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block" style={{
+              <QuranicRecitation 
+                onDonationClick={() => window.location.href = '/donate'}
+                className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
+                style={{
                 transform: 'perspective(1000px) rotateX(-5deg) rotateY(2deg)',
                 boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
                 border: '2px solid rgba(34, 197, 94, 0.8)'
@@ -485,7 +498,7 @@ function HomeContent() {
                 }}>
                   DONATE
                 </div>
-              </a>
+              </QuranicRecitation>
             </div>
           </div>
         </div>
