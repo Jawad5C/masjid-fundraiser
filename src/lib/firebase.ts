@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
-// Firebase configuration
+// Firebase configuration with fallback values
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'demo-key',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 'demo.firebaseapp.com',
@@ -17,23 +17,35 @@ let app: ReturnType<typeof initializeApp> | null = null;
 let db: ReturnType<typeof getFirestore> | null = null;
 let auth: ReturnType<typeof getAuth> | null = null;
 
-if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-key') {
-  app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-  auth = getAuth(app);
+// Only initialize if we have real Firebase keys
+if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && 
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-key' &&
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID !== 'demo-project') {
+  try {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    console.log('✅ Firebase initialized successfully');
+  } catch (error) {
+    console.warn('⚠️ Firebase initialization failed:', error);
+  }
+} else {
+  console.log('ℹ️ Firebase not configured - using demo mode');
 }
 
-// Export Firebase instances
+// Export Firebase instances (will be null if not configured)
 export { db, auth };
 
-// Connect to emulators in development
-if (process.env.NODE_ENV === 'development' && db && auth) {
-  try {
-    connectFirestoreEmulator(db, 'localhost', 8080);
-    connectAuthEmulator(auth, 'http://localhost:9099');
-  } catch {
-    // Emulators already connected
-  }
-}
+// Note: Firebase emulators disabled for now - using live Firebase
+// To enable emulators later, uncomment the code below:
+// if (process.env.NODE_ENV === 'development' && db && auth) {
+//   try {
+//     connectFirestoreEmulator(db, 'localhost', 8080);
+//     connectAuthEmulator(auth, 'http://localhost:9099');
+//   } catch {
+//     // Emulators already connected or not available
+//   }
+// }
 
 export default app;

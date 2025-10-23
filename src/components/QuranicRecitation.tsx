@@ -45,10 +45,6 @@ export default function QuranicRecitation({ onDonationClick, children, className
 
     audio.onerror = () => {
       // If audio file doesn't exist, show text instead
-      console.log(`Playing: ${randomVerse.text}`);
-      console.log(`Translation: ${randomVerse.translation}`);
-      console.log(`Source: ${randomVerse.source}`);
-      
       // Show text for 3 seconds if audio fails
       setTimeout(() => {
         setIsPlaying(false);
@@ -58,10 +54,6 @@ export default function QuranicRecitation({ onDonationClick, children, className
 
     audio.play().catch(() => {
       // If audio fails, show text instead
-      console.log(`Playing: ${randomVerse.text}`);
-      console.log(`Translation: ${randomVerse.translation}`);
-      console.log(`Source: ${randomVerse.source}`);
-      
       setTimeout(() => {
         setIsPlaying(false);
         setCurrentRecitation(null);
