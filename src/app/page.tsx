@@ -177,16 +177,40 @@ function HomeContent() {
         
         {/* Help Us Reach Our Goal - In Starry Space */}
         <div className="text-center mb-8 relative z-10 mt-16 sm:mt-32">
-          <h2 className="text-2xl sm:text-4xl font-bold text-purple-300 mb-4 sm:mb-6 px-4" style={{
-            textShadow: '0 0 10px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 30px rgba(196, 181, 253, 0.4)'
-          }}>
-            Help Us Reach Our Goal
-          </h2>
-          <p className="text-lg sm:text-xl text-purple-200 max-w-2xl mx-auto leading-relaxed px-4" style={{
-            textShadow: '0 0 5px rgba(196, 181, 253, 0.6), 0 0 10px rgba(196, 181, 253, 0.4)'
-          }}>
-            Join us in building a stronger community. Every donation brings us closer to our $1 million goal.
-          </p>
+          {totalRaised >= goalAmount ? (
+            // Goal Reached Celebration
+            <>
+              <h2 className="text-2xl sm:text-4xl font-bold text-green-300 mb-4 sm:mb-6 px-4 animate-pulse" style={{
+                textShadow: '0 0 10px rgba(34, 197, 94, 0.8), 0 0 20px rgba(34, 197, 94, 0.6), 0 0 30px rgba(34, 197, 94, 0.4)',
+                fontFamily: '"Playfair Display", "Georgia", "serif"',
+                letterSpacing: '0.05em',
+                fontWeight: '700'
+              }}>
+                Alhamdulillah! Our Goal Has Been Reached!
+              </h2>
+              <p className="text-lg sm:text-xl text-green-200 max-w-3xl mx-auto leading-relaxed px-4" style={{
+                textShadow: '0 0 5px rgba(34, 197, 94, 0.6), 0 0 10px rgba(34, 197, 94, 0.4)',
+                fontFamily: '"Amiri", "Georgia", "serif"',
+                fontWeight: '500'
+              }}>
+                May Allah (SWT) Bless Your Generous Contribution Regardless of How Much, Bless Your Families and Make A Home For You In Paradise!!!
+              </p>
+            </>
+          ) : (
+            // Original Goal Message
+            <>
+              <h2 className="text-2xl sm:text-4xl font-bold text-purple-300 mb-4 sm:mb-6 px-4" style={{
+                textShadow: '0 0 10px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 30px rgba(196, 181, 253, 0.4)'
+              }}>
+                Help Us Reach Our Goal
+              </h2>
+              <p className="text-lg sm:text-xl text-purple-200 max-w-2xl mx-auto leading-relaxed px-4" style={{
+                textShadow: '0 0 5px rgba(196, 181, 253, 0.6), 0 0 10px rgba(196, 181, 253, 0.4)'
+              }}>
+                Join us in building a stronger community. Every donation brings us closer to our $1 million goal.
+              </p>
+            </>
+          )}
         </div>
 
 
