@@ -14,91 +14,98 @@ export default function QuranicRecitation({ onDonationClick, children, className
   const [currentRecitation, setCurrentRecitation] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Quranic verse from your project - Used in donation receipt
-  const quranicVerses = [
-    {
-      id: 'project-verse',
-      text: 'وَمَا تُنفِقُوا مِنْ خَيْرٍ فَإِنَّ اللَّهَ بِهِ عَلِيمٌ',
-      translation: 'And whatever you spend in charity or devotion, be sure Allah knows it all',
-      source: 'Quran 2:273',
-      audio: '/audio/test-quran-2-273.mp3', // Test audio - replace with Omar Hisham file
-      reciter: 'Omar Hisham Al Arabi'
-    }
-  ];
+         // Quranic verse from your project - Used in donation receipt
+         const quranicVerses = [
+           {
+             id: 'project-verse',
+             text: 'مَّن ذَا ٱلَّذِى يُقۡرِضُ ٱللَّهَ قَرۡضًا حَسَنًۭا فَيُضَـٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجۡرٌۭ كَرِيمٌۭ',
+             translation: 'Who is it that would loan Allah a goodly loan so He will multiply it for him and he will have a noble reward?',
+             source: 'Qur&apos;an 57:11',
+             audio: '/audio/test-quran-2-273.mp3', // Test audio - replace with Zain Abu Kautsar file
+             reciter: 'Zain Abu Kautsar'
+           }
+         ];
 
-  // Play random Quranic recitation
-  const playQuranicRecitation = () => {
-    if (isPlaying) return; // Prevent multiple simultaneous recitations
-    
-    const randomVerse = quranicVerses[Math.floor(Math.random() * quranicVerses.length)];
-    setCurrentRecitation(randomVerse.id);
-    setIsPlaying(true);
+         // Play random Quranic recitation
+         const playQuranicRecitation = () => {
+           if (isPlaying) return; // Prevent multiple simultaneous recitations
 
-    // Create audio element
-    const audio = new Audio(randomVerse.audio);
-    audioRef.current = audio;
-    
-    audio.onended = () => {
-      setIsPlaying(false);
-      setCurrentRecitation(null);
-    };
+           const randomVerse = quranicVerses[Math.floor(Math.random() * quranicVerses.length)];
+           setCurrentRecitation(randomVerse.id);
+           setIsPlaying(true);
 
-    audio.onerror = () => {
-      // If audio file doesn't exist, show text instead
-      // Show text for 3 seconds if audio fails
-      setTimeout(() => {
-        setIsPlaying(false);
-        setCurrentRecitation(null);
-      }, 3000);
-    };
+           // Create audio element
+           const audio = new Audio(randomVerse.audio);
+           audioRef.current = audio;
 
-    audio.play().catch(() => {
-      // If audio fails, show text instead
-      setTimeout(() => {
-        setIsPlaying(false);
-        setCurrentRecitation(null);
-      }, 3000);
-    });
-  };
+           audio.onended = () => {
+             setIsPlaying(false);
+             setCurrentRecitation(null);
+             // Redirect after audio finishes
+             onDonationClick();
+           };
 
-  // Handle donation click with recitation
-  const handleDonationClick = () => {
-    playQuranicRecitation();
-    // Delay the redirect to allow popup to show
-    setTimeout(() => {
-      onDonationClick();
-    }, 3000); // 3 second delay to show popup
-  };
+           audio.onerror = () => {
+             // If audio file doesn't exist, redirect immediately
+             setIsPlaying(false);
+             setCurrentRecitation(null);
+             onDonationClick();
+           };
 
-  return (
-    <div className="relative">
-      <button
-        onClick={handleDonationClick}
-        disabled={isPlaying}
-        className={`${className} ${isPlaying ? 'opacity-75 cursor-not-allowed' : 'hover:scale-105'} transition-all duration-300`}
-        style={style}
-      >
-        {children}
-      </button>
-      
-      {/* Quranic text display */}
-      {isPlaying && currentRecitation && (
-        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-800 to-green-600 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm text-center">
-          <div className="text-sm font-bold mb-2">📖 Quranic Recitation</div>
-          <div className="text-lg font-bold mb-2" style={{ fontFamily: 'Amiri, serif' }}>
-            {quranicVerses.find(v => v.id === currentRecitation)?.text}
-          </div>
-          <div className="text-sm mt-2 opacity-90">
-            {quranicVerses.find(v => v.id === currentRecitation)?.translation}
-          </div>
-          <div className="text-xs mt-2 font-semibold">
-            {quranicVerses.find(v => v.id === currentRecitation)?.source}
-          </div>
-          <div className="text-xs mt-1 opacity-80">
-            Recited by: {quranicVerses.find(v => v.id === currentRecitation)?.reciter}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+           audio.play().catch(() => {
+             // If audio fails, redirect immediately
+             setIsPlaying(false);
+             setCurrentRecitation(null);
+             onDonationClick();
+           });
+         };
+
+         // Handle donation click with recitation
+         const handleDonationClick = () => {
+           playQuranicRecitation();
+         };
+
+         return (
+           <div className="relative">
+             <button
+               onClick={handleDonationClick}
+               disabled={isPlaying}
+               className={`${className} ${isPlaying ? 'opacity-75 cursor-not-allowed' : 'hover:scale-105'} transition-all duration-300`}
+               style={style}
+             >
+               {children}
+             </button>
+
+             {/* Beautiful transition overlay during audio */}
+             {isPlaying && (
+               <div className="fixed inset-0 bg-gradient-to-br from-green-900/90 via-emerald-800/90 to-teal-900/90 backdrop-blur-sm z-50 flex items-center justify-center">
+                 <div className="text-center text-white">
+                   <div className="mb-8">
+                     <div className="text-6xl mb-4 animate-pulse">🕌</div>
+                     <div className="text-2xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                       مَّن ذَا ٱلَّذِى يُقۡرِضُ ٱللَّهَ قَرۡضًا حَسَنًۭا فَيُضَـٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجۡرٌۭ كَرِيمٌۭ
+                     </div>
+                     <div className="text-lg opacity-90 mb-4">
+                       Who is it that would loan Allah a goodly loan so He will multiply it for him and he will have a noble reward?
+                     </div>
+                     <div className="text-sm font-semibold">
+                       Qur&apos;an 57:11 • Recited by Zain Abu Kautsar
+                     </div>
+                   </div>
+                   
+                   {/* Animated loading dots */}
+                   <div className="flex justify-center space-x-2">
+                     <div className="w-3 h-3 bg-white rounded-full animate-bounce"></div>
+                     <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                     <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                   </div>
+                   
+                   <div className="mt-4 text-sm opacity-75">
+                     Preparing your donation page...
+                   </div>
+                 </div>
+               </div>
+             )}
+           </div>
+         );
 }

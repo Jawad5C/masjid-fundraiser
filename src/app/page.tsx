@@ -20,6 +20,7 @@ function HomeContent() {
   const totalRaised = stats?.totalRaised || 0;
   const goalAmount = stats?.goalAmount || 1000000;
 
+
   // Check if goal is reached
   useEffect(() => {
     if (totalRaised >= goalAmount && !hasTriggered) {
