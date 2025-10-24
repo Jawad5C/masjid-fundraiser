@@ -60,17 +60,7 @@ export default function UnifiedDonation() {
 
   // Handle successful payment
   const handlePaymentSuccess = async () => {
-    const amount = parseInt(donationAmount || customAmount || '0');
-    await addDonation({
-      amount,
-      donorName: donorInfo.name,
-      donorEmail: donorInfo.email,
-      donorPhone: donorInfo.phone,
-      type: 'donation',
-      paymentMethod: 'stripe',
-      status: 'completed',
-      notes: 'Stripe payment'
-    });
+    // Donation is already added by StripePayment component
     setShowStripeForm(false);
     setShowReceipt(true);
   };
