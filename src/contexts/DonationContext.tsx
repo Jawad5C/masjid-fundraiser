@@ -18,6 +18,7 @@ interface DonationContextType {
   error: string | null;
   addDonation: (donationData: Partial<Donation>) => Promise<void>;
   refreshStats: () => Promise<void>;
+  resetStats: () => Promise<void>;
 }
 
 const DonationContext = createContext<DonationContextType | undefined>(undefined);
@@ -93,6 +94,18 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
     setStats(stats);
   };
 
+  const resetStats = async () => {
+    try {
+      setError(null);
+      await FirebaseDonationService.resetStats();
+      // Refresh stats after reset
+      await refreshStats();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reset stats');
+      throw err;
+    }
+  };
+
   return (
     <DonationContext.Provider value={{
       donations,
@@ -100,7 +113,8 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
       isLoading,
       error,
       addDonation,
-      refreshStats
+      refreshStats,
+      resetStats
     }}>
       {children}
     </DonationContext.Provider>

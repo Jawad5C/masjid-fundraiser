@@ -13,9 +13,10 @@ export default function Home() {
 }
 
 function HomeContent() {
-  const { stats, isLoading, error } = useDonations();
+  const { stats, isLoading, error, resetStats } = useDonations();
   const [showFireworks, setShowFireworks] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
 
   const totalRaised = stats?.totalRaised || 0;
   const goalAmount = stats?.goalAmount || 1000000;
@@ -35,6 +36,21 @@ function HomeContent() {
       setHasTriggered(false);
     }
   }, [totalRaised, goalAmount]);
+
+  // Handle reset stats
+  const handleResetStats = async () => {
+    try {
+      setIsResetting(true);
+      await resetStats();
+      setShowFireworks(false);
+      setHasTriggered(false);
+    } catch (error) {
+      console.error('Error resetting stats:', error);
+      alert('Failed to reset stats. Please try again.');
+    } finally {
+      setIsResetting(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -168,6 +184,18 @@ function HomeContent() {
             className="scale-100 sm:scale-125"
           />
           
+        </div>
+
+        {/* Reset Button for Testing */}
+        <div className="text-center mb-4 relative z-10">
+          <button
+            onClick={handleResetStats}
+            disabled={isResetting}
+            className="bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 shadow-lg hover:shadow-xl"
+          >
+            {isResetting ? 'Resetting...' : '🔄 Reset Stats (Testing)'}
+          </button>
+          <p className="text-xs text-gray-400 mt-2">For testing goal achievement</p>
         </div>
 
 

@@ -222,6 +222,29 @@ export class FirebaseDonationService {
     }
   }
 
+  // Reset stats to initial values
+  static async resetStats(): Promise<void> {
+    if (!db) {
+      console.warn('Firebase not initialized - cannot reset stats');
+      return;
+    }
+
+    try {
+      const initialStats = {
+        totalRaised: 0,
+        totalDonations: 0,
+        totalPledges: 0,
+        goalAmount: 1000000,
+        lastUpdated: serverTimestamp()
+      };
+
+      await setDoc(this.getStatsRef()!, initialStats);
+    } catch (error) {
+      console.error('Error resetting stats:', error);
+      throw error;
+    }
+  }
+
   // Real-time listener for stats
   static onStatsUpdate(callback: (stats: DonationStats) => void) {
     if (!db) {
