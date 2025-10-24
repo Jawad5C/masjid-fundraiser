@@ -47,7 +47,8 @@ export default function UnifiedDonation() {
         donorPhone: donorInfo.phone,
         type: 'donation',
         paymentMethod: 'other',
-        status: 'completed'
+        status: 'completed',
+        notes: 'Direct donation'
       });
       setIsProcessing(true);
       setTimeout(() => {
@@ -67,7 +68,8 @@ export default function UnifiedDonation() {
       donorPhone: donorInfo.phone,
       type: 'donation',
       paymentMethod: 'stripe',
-      status: 'completed'
+      status: 'completed',
+      notes: 'Stripe payment'
     });
     setShowStripeForm(false);
     setShowReceipt(true);

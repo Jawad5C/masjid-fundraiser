@@ -64,7 +64,8 @@ function CheckoutForm({ amount, donorInfo, onSuccess, onError }: StripePaymentPr
         donorPhone: donorInfo.phone,
         type: 'donation',
         paymentMethod: 'stripe',
-        status: 'completed'
+        status: 'completed',
+        notes: 'Stripe payment'
       });
       
       onSuccess();
