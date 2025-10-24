@@ -196,6 +196,31 @@ export default function UnifiedDonation() {
               </div>
             </div>
 
+            {/* QR Code Section */}
+            <div className="bg-gradient-to-br from-amber-900 to-amber-800 rounded-xl p-6 border-2 border-amber-500" style={{
+              boxShadow: '0 0 20px rgba(245, 158, 11, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1)'
+            }}>
+              <h4 className="text-white text-lg font-bold mb-3 flex items-center">
+                <span className="text-2xl mr-2">📱</span>
+                Quick Donate with QR Code
+              </h4>
+              <div className="flex items-center space-x-4">
+                <div className="bg-white p-4 rounded-lg">
+                  <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
+                    <span className="text-gray-500 text-xs">QR Code Placeholder</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-amber-100 text-sm leading-relaxed">
+                    <strong className="text-white">Scan to donate instantly!</strong> Use your phone's camera to scan this QR code for quick mobile donations.
+                  </p>
+                  <p className="text-amber-200 text-xs mt-2">
+                    Compatible with Apple Pay, Google Pay, and other mobile payment apps.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Tax Receipt Info */}
             <div className="bg-gradient-to-br from-purple-900 to-purple-800 rounded-xl p-6 border-2 border-purple-500" style={{
               boxShadow: '0 0 20px rgba(147, 51, 234, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1)'
