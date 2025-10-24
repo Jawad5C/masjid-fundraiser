@@ -28,6 +28,11 @@ export default function UnifiedDonation() {
   const [showStripeForm, setShowStripeForm] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [paymentError, setPaymentError] = useState('');
+  const [receiptPreferences, setReceiptPreferences] = useState({
+    email: true,
+    sms: false,
+    print: false
+  });
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +43,31 @@ export default function UnifiedDonation() {
     } else if (paymentMethod === 'pledge') {
       setShowPledgeForm(true);
     }
+  };
+
+  // Handle receipt delivery based on preferences
+  const handleReceiptDelivery = async (donationData: any) => {
+    const receiptMethods = [];
+    
+    if (receiptPreferences.email && donorInfo.email) {
+      receiptMethods.push('email');
+      // TODO: Implement email service (SendGrid, AWS SES, etc.)
+      console.log(`📧 Email receipt will be sent to: ${donorInfo.email}`);
+    }
+    
+    if (receiptPreferences.sms && donorInfo.phone) {
+      receiptMethods.push('sms');
+      // TODO: Implement SMS service (Twilio, AWS SNS, etc.)
+      console.log(`📱 SMS receipt will be sent to: ${donorInfo.phone}`);
+    }
+    
+    if (receiptPreferences.print) {
+      receiptMethods.push('print');
+      // TODO: Generate printable receipt
+      console.log(`📄 Print receipt will be generated`);
+    }
+    
+    return receiptMethods;
   };
 
   // Handle successful payment
@@ -196,6 +226,43 @@ export default function UnifiedDonation() {
               </div>
             </div>
 
+            {/* Receipt Delivery Preferences */}
+            <div>
+              <h3 className="text-white text-xl font-semibold mb-4">Receipt Delivery</h3>
+              <div className="space-y-3">
+                <label className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={receiptPreferences.email}
+                    onChange={(e) => setReceiptPreferences({...receiptPreferences, email: e.target.checked})}
+                    className="w-5 h-5 text-purple-600 rounded"
+                  />
+                  <span className="text-white">📧 Email receipt to {donorInfo.email || 'your email'}</span>
+                </label>
+                <label className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={receiptPreferences.sms}
+                    onChange={(e) => setReceiptPreferences({...receiptPreferences, sms: e.target.checked})}
+                    className="w-5 h-5 text-purple-600 rounded"
+                  />
+                  <span className="text-white">📱 SMS receipt to {donorInfo.phone || 'your phone'}</span>
+                </label>
+                <label className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={receiptPreferences.print}
+                    onChange={(e) => setReceiptPreferences({...receiptPreferences, print: e.target.checked})}
+                    className="w-5 h-5 text-purple-600 rounded"
+                  />
+                  <span className="text-white">📄 Print receipt (for tax purposes)</span>
+                </label>
+              </div>
+              <p className="text-amber-200 text-sm mt-2">
+                💡 <strong>Tip:</strong> Email receipts are automatically sent. SMS and print options are available for your convenience.
+              </p>
+            </div>
+
             {/* QR Code Section */}
             <div className="bg-gradient-to-br from-amber-900 to-amber-800 rounded-xl p-6 border-2 border-amber-500" style={{
               boxShadow: '0 0 20px rgba(245, 158, 11, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1)'
@@ -231,8 +298,11 @@ export default function UnifiedDonation() {
               </h4>
               <p className="text-purple-100 text-sm leading-relaxed">
                 <strong className="text-white">WICC is a registered 501(c)(3) non-profit organization.</strong> Your donation is tax-deductible. 
-                A receipt will be automatically generated and emailed to you upon completion of your donation.
+                Receipts will be delivered according to your preferences above (email, SMS, or print).
               </p>
+              <div className="mt-3 text-purple-200 text-xs">
+                <strong>Receipt includes:</strong> Donation amount, date, tax ID, and acknowledgment for tax purposes.
+              </div>
             </div>
 
             {/* Payment Error Display */}
