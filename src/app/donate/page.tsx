@@ -47,33 +47,43 @@ export default function UnifiedDonation() {
 
   // Handle receipt delivery based on preferences
   const handleReceiptDelivery = async (donationData: any) => {
-    const receiptMethods = [];
-    
-    if (receiptPreferences.email && donorInfo.email) {
-      receiptMethods.push('email');
-      // TODO: Implement email service (SendGrid, AWS SES, etc.)
-      console.log(`📧 Email receipt will be sent to: ${donorInfo.email}`);
+    try {
+      const response = await fetch('/api/send-receipt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          donorInfo,
+          donationAmount: parseInt(donationAmount || customAmount || '0'),
+          receiptPreferences
+        })
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        console.log('✅ Receipt delivery results:', result.results);
+        return result.results;
+      } else {
+        console.error('❌ Receipt delivery failed:', result.error);
+        return [];
+      }
+    } catch (error) {
+      console.error('❌ Error sending receipts:', error);
+      return [];
     }
-    
-    if (receiptPreferences.sms && donorInfo.phone) {
-      receiptMethods.push('sms');
-      // TODO: Implement SMS service (Twilio, AWS SNS, etc.)
-      console.log(`📱 SMS receipt will be sent to: ${donorInfo.phone}`);
-    }
-    
-    if (receiptPreferences.print) {
-      receiptMethods.push('print');
-      // TODO: Generate printable receipt
-      console.log(`📄 Print receipt will be generated`);
-    }
-    
-    return receiptMethods;
   };
 
   // Handle successful payment
   const handlePaymentSuccess = async () => {
     // Donation is already added by StripePayment component
     setShowStripeForm(false);
+    
+    // Send receipts based on preferences
+    const receiptResults = await handleReceiptDelivery({});
+    console.log('📧📱 Receipt delivery completed:', receiptResults);
+    
     setShowReceipt(true);
   };
 

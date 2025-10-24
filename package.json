@@ -15,10 +15,12 @@
     "firebase": "^12.4.0",
     "fireworks-js": "^2.10.8",
     "next": "15.5.5",
+    "nodemailer": "^7.0.10",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "stripe": "^19.1.0",
-    "styled-jsx": "^5.1.7"
+    "styled-jsx": "^5.1.7",
+    "twilio": "^5.10.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

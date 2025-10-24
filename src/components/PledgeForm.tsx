@@ -59,10 +59,38 @@ export default function PledgeForm({
         notes: `Pledge for ${pledgeDetails.pledgeDate} via ${pledgeDetails.paymentMethod}. ${pledgeDetails.notes}`
       });
       
+      // Send receipt for pledge
+      await sendPledgeReceipt(amount);
+      
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting pledge:', error);
       alert('Failed to submit pledge. Please try again.');
+    }
+  };
+
+  const sendPledgeReceipt = async (amount: number) => {
+    try {
+      const response = await fetch('/api/send-receipt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          donorInfo,
+          donationAmount: amount,
+          receiptPreferences: {
+            email: true, // Always send email for pledges
+            sms: true,   // Always send SMS for pledges
+            print: false
+          }
+        })
+      });
+
+      const result = await response.json();
+      console.log('📧📱 Pledge receipt delivery results:', result.results);
+    } catch (error) {
+      console.error('❌ Error sending pledge receipts:', error);
     }
   };
 
