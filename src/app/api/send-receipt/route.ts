@@ -1,21 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-import twilio from 'twilio';
 
-// Email configuration (using Gmail SMTP for now - you can change this)
-const emailTransporter = nodemailer.createTransporter({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER || 'your-email@gmail.com',
-    pass: process.env.EMAIL_PASS || 'your-app-password'
+// Optional email and SMS services - only initialize if credentials are provided
+let emailTransporter: any = null;
+let twilioClient: any = null;
+
+// Initialize email service if credentials are available
+if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  try {
+    const nodemailer = require('nodemailer');
+    emailTransporter = nodemailer.createTransporter({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+  } catch (error) {
+    console.warn('Email service not available:', error.message);
   }
-});
+}
 
-// Twilio configuration
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
+// Initialize Twilio service if credentials are available
+if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
+  try {
+    const twilio = require('twilio');
+    twilioClient = twilio(
+      process.env.TWILIO_ACCOUNT_SID,
+      process.env.TWILIO_AUTH_TOKEN
+    );
+  } catch (error) {
+    console.warn('SMS service not available:', error.message);
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,21 +41,37 @@ export async function POST(request: NextRequest) {
 
     // Send email receipt if requested
     if (receiptPreferences.email && donorInfo.email) {
-      try {
-        const emailResult = await sendEmailReceipt(donorInfo, donationAmount);
-        results.push({ method: 'email', success: true, result: emailResult });
-      } catch (error) {
-        results.push({ method: 'email', success: false, error: error.message });
+      if (emailTransporter) {
+        try {
+          const emailResult = await sendEmailReceipt(donorInfo, donationAmount);
+          results.push({ method: 'email', success: true, result: emailResult });
+        } catch (error) {
+          results.push({ method: 'email', success: false, error: error.message });
+        }
+      } else {
+        results.push({ 
+          method: 'email', 
+          success: false, 
+          error: 'Email service not configured. Please add EMAIL_USER and EMAIL_PASS to .env.local' 
+        });
       }
     }
 
     // Send SMS receipt if requested
     if (receiptPreferences.sms && donorInfo.phone) {
-      try {
-        const smsResult = await sendSMSReceipt(donorInfo, donationAmount);
-        results.push({ method: 'sms', success: true, result: smsResult });
-      } catch (error) {
-        results.push({ method: 'sms', success: false, error: error.message });
+      if (twilioClient) {
+        try {
+          const smsResult = await sendSMSReceipt(donorInfo, donationAmount);
+          results.push({ method: 'sms', success: true, result: smsResult });
+        } catch (error) {
+          results.push({ method: 'sms', success: false, error: error.message });
+        }
+      } else {
+        results.push({ 
+          method: 'sms', 
+          success: false, 
+          error: 'SMS service not configured. Please add Twilio credentials to .env.local' 
+        });
       }
     }
 
@@ -59,8 +91,12 @@ export async function POST(request: NextRequest) {
 }
 
 async function sendEmailReceipt(donorInfo: any, amount: number) {
+  if (!emailTransporter) {
+    throw new Error('Email service not configured');
+  }
+
   const mailOptions = {
-    from: process.env.EMAIL_USER || 'your-email@gmail.com',
+    from: process.env.EMAIL_USER,
     to: donorInfo.email,
     subject: 'WICC Masjid Fundraiser - Donation Receipt',
     html: `
@@ -104,6 +140,10 @@ async function sendEmailReceipt(donorInfo: any, amount: number) {
 }
 
 async function sendSMSReceipt(donorInfo: any, amount: number) {
+  if (!twilioClient) {
+    throw new Error('SMS service not configured');
+  }
+
   const message = `🕌 WICC Masjid Fundraiser\n\nThank you ${donorInfo.name} for your $${amount} donation!\n\nReceipt: Tax-deductible under 501(c)(3)\nDate: ${new Date().toLocaleDateString()}\n\nMay Allah (SWT) bless your generosity!`;
 
   return await twilioClient.messages.create({
