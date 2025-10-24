@@ -37,24 +37,6 @@ export default function UnifiedDonation() {
       setShowStripeForm(true);
     } else if (paymentMethod === 'pledge') {
       setShowPledgeForm(true);
-    } else {
-      // For other payment methods, show receipt directly
-      const amount = parseInt(donationAmount || customAmount || '0');
-      await addDonation({
-        amount,
-        donorName: donorInfo.name,
-        donorEmail: donorInfo.email,
-        donorPhone: donorInfo.phone,
-        type: 'donation',
-        paymentMethod: 'other',
-        status: 'completed',
-        notes: 'Direct donation'
-      });
-      setIsProcessing(true);
-      setTimeout(() => {
-        setIsProcessing(false);
-        setShowReceipt(true);
-      }, 2000);
     }
   };
 
@@ -198,29 +180,7 @@ export default function UnifiedDonation() {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     className="w-5 h-5 text-purple-600"
                   />
-                  <span className="text-white">Credit/Debit Card</span>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="bank"
-                    checked={paymentMethod === 'bank'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-5 h-5 text-purple-600"
-                  />
-                  <span className="text-white">Bank Transfer</span>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="check"
-                    checked={paymentMethod === 'check'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-5 h-5 text-purple-600"
-                  />
-                  <span className="text-white">Check (Mail-in)</span>
+                  <span className="text-white">Credit/Debit Card (Stripe)</span>
                 </label>
                 <label className="flex items-center space-x-3 cursor-pointer">
                   <input
