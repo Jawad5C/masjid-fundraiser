@@ -34,6 +34,30 @@ export default function UnifiedDonation() {
     print: false
   });
 
+  // Format phone number as user types
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-numeric characters
+    const phoneNumber = value.replace(/\D/g, '');
+    
+    // Don't format if empty
+    if (!phoneNumber) return '';
+    
+    // Format based on length
+    if (phoneNumber.length <= 3) {
+      return `(${phoneNumber}`;
+    } else if (phoneNumber.length <= 6) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    } else {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    }
+  };
+
+  // Handle phone number input
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setDonorInfo({...donorInfo, phone: formatted});
+  };
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,13 +200,14 @@ export default function UnifiedDonation() {
                   onChange={(e) => setDonorInfo({...donorInfo, email: e.target.value})}
                   className="p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-amber-400 focus:border-amber-300 focus:outline-none"
                 />
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  value={donorInfo.phone}
-                  onChange={(e) => setDonorInfo({...donorInfo, phone: e.target.value})}
-                  className="p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-amber-400 focus:border-amber-300 focus:outline-none"
-                />
+                       <input
+                         type="tel"
+                         placeholder="(555) 123-4567"
+                         value={donorInfo.phone}
+                         onChange={handlePhoneChange}
+                         maxLength={14}
+                         className="p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-amber-400 focus:border-amber-300 focus:outline-none"
+                       />
                 <input
                   type="text"
                   placeholder="Address"
