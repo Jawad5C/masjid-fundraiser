@@ -1,4 +1,4 @@
-# QR Codes for WICC Masjid Fundraiser
+ththe n# QR Codes for WICC Masjid Fundraiser
 
 This directory contains the QR codes for the donation page.
 
