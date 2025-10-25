@@ -11,7 +11,7 @@ interface QuranicRecitationProps {
 
 export default function QuranicRecitation({ onDonationClick, children, className, style }: QuranicRecitationProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentRecitation, setCurrentRecitation] = useState<string | null>(null);
+  // const [currentRecitation, setCurrentRecitation] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
          // Quranic verse from your project - Used in donation receipt
@@ -31,7 +31,7 @@ export default function QuranicRecitation({ onDonationClick, children, className
            if (isPlaying) return; // Prevent multiple simultaneous recitations
 
            const randomVerse = quranicVerses[Math.floor(Math.random() * quranicVerses.length)];
-           setCurrentRecitation(randomVerse.id);
+           // setCurrentRecitation(randomVerse.id);
            setIsPlaying(true);
 
            // Create audio element
@@ -40,7 +40,7 @@ export default function QuranicRecitation({ onDonationClick, children, className
 
            audio.onended = () => {
              setIsPlaying(false);
-             setCurrentRecitation(null);
+             // setCurrentRecitation(null);
              // Redirect after audio finishes
              onDonationClick();
            };
@@ -48,14 +48,14 @@ export default function QuranicRecitation({ onDonationClick, children, className
            audio.onerror = () => {
              // If audio file doesn't exist, redirect immediately
              setIsPlaying(false);
-             setCurrentRecitation(null);
+             // setCurrentRecitation(null);
              onDonationClick();
            };
 
            audio.play().catch(() => {
              // If audio fails, redirect immediately
              setIsPlaying(false);
-             setCurrentRecitation(null);
+             // setCurrentRecitation(null);
              onDonationClick();
            });
          };

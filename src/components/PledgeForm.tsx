@@ -36,31 +36,31 @@ export default function PledgeForm({
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Format phone number as user types
-  const formatPhoneNumber = (value: string) => {
-    // Remove all non-numeric characters
-    const phoneNumber = value.replace(/\D/g, '');
+  // const formatPhoneNumber = (value: string) => {
+  //   // Remove all non-numeric characters
+  //   const phoneNumber = value.replace(/\D/g, '');
     
-    // Don't format if empty
-    if (!phoneNumber) return '';
+  //   // Don't format if empty
+  //   if (!phoneNumber) return '';
     
-    // Format based on length
-    if (phoneNumber.length <= 3) {
-      return `(${phoneNumber}`;
-    } else if (phoneNumber.length <= 6) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    } else {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-    }
-  };
+  //   // Format based on length
+  //   if (phoneNumber.length <= 3) {
+  //     return `(${phoneNumber}`;
+  //   } else if (phoneNumber.length <= 6) {
+  //     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+  //   } else {
+  //     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  //   }
+  // };
 
-  // Handle phone number input
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(e.target.value);
-    // Update the donorInfo in the parent component
-    // This is a bit tricky since we're in a child component
-    // For now, we'll just format the display but keep the original value
-    console.log('Formatted phone:', formatted);
-  };
+  // Handle phone number input - REMOVED (unused)
+  // const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const formatted = formatPhoneNumber(e.target.value);
+  //   // Update the donorInfo in the parent component
+  //   // This is a bit tricky since we're in a child component
+  //   // For now, we'll just format the display but keep the original value
+  //   console.log('Formatted phone:', formatted);
+  // };
   
   const finalAmount = donationAmount || customAmount;
   const pledgeNumber = `PLEDGE-${Date.now().toString().slice(-6)}`;
@@ -87,7 +87,7 @@ export default function PledgeForm({
       });
       
       // Send receipt for pledge
-      await sendPledgeReceipt(amount);
+      await sendPledgeReceipt();
       
       setIsSubmitted(true);
     } catch (error) {
@@ -96,7 +96,7 @@ export default function PledgeForm({
     }
   };
 
-  const sendPledgeReceipt = async (amount: number) => {
+  const sendPledgeReceipt = async () => {
     // Receipt delivery simplified - only print option available
     console.log('📄 Pledge receipt - print option available for tax purposes');
   };

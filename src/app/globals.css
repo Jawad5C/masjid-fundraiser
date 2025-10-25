@@ -38,6 +38,754 @@ body {
   }
 }
 
+/* Pulsing bright fade animation for dramatic text effects */
+@keyframes pulse-bright-fade {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: brightness(0.3);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(2);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1.5);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scale(0.95);
+    filter: brightness(1);
+  }
+  80% {
+    opacity: 0.3;
+    transform: scale(0.9);
+    filter: brightness(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: brightness(0.2);
+  }
+}
+
+/* Intense light glow emergence and disappearance animation */
+@keyframes star-emerge-fade {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  15% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  25% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  35% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  75% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(1px);
+  }
+  85% {
+    opacity: 0.6;
+    transform: scale(0.8);
+    filter: brightness(1.5) blur(3px);
+  }
+  95% {
+    opacity: 0.3;
+    transform: scale(0.6);
+    filter: brightness(0.8) blur(6px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.2) blur(10px);
+  }
+}
+
+/* Animation with 3-second pause between cycles */
+@keyframes star-emerge-fade-with-pause {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(1px);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(0.8);
+    filter: brightness(1.5) blur(3px);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(0.6);
+    filter: brightness(0.8) blur(6px);
+  }
+  95% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.2) blur(10px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.2) blur(10px);
+  }
+}
+
+/* Fade out disappearance */
+@keyframes star-emerge-fade-out {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(1px);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(1);
+    filter: brightness(1.5) blur(0px);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(1);
+    filter: brightness(0.8) blur(0px);
+  }
+  95% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.2) blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.2) blur(0px);
+  }
+}
+
+/* Blur away disappearance */
+@keyframes star-emerge-blur-away {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(2px);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(1);
+    filter: brightness(1.5) blur(8px);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(1);
+    filter: brightness(0.8) blur(15px);
+  }
+  95% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.2) blur(25px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.2) blur(25px);
+  }
+}
+
+/* Shrink away disappearance */
+@keyframes star-emerge-shrink-away {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(0.9);
+    filter: brightness(2.5) blur(0px);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(0.7);
+    filter: brightness(1.5) blur(0px);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(0.5);
+    filter: brightness(0.8) blur(0px);
+  }
+  95% {
+    opacity: 0;
+    transform: scale(0.2);
+    filter: brightness(0.2) blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+    filter: brightness(0.2) blur(0px);
+  }
+}
+
+/* Fade to star disappearance */
+@keyframes star-emerge-fade-to-star {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(1px);
+  }
+  80% {
+    opacity: 0.6;
+    transform: scale(0.8);
+    filter: brightness(1.5) blur(3px);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(0.6);
+    filter: brightness(0.8) blur(6px);
+  }
+  95% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.2) blur(10px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.2) blur(10px);
+  }
+}
+
+/* Flash disappearance - instant vanish */
+@keyframes star-emerge-flash-away {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.5) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(1.5) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(3) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(6) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(10) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(8) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(5) blur(0px);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(15) blur(0px);
+  }
+  85% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.1) blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.1) blur(0px);
+  }
+}
+
+/* Disintegrate effect - particles flying away */
+@keyframes star-emerge-disintegrate {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(0px);
+  }
+  80% {
+    opacity: 0.7;
+    transform: scale(0.9) rotate(2deg);
+    filter: brightness(1.5) blur(2px);
+  }
+  85% {
+    opacity: 0.4;
+    transform: scale(0.7) rotate(5deg);
+    filter: brightness(1) blur(5px);
+  }
+  90% {
+    opacity: 0.2;
+    transform: scale(0.5) rotate(10deg);
+    filter: brightness(0.5) blur(10px);
+  }
+  95% {
+    opacity: 0;
+    transform: scale(0.2) rotate(15deg);
+    filter: brightness(0.2) blur(15px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1) rotate(20deg);
+    filter: brightness(0.1) blur(20px);
+  }
+}
+
+/* Fire/burn effect - text burns away */
+@keyframes star-emerge-burn-away {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.5) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(1.5) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(3) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(6) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(10) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(8) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(5) blur(0px);
+  }
+  80% {
+    opacity: 0.7;
+    transform: scale(1);
+    filter: brightness(4) hue-rotate(30deg) saturate(3);
+  }
+  85% {
+    opacity: 0.5;
+    transform: scale(1);
+    filter: brightness(3) hue-rotate(60deg) saturate(4);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(1);
+    filter: brightness(2) hue-rotate(90deg) saturate(5);
+  }
+  95% {
+    opacity: 0.1;
+    transform: scale(1);
+    filter: brightness(1) hue-rotate(120deg) saturate(6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+    filter: brightness(0.2) hue-rotate(180deg) saturate(8);
+  }
+}
+
+/* Glitch effect - digital corruption */
+@keyframes star-emerge-glitch-away {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(0px);
+  }
+  80% {
+    opacity: 0.8;
+    transform: scale(1) skew(2deg, 0deg);
+    filter: brightness(2) contrast(1.5);
+  }
+  85% {
+    opacity: 0.6;
+    transform: scale(1) skew(-2deg, 1deg);
+    filter: brightness(1.5) contrast(2);
+  }
+  90% {
+    opacity: 0.4;
+    transform: scale(1) skew(3deg, -1deg);
+    filter: brightness(1) contrast(3);
+  }
+  95% {
+    opacity: 0.2;
+    transform: scale(1) skew(-3deg, 2deg);
+    filter: brightness(0.5) contrast(4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) skew(0deg, 0deg);
+    filter: brightness(0.2) contrast(5);
+  }
+}
+
+/* Melt away effect - text melts down */
+@keyframes star-emerge-melt-away {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+    filter: brightness(0.1) blur(15px);
+  }
+  10% {
+    opacity: 0.2;
+    transform: scale(0.5);
+    filter: brightness(0.3) blur(12px);
+  }
+  20% {
+    opacity: 0.5;
+    transform: scale(0.7);
+    filter: brightness(0.8) blur(8px);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(0.9);
+    filter: brightness(1.5) blur(4px);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3) blur(1px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    filter: brightness(4) blur(0px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+    filter: brightness(3.5) blur(0px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+    filter: brightness(2.5) blur(0px);
+  }
+  80% {
+    opacity: 0.7;
+    transform: scale(1, 0.8);
+    filter: brightness(1.5) blur(1px);
+  }
+  85% {
+    opacity: 0.5;
+    transform: scale(1, 0.6);
+    filter: brightness(1) blur(2px);
+  }
+  90% {
+    opacity: 0.3;
+    transform: scale(1, 0.4);
+    filter: brightness(0.5) blur(3px);
+  }
+  95% {
+    opacity: 0.1;
+    transform: scale(1, 0.2);
+    filter: brightness(0.3) blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1, 0.1);
+    filter: brightness(0.2) blur(5px);
+  }
+}
+
 @keyframes flash {
   0% {
     opacity: 1;

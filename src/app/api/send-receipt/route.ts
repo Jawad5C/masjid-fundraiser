@@ -1,8 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Types for email and SMS services
+interface EmailTransporter {
+  apiKey: string;
+  domain: string;
+  fromEmail: string;
+}
+
+interface TwilioClient {
+  messages: {
+    create: (options: { body: string; from: string; to: string }) => Promise<unknown>;
+  };
+}
+
 // Optional email and SMS services - only initialize if credentials are provided
-let emailTransporter: any = null;
-let twilioClient: any = null;
+let emailTransporter: EmailTransporter | null = null;
+let twilioClient: TwilioClient | null = null;
 
 // Initialize email service if credentials are available
 if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
@@ -14,20 +27,24 @@ if (process.env.MAILGUN_API_KEY && process.env.MAILGUN_DOMAIN) {
       fromEmail: process.env.MAILGUN_FROM_EMAIL || `noreply@${process.env.MAILGUN_DOMAIN}`
     };
   } catch (error) {
-    console.warn('Email service not available:', error.message);
+    console.warn('Email service not available:', error instanceof Error ? error.message : 'Unknown error');
   }
 }
 
 // Initialize Twilio service if credentials are available
 if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN) {
   try {
-    const twilio = require('twilio');
-    twilioClient = twilio(
-      process.env.TWILIO_ACCOUNT_SID,
-      process.env.TWILIO_AUTH_TOKEN
-    );
+    // Dynamic import to avoid require() error
+    import('twilio').then((twilio) => {
+      twilioClient = twilio.default(
+        process.env.TWILIO_ACCOUNT_SID!,
+        process.env.TWILIO_AUTH_TOKEN!
+      );
+    }).catch((error) => {
+      console.warn('SMS service not available:', error instanceof Error ? error.message : 'Unknown error');
+    });
   } catch (error) {
-    console.warn('SMS service not available:', error.message);
+    console.warn('SMS service not available:', error instanceof Error ? error.message : 'Unknown error');
   }
 }
 
@@ -44,7 +61,7 @@ export async function POST(request: NextRequest) {
           const emailResult = await sendEmailReceipt(donorInfo, donationAmount);
           results.push({ method: 'email', success: true, result: emailResult });
         } catch (error) {
-          results.push({ method: 'email', success: false, error: error.message });
+          results.push({ method: 'email', success: false, error: error instanceof Error ? error.message : 'Unknown error' });
         }
       } else {
         results.push({ 
@@ -62,7 +79,7 @@ export async function POST(request: NextRequest) {
           const smsResult = await sendSMSReceipt(donorInfo, donationAmount);
           results.push({ method: 'sms', success: true, result: smsResult });
         } catch (error) {
-          results.push({ method: 'sms', success: false, error: error.message });
+          results.push({ method: 'sms', success: false, error: error instanceof Error ? error.message : 'Unknown error' });
         }
       } else {
         results.push({ 
@@ -82,13 +99,19 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error sending receipts:', error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
 }
 
-async function sendEmailReceipt(donorInfo: any, amount: number) {
+interface DonorInfo {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+async function sendEmailReceipt(donorInfo: DonorInfo, amount: number) {
   if (!emailTransporter) {
     throw new Error('Email service not configured');
   }
@@ -157,7 +180,7 @@ async function sendEmailReceipt(donorInfo: any, amount: number) {
   return await response.json();
 }
 
-async function sendSMSReceipt(donorInfo: any, amount: number) {
+async function sendSMSReceipt(donorInfo: DonorInfo, amount: number) {
   if (!twilioClient) {
     throw new Error('SMS service not configured');
   }
@@ -170,7 +193,7 @@ async function sendSMSReceipt(donorInfo: any, amount: number) {
 
   return await twilioClient.messages.create({
     body: message,
-    from: process.env.TWILIO_PHONE_NUMBER,
+    from: process.env.TWILIO_PHONE_NUMBER!,
     to: donorInfo.phone
   });
 }

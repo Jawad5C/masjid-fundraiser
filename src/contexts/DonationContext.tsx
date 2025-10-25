@@ -26,14 +26,15 @@ const DonationContext = createContext<DonationContextType | undefined>(undefined
 export function DonationProvider({ children }: { children: React.ReactNode }) {
   const [donations, setDonations] = useState<Donation[]>([]);
   const [stats, setStats] = useState<DonationStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Load initial data and set up real-time listeners
   useEffect(() => {
-    loadDonations();
-    
-    // Set up real-time listener for stats
+    // Set initial stats in Firebase if needed
+    FirebaseDonationService.setInitialStats().catch(console.error);
+
+    // Set up real-time listener for stats immediately
     const unsubscribeStats = FirebaseDonationService.onStatsUpdate((newStats) => {
       setStats(newStats);
     });
@@ -42,6 +43,9 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
     const unsubscribeDonations = FirebaseDonationService.onRecentDonationsUpdate((newDonations) => {
       setDonations(newDonations);
     });
+
+    // Also load initial data
+    loadDonations();
 
     return () => {
       unsubscribeStats();

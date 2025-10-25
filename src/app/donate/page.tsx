@@ -4,12 +4,21 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import StarryBackground from '@/components/StarryBackground';
 import DonationReceipt from '@/components/DonationReceipt';
 import PledgeForm from '@/components/PledgeForm';
 import { useDonations } from '@/contexts/DonationContext';
 
 export default function UnifiedDonation() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white text-xl">Loading...</div></div>}>
+      <UnifiedDonationContent />
+    </Suspense>
+  );
+}
+
+function UnifiedDonationContent() {
   const { addDonation } = useDonations();
   const searchParams = useSearchParams();
   const [donorInfo, setDonorInfo] = useState({
@@ -24,7 +33,7 @@ export default function UnifiedDonation() {
   const [donationAmount, setDonationAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
@@ -111,14 +120,14 @@ export default function UnifiedDonation() {
     window.location.href = '/';
   };
 
-  // Handle receipt delivery based on preferences
-  const handleReceiptDelivery = async (donationData: any) => {
-    // Since we only have print option now, just log the preference
-    if (receiptPreferences.print) {
-      console.log('📄 Print receipt requested for tax purposes');
-    }
-    return [];
-  };
+  // Handle receipt delivery based on preferences - REMOVED (unused)
+  // const handleReceiptDelivery = async (donationData: unknown) => {
+  //   // Since we only have print option now, just log the preference
+  //   if (receiptPreferences.print) {
+  //     console.log('📄 Print receipt requested for tax purposes');
+  //   }
+  //   return [];
+  // };
 
 
   return (
@@ -305,7 +314,7 @@ export default function UnifiedDonation() {
                   </div>
                   <h5 className="text-white font-semibold mb-2">Masjid Payment Page</h5>
                   <p className="text-amber-100 text-sm">
-                    Direct payment to WICC's custom donation system
+                    Direct payment to WICC&apos;s custom donation system
                   </p>
                 </div>
 
@@ -322,14 +331,14 @@ export default function UnifiedDonation() {
                   </div>
                   <h5 className="text-white font-semibold mb-2">Launchgood Platform</h5>
                   <p className="text-amber-100 text-sm">
-                    Donate through Launchgood's trusted platform
+                    Donate through Launchgood&apos;s trusted platform
                   </p>
                 </div>
               </div>
 
               <div className="mt-4 text-center">
                 <p className="text-amber-100 text-sm">
-                  <strong className="text-white">Scan either QR code to donate instantly!</strong> Use your phone's camera to scan for quick mobile donations.
+                  <strong className="text-white">Scan either QR code to donate instantly!</strong> Use your phone&apos;s camera to scan for quick mobile donations.
                 </p>
                 <p className="text-amber-200 text-xs mt-2">
                   Compatible with Apple Pay, Google Pay, and other mobile payment apps.

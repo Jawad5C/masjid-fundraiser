@@ -4,20 +4,26 @@ import MinaretThermometer from '@/components/MinaretThermometer';
 import StarryBackground from '@/components/StarryBackground';
 import FireworksCelebration from '@/components/FireworksCelebration';
 import QuranicRecitation from '@/components/QuranicRecitation';
+// import AnimatedText from '@/components/AnimatedText';
 import { useDonations } from '@/contexts/DonationContext';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import Image from 'next/image';
 
 export default function Home() {
-  return <HomeContent />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center"><div className="text-white text-xl">Loading...</div></div>}>
+      <HomeContent />
+    </Suspense>
+  );
 }
 
 function HomeContent() {
-  const { stats, isLoading, error, resetStats, addDonation } = useDonations();
+  const { stats, isLoading, error, addDonation } = useDonations();
   const [showFireworks, setShowFireworks] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
-  const [isResetting, setIsResetting] = useState(false);
+  // const [isResetting, setIsResetting] = useState(false);
   const [paymentProcessed, setPaymentProcessed] = useState(false);
   const searchParams = useSearchParams();
 
@@ -71,20 +77,20 @@ function HomeContent() {
     }
   }, [totalRaised, goalAmount]);
 
-  // Handle reset stats
-  const handleResetStats = async () => {
-    try {
-      setIsResetting(true);
-      await resetStats();
-      setShowFireworks(false);
-      setHasTriggered(false);
-    } catch (error) {
-      console.error('Error resetting stats:', error);
-      alert('Failed to reset stats. Please try again.');
-    } finally {
-      setIsResetting(false);
-    }
-  };
+  // Handle reset stats - REMOVED FOR PRODUCTION
+  // const handleResetStats = async () => {
+  //   try {
+  //     setIsResetting(true);
+  //     await resetStats();
+  //     setShowFireworks(false);
+  //     setHasTriggered(false);
+  //   } catch (error) {
+  //     console.error('Error resetting stats:', error);
+  //     alert('Failed to reset stats. Please try again.');
+  //   } finally {
+  //     setIsResetting(false);
+  //   }
+  // };
 
   if (isLoading) {
     return (
@@ -195,42 +201,51 @@ function HomeContent() {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="bg-transparent shadow-lg relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-white mb-2">Masjid Fundraiser</h1>
-              <p className="text-amber-200">Building Our Community Together</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Header removed - text moved under minaret */}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
-        {/* Minaret Thermometer */}
-        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-8 sm:mt-16">
-          <MinaretThermometer 
-            currentAmount={totalRaised}
-            goalAmount={goalAmount}
-            className="scale-100 sm:scale-125"
-          />
-          
+        {/* Minaret Thermometer with Pulsing Text */}
+        <div className="flex items-center justify-center mb-8 sm:mb-16 relative z-20 mt-12 sm:mt-20">
+          {/* Left Side - Masjid Fundraiser */}
+          <div className="absolute left-0 top-1/4 transform -translate-y-1/2 -translate-x-4 sm:-translate-x-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-cyan-200 whitespace-nowrap" style={{
+              textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
+              fontFamily: '"Playfair Display", "Georgia", "serif"',
+              letterSpacing: '0.05em',
+              fontWeight: '700',
+              animation: 'star-emerge-flash-away 8s ease-in-out infinite 0s',
+              filter: 'brightness(1.5) contrast(1.3) saturate(1.8)'
+            }}>
+              Masjid Fundraiser
+            </h1>
+          </div>
+
+          {/* Center - Minaret Thermometer */}
+          <div className="relative">
+            <MinaretThermometer 
+              currentAmount={totalRaised}
+              goalAmount={goalAmount}
+              className="scale-100 sm:scale-125"
+            />
+          </div>
+
+          {/* Right Side - Building Our Community Together */}
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 sm:translate-x-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-pink-200 whitespace-nowrap" style={{
+              textShadow: '0 0 50px rgba(244, 114, 182, 1), 0 0 100px rgba(244, 114, 182, 1), 0 0 150px rgba(244, 114, 182, 0.8), 0 0 200px rgba(244, 114, 182, 0.6), 0 0 250px rgba(244, 114, 182, 0.4), 0 0 300px rgba(244, 114, 182, 0.2)',
+              fontFamily: '"Playfair Display", "Georgia", "serif"',
+              letterSpacing: '0.05em',
+              fontWeight: '700',
+              animation: 'star-emerge-burn-away 8s ease-in-out infinite 4s',
+              filter: 'brightness(1.5) contrast(1.3) saturate(1.8)'
+            }}>
+              Masjid Fundraiser
+            </h1>
+          </div>
         </div>
 
-        {/* Reset Button for Testing */}
-        <div className="text-center mb-4 relative z-10">
-          <button
-            onClick={handleResetStats}
-            disabled={isResetting}
-            className="bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 shadow-lg hover:shadow-xl"
-          >
-            {isResetting ? 'Resetting...' : '🔄 Reset Stats (Testing)'}
-          </button>
-          <p className="text-xs text-gray-400 mt-2">For testing goal achievement</p>
-        </div>
 
 
 
@@ -603,13 +618,22 @@ function HomeContent() {
             <div className="text-xs sm:text-sm text-slate-400 border-t border-slate-700 pt-4">
               <p className="mb-2">Website Design & Development</p>
               <p className="text-slate-300">
-                <span className="font-semibold">Jawad Ashraf</span> • 
+                <span className="font-semibold text-amber-300">Jawad Ashraf</span> • 
                 <a 
                   href="mailto:jawad.ashraf.nyc@gmail.com" 
                   className="text-amber-300 hover:text-amber-200 transition-colors duration-200 ml-1 break-all sm:break-normal"
                 >
                   jawad.ashraf.nyc@gmail.com
                 </a>
+              </p>
+              <p className="text-slate-300 mt-1">
+                <a 
+                  href="tel:+18607963837" 
+                  className="text-amber-300 hover:text-amber-200 transition-colors duration-200"
+                >
+                  (860) 796-3837
+                </a>
+                <span className="text-amber-300 ml-2">(Text Preferred)</span>
               </p>
             </div>
           </div>
