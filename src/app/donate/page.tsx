@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import StarryBackground from '@/components/StarryBackground';
 import DonationReceipt from '@/components/DonationReceipt';
-import StripePayment from '@/components/StripePayment';
 import PledgeForm from '@/components/PledgeForm';
 import { useDonations } from '@/contexts/DonationContext';
 
 export default function UnifiedDonation() {
   const { addDonation } = useDonations();
+  const searchParams = useSearchParams();
   const [donorInfo, setDonorInfo] = useState({
     name: '',
     email: '',
@@ -25,14 +26,21 @@ export default function UnifiedDonation() {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
-  const [showStripeForm, setShowStripeForm] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
+  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
   const [paymentError, setPaymentError] = useState('');
   const [receiptPreferences, setReceiptPreferences] = useState({
-    email: true,
-    sms: false,
     print: false
   });
+
+  // Read URL parameter and set initial donation amount
+  useEffect(() => {
+    const amount = searchParams.get('amount');
+    if (amount) {
+      setDonationAmount(amount);
+      setCustomAmount(''); // Clear custom amount if preset amount is selected
+    }
+  }, [searchParams]);
 
   // Format phone number as user types
   const formatPhoneNumber = (value: string) => {
@@ -63,59 +71,55 @@ export default function UnifiedDonation() {
     e.preventDefault();
     
     if (paymentMethod === 'card') {
-      setShowStripeForm(true);
+      // First, record the donation on our site immediately
+      const amount = parseInt(donationAmount || customAmount || '0');
+      
+      try {
+        console.log('Recording donation:', { amount, donorName: donorInfo.name, status: 'pending' });
+        
+        await addDonation({
+          amount,
+          donorName: donorInfo.name,
+          donorEmail: donorInfo.email,
+          donorPhone: donorInfo.phone,
+          type: 'donation',
+          paymentMethod: 'card',
+          status: 'pending', // Mark as pending until payment is completed
+          notes: 'Payment to be completed via WICC Payment Center'
+        });
+        
+        console.log('Donation recorded successfully');
+        
+        // Show confirmation message
+        setShowPaymentConfirmation(true);
+        
+      } catch (error) {
+        console.error('Error recording donation:', error);
+        alert('Error recording donation. Please try again.');
+      }
     } else if (paymentMethod === 'pledge') {
       setShowPledgeForm(true);
     }
   };
 
+  // Handle proceeding to payment center
+  const handleProceedToPayment = () => {
+    const paymentUrl = `https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1`;
+    window.open(paymentUrl, '_blank');
+    
+    // Redirect to main page to show updated minaret
+    window.location.href = '/';
+  };
+
   // Handle receipt delivery based on preferences
   const handleReceiptDelivery = async (donationData: any) => {
-    try {
-      const response = await fetch('/api/send-receipt', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          donorInfo,
-          donationAmount: parseInt(donationAmount || customAmount || '0'),
-          receiptPreferences
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.success) {
-        console.log('✅ Receipt delivery results:', result.results);
-        return result.results;
-      } else {
-        console.error('❌ Receipt delivery failed:', result.error);
-        return [];
-      }
-    } catch (error) {
-      console.error('❌ Error sending receipts:', error);
-      return [];
+    // Since we only have print option now, just log the preference
+    if (receiptPreferences.print) {
+      console.log('📄 Print receipt requested for tax purposes');
     }
+    return [];
   };
 
-  // Handle successful payment
-  const handlePaymentSuccess = async () => {
-    // Donation is already added by StripePayment component
-    setShowStripeForm(false);
-    
-    // Send receipts based on preferences
-    const receiptResults = await handleReceiptDelivery({});
-    console.log('📧📱 Receipt delivery completed:', receiptResults);
-    
-    setShowReceipt(true);
-  };
-
-  // Handle payment error
-  const handlePaymentError = (error: string) => {
-    setPaymentError(error);
-    setShowStripeForm(false);
-  };
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
@@ -245,7 +249,7 @@ export default function UnifiedDonation() {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     className="w-5 h-5 text-purple-600"
                   />
-                  <span className="text-white">Credit/Debit Card (Stripe)</span>
+                  <span className="text-white">Credit/Debit Card (WICC Payment Center)</span>
                 </label>
                 <label className="flex items-center space-x-3 cursor-pointer">
                   <input
@@ -263,26 +267,8 @@ export default function UnifiedDonation() {
 
             {/* Receipt Delivery Preferences */}
             <div>
-              <h3 className="text-white text-xl font-semibold mb-4">Receipt Delivery</h3>
+              <h3 className="text-white text-xl font-semibold mb-4">Receipt Options</h3>
               <div className="space-y-3">
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={receiptPreferences.email}
-                    onChange={(e) => setReceiptPreferences({...receiptPreferences, email: e.target.checked})}
-                    className="w-5 h-5 text-purple-600 rounded"
-                  />
-                  <span className="text-white">📧 Email receipt to {donorInfo.email || 'your email'}</span>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={receiptPreferences.sms}
-                    onChange={(e) => setReceiptPreferences({...receiptPreferences, sms: e.target.checked})}
-                    className="w-5 h-5 text-purple-600 rounded"
-                  />
-                  <span className="text-white">📱 SMS receipt to {donorInfo.phone || 'your phone'}</span>
-                </label>
                 <label className="flex items-center space-x-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -293,33 +279,61 @@ export default function UnifiedDonation() {
                   <span className="text-white">📄 Print receipt (for tax purposes)</span>
                 </label>
               </div>
-              <p className="text-amber-200 text-sm mt-2">
-                💡 <strong>Tip:</strong> Email receipts are automatically sent. SMS and print options are available for your convenience.
-              </p>
             </div>
 
             {/* QR Code Section */}
             <div className="bg-gradient-to-br from-amber-900 to-amber-800 rounded-xl p-6 border-2 border-amber-500" style={{
               boxShadow: '0 0 20px rgba(245, 158, 11, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1)'
             }}>
-              <h4 className="text-white text-lg font-bold mb-3 flex items-center">
+              <h4 className="text-white text-lg font-bold mb-4 flex items-center">
                 <span className="text-2xl mr-2">📱</span>
-                Quick Donate with QR Code
+                Quick Donate with QR Codes
               </h4>
-              <div className="flex items-center space-x-4">
-                <div className="bg-white p-4 rounded-lg">
-                  <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
-                    <span className="text-gray-500 text-xs">QR Code Placeholder</span>
+              
+              {/* Two QR Codes Side by Side */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Masjid Custom Payment QR */}
+                <div className="text-center">
+                  <div className="bg-white p-4 rounded-lg mb-3">
+                    <Image
+                      src="/qr-codes/masjid-payment-qr.png"
+                      alt="Masjid Payment QR Code"
+                      width={128}
+                      height={128}
+                      className="w-32 h-32 rounded-lg"
+                    />
                   </div>
-                </div>
-                <div className="flex-1">
-                  <p className="text-amber-100 text-sm leading-relaxed">
-                    <strong className="text-white">Scan to donate instantly!</strong> Use your phone's camera to scan this QR code for quick mobile donations.
-                  </p>
-                  <p className="text-amber-200 text-xs mt-2">
-                    Compatible with Apple Pay, Google Pay, and other mobile payment apps.
+                  <h5 className="text-white font-semibold mb-2">Masjid Payment Page</h5>
+                  <p className="text-amber-100 text-sm">
+                    Direct payment to WICC's custom donation system
                   </p>
                 </div>
+
+                {/* Launchgood QR */}
+                <div className="text-center">
+                  <div className="bg-white p-4 rounded-lg mb-3">
+                    <Image
+                      src="/qr-codes/launchgood-qr.png"
+                      alt="Launchgood QR Code"
+                      width={128}
+                      height={128}
+                      className="w-32 h-32 rounded-lg"
+                    />
+                  </div>
+                  <h5 className="text-white font-semibold mb-2">Launchgood Platform</h5>
+                  <p className="text-amber-100 text-sm">
+                    Donate through Launchgood's trusted platform
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 text-center">
+                <p className="text-amber-100 text-sm">
+                  <strong className="text-white">Scan either QR code to donate instantly!</strong> Use your phone's camera to scan for quick mobile donations.
+                </p>
+                <p className="text-amber-200 text-xs mt-2">
+                  Compatible with Apple Pay, Google Pay, and other mobile payment apps.
+                </p>
               </div>
             </div>
 
@@ -332,8 +346,7 @@ export default function UnifiedDonation() {
                 Tax Receipt Information
               </h4>
               <p className="text-purple-100 text-sm leading-relaxed">
-                <strong className="text-white">WICC is a registered 501(c)(3) non-profit organization.</strong> Your donation is tax-deductible. 
-                Receipts will be delivered according to your preferences above (email, SMS, or print).
+                <strong className="text-white">WICC is a registered 501(c)(3) non-profit organization.</strong> Your donation is tax-deductible.
               </p>
               <div className="mt-3 text-purple-200 text-xs">
                 <strong>Receipt includes:</strong> Donation amount, date, tax ID, and acknowledgment for tax purposes.
@@ -369,49 +382,6 @@ export default function UnifiedDonation() {
         </div>
       </div>
 
-      {/* Stripe Payment Modal */}
-      {showStripeForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-6 rounded-t-2xl">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                    <Image 
-                      src="/logo.jpeg" 
-                      alt="WICC Logo" 
-                      width={64}
-                      height={64}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold">Secure Payment</h2>
-                    <p className="text-green-100">Complete your donation to WICC</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowStripeForm(false)}
-                  className="text-white hover:text-green-200 transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <StripePayment
-                amount={parseInt(donationAmount || customAmount || '0')}
-                donorInfo={donorInfo}
-                onSuccess={handlePaymentSuccess}
-                onError={handlePaymentError}
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Pledge Form Modal */}
       {showPledgeForm && (
@@ -423,16 +393,138 @@ export default function UnifiedDonation() {
         />
       )}
 
-      {/* Donation Receipt Modal */}
-      {showReceipt && (
-        <DonationReceipt
-          donorInfo={donorInfo}
-          donationAmount={donationAmount}
-          customAmount={customAmount}
-          paymentMethod={paymentMethod}
-          onClose={() => setShowReceipt(false)}
-        />
-      )}
-    </div>
-  );
-}
+             {/* Donation Receipt Modal */}
+             {showReceipt && (
+               <DonationReceipt
+                 donorInfo={donorInfo}
+                 donationAmount={donationAmount}
+                 customAmount={customAmount}
+                 paymentMethod={paymentMethod}
+                 onClose={() => setShowReceipt(false)}
+               />
+             )}
+
+             {/* Payment Confirmation Modal */}
+             {showPaymentConfirmation && (
+               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                 <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                   {/* Payment Confirmation Header */}
+                   <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-6 rounded-t-2xl">
+                     <div className="flex items-center justify-between">
+                       <div className="flex items-center space-x-4">
+                         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                           <Image 
+                             src="/logo.jpeg" 
+                             alt="WICC Logo" 
+                             width={64}
+                             height={64}
+                             className="w-full h-full object-cover rounded-full"
+                           />
+                         </div>
+                         <div>
+                           <h2 className="text-2xl font-bold">Payment Confirmation</h2>
+                           <p className="text-green-100">Waterbury Islamic Cultural Center</p>
+                         </div>
+                       </div>
+                       <button
+                         onClick={() => setShowPaymentConfirmation(false)}
+                         className="text-white hover:text-green-200 transition-colors"
+                       >
+                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                         </svg>
+                       </button>
+                     </div>
+                   </div>
+
+                   {/* Payment Confirmation Content */}
+                   <div className="p-6 space-y-6">
+                     {/* Thank You Message */}
+                     <div className="text-center bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border-2 border-green-200">
+                       <h3 className="text-2xl font-bold text-green-800 mb-2">JazakAllah Khair!</h3>
+                       <p className="text-lg text-green-700 mb-4">
+                         Thank you for your generous donation of ${donationAmount || customAmount} to the Waterbury Islamic Cultural Center
+                       </p>
+                       <p className="text-sm text-green-600 italic">
+                         &ldquo;And whatever you spend in charity or devotion, be sure Allah knows it all.&rdquo; - Quran 2:273
+                       </p>
+                     </div>
+
+                     {/* Payment Instructions */}
+                     <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-6 rounded-xl border border-amber-200">
+                       <h4 className="font-bold text-amber-800 mb-4 flex items-center">
+                         <span className="text-2xl mr-3">💳</span>
+                         Complete Your Payment
+                       </h4>
+                       <div className="text-amber-700 space-y-3">
+                         <p className="font-semibold">You will now be redirected to our secure payment center to complete your donation.</p>
+                         <div className="bg-white p-4 rounded-lg border border-amber-300">
+                           <p className="text-sm"><strong>Donation Amount:</strong> ${donationAmount || customAmount}</p>
+                           <p className="text-sm"><strong>Donor:</strong> {donorInfo.name}</p>
+                           <p className="text-sm"><strong>Email:</strong> {donorInfo.email}</p>
+                         </div>
+                         <p className="text-sm">Once payment is processed, you will receive a receipt via email for tax purposes.</p>
+                       </div>
+                     </div>
+
+                     {/* Receipt Information */}
+                     <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+                       <h4 className="font-bold text-purple-800 mb-3 flex items-center">
+                         <span className="text-2xl mr-2">📄</span>
+                         Receipt Information
+                       </h4>
+                       <div className="text-purple-700 space-y-2">
+                         <p><strong>Tax Receipt:</strong> You will receive an email receipt once payment is processed</p>
+                         <p><strong>Organization:</strong> Waterbury Islamic Cultural Center (WICC)</p>
+                         <p><strong>Tax ID:</strong> 83-3099502</p>
+                         <p className="text-sm italic mt-2">
+                           WICC is a registered 501(c)(3) non-profit organization. Your donation is tax-deductible.
+                         </p>
+                       </div>
+                     </div>
+
+                     {/* Impact Statement */}
+                     <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                       <h4 className="font-bold text-green-800 mb-3 flex items-center">
+                         <span className="text-2xl mr-2">🌟</span>
+                         Your Donation Impact
+                       </h4>
+                       <p className="text-green-700">
+                         Your generous donation of ${donationAmount || customAmount} will directly support our new masjid&apos;s vision through prayer services, 
+                         education programs, community events, janazah services, recreation facilities, and nikah ceremonies. 
+                         May Allah reward you abundantly for your generosity.
+                       </p>
+                     </div>
+
+                     {/* Contact Information */}
+                     <div className="text-center text-sm text-slate-600 border-t pt-4">
+                       <p><strong>Waterbury Islamic Cultural Center</strong></p>
+                       <p>For questions about this donation, please contact us at:</p>
+                       <p>Email: info@waterburyicc.org | Phone: (203) 510-0400</p>
+                     </div>
+                   </div>
+
+                   {/* Action Buttons */}
+                   <div className="flex justify-center space-x-4 p-6 bg-slate-50 rounded-b-2xl">
+                     <button
+                       onClick={handleProceedToPayment}
+                       className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center"
+                     >
+                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                       </svg>
+                       Proceed to Payment Center
+                     </button>
+                     <button
+                       onClick={() => setShowPaymentConfirmation(false)}
+                       className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                     >
+                       Cancel
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             )}
+           </div>
+         );
+       }

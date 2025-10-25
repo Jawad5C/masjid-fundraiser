@@ -97,28 +97,8 @@ export default function PledgeForm({
   };
 
   const sendPledgeReceipt = async (amount: number) => {
-    try {
-      const response = await fetch('/api/send-receipt', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          donorInfo,
-          donationAmount: amount,
-          receiptPreferences: {
-            email: true, // Always send email for pledges
-            sms: true,   // Always send SMS for pledges
-            print: false
-          }
-        })
-      });
-
-      const result = await response.json();
-      console.log('📧📱 Pledge receipt delivery results:', result.results);
-    } catch (error) {
-      console.error('❌ Error sending pledge receipts:', error);
-    }
+    // Receipt delivery simplified - only print option available
+    console.log('📄 Pledge receipt - print option available for tax purposes');
   };
 
   const handlePrint = () => {
@@ -216,7 +196,11 @@ export default function PledgeForm({
               </h4>
               <div className="text-sm text-amber-700 space-y-2">
                 <p><strong>1. Payment Method:</strong> {pledgeDetails.paymentMethod || 'To be determined'}</p>
-                <p><strong>2. Payment Date:</strong> {pledgeDetails.pledgeDate || 'To be scheduled'}</p>
+                <p><strong>2. Payment Date:</strong> {pledgeDetails.pledgeDate ? new Date(pledgeDetails.pledgeDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                }) : 'To be scheduled'}</p>
                 <p><strong>3. Contact:</strong> We will contact you to arrange payment</p>
                 {pledgeDetails.notes && (
                   <p><strong>4. Notes:</strong> {pledgeDetails.notes}</p>
@@ -232,7 +216,7 @@ export default function PledgeForm({
               </h4>
               <div className="text-sm text-purple-700 space-y-1">
                 <p><strong>Organization:</strong> Waterbury Islamic Cultural Center (WICC)</p>
-                <p><strong>Tax ID:</strong> [Your 501(c)(3) EIN will be displayed here]</p>
+                <p><strong>Tax ID:</strong> 83-3099502</p>
                 <p><strong>Pledge Amount:</strong> ${finalAmount}</p>
                 <p className="text-xs italic mt-2">
                   <strong>Note:</strong> Tax receipt will be provided upon payment completion.
@@ -258,7 +242,7 @@ export default function PledgeForm({
             <div className="text-center text-sm text-slate-600 border-t pt-4">
               <p><strong>Waterbury Islamic Cultural Center</strong></p>
               <p>For questions about this pledge, please contact us at:</p>
-              <p>Email: info@wicc.org | Phone: (203) XXX-XXXX</p>
+              <p>Email: info@waterburyicc.org | Phone: (203) 510-0400</p>
               <p className="text-xs mt-2">
                 This pledge was recorded on {new Date().toLocaleString()}
               </p>

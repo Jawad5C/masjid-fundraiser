@@ -6,6 +6,7 @@ import FireworksCelebration from '@/components/FireworksCelebration';
 import QuranicRecitation from '@/components/QuranicRecitation';
 import { useDonations } from '@/contexts/DonationContext';
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 export default function Home() {
@@ -13,10 +14,12 @@ export default function Home() {
 }
 
 function HomeContent() {
-  const { stats, isLoading, error, resetStats } = useDonations();
+  const { stats, isLoading, error, resetStats, addDonation } = useDonations();
   const [showFireworks, setShowFireworks] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [paymentProcessed, setPaymentProcessed] = useState(false);
+  const searchParams = useSearchParams();
 
   const totalRaised = stats?.totalRaised || 0;
   const goalAmount = stats?.goalAmount || 1000000;
@@ -29,6 +32,37 @@ function HomeContent() {
       setHasTriggered(true);
     }
   }, [totalRaised, goalAmount, hasTriggered]);
+
+  // Handle payment redirect from WICC Payment Center
+  useEffect(() => {
+    const paymentSuccess = searchParams.get('payment');
+    const amount = searchParams.get('amount');
+    const donorName = searchParams.get('donorName');
+    const donorEmail = searchParams.get('donorEmail');
+
+    if (paymentSuccess === 'success' && amount && !paymentProcessed) {
+      const donationAmount = parseFloat(amount);
+      
+      if (donationAmount > 0) {
+        // Add the donation to the database
+        addDonation({
+          amount: donationAmount,
+          donorName: donorName || 'Anonymous Donor',
+          donorEmail: donorEmail || 'payment@wicc.org',
+          type: 'donation',
+          paymentMethod: 'card',
+          status: 'completed',
+          notes: 'Payment processed via WICC Payment Center'
+        }).then(() => {
+          setPaymentProcessed(true);
+          // Clean up URL parameters
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }).catch((error) => {
+          console.error('Error adding payment donation:', error);
+        });
+      }
+    }
+  }, [searchParams, addDonation, paymentProcessed]);
 
   // Reset hasTriggered when totalRaised goes below goal
   useEffect(() => {
@@ -413,7 +447,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=25'}
                 className="w-40 sm:w-48 h-24 sm:h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(5deg) rotateY(-2deg)',
@@ -452,7 +486,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=100'}
                 className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(5deg) rotateY(2deg)',
@@ -487,7 +521,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=500'}
                 className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(-5deg) rotateY(-2deg)',
@@ -522,7 +556,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=1000'}
                 className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(-5deg) rotateY(2deg)',

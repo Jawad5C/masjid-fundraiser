@@ -207,7 +207,7 @@ export class FirebaseDonationService {
           lastUpdated: serverTimestamp()
         };
 
-        if (type === 'donation' && status === 'completed') {
+        if (type === 'donation' && (status === 'completed' || status === 'pending')) {
           updates.totalRaised = (currentStats.totalRaised || 0) + amount;
           updates.totalDonations = (currentStats.totalDonations || 0) + 1;
         } else if (type === 'pledge') {

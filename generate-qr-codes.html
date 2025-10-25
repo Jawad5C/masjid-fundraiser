@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator for WICC Masjid Fundraiser</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .qr-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .qr-section h3 {
+            color: #555;
+            margin-top: 0;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .download-btn {
+            background: #2196F3;
+        }
+        .download-btn:hover {
+            background: #1976D2;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+        .instructions {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .instructions h4 {
+            margin-top: 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🕌 WICC Masjid Fundraiser - QR Code Generator</h1>
+        
+        <div class="instructions">
+            <h4>📋 Instructions:</h4>
+            <ol>
+                <li>Enter the URLs for your Masjid payment page and Launchgood campaign</li>
+                <li>Click "Generate QR Code" for each section</li>
+                <li>Right-click on the generated QR code and "Save image as..."</li>
+                <li>Save as <code>masjid-payment-qr.png</code> and <code>launchgood-qr.png</code></li>
+                <li>Place both files in the <code>public/qr-codes/</code> directory</li>
+            </ol>
+        </div>
+
+        <!-- Masjid Payment QR Code -->
+        <div class="qr-section">
+            <h3>🕌 Masjid Payment QR Code</h3>
+            <p>Generate QR code for your custom donation page:</p>
+            <input type="url" id="masjidUrl" placeholder="https://your-domain.com/donate" value="https://your-domain.com/donate">
+            <br>
+            <button onclick="generateMasjidQR()">Generate QR Code</button>
+            <button class="download-btn" onclick="downloadQR('masjid')" id="downloadMasjid" style="display:none;">Download as masjid-payment-qr.png</button>
+            <br>
+            <canvas id="masjidQR" style="display:none;"></canvas>
+        </div>
+
+        <!-- Launchgood QR Code -->
+        <div class="qr-section">
+            <h3>🚀 Launchgood QR Code</h3>
+            <p>Generate QR code for your Launchgood campaign:</p>
+            <input type="url" id="launchgoodUrl" placeholder="https://www.launchgood.com/campaign/your-campaign" value="https://www.launchgood.com/campaign/your-campaign">
+            <br>
+            <button onclick="generateLaunchgoodQR()">Generate QR Code</button>
+            <button class="download-btn" onclick="downloadQR('launchgood')" id="downloadLaunchgood" style="display:none;">Download as launchgood-qr.png</button>
+            <br>
+            <canvas id="launchgoodQR" style="display:none;"></canvas>
+        </div>
+
+        <div class="instructions">
+            <h4>💡 Tips:</h4>
+            <ul>
+                <li>Use high-resolution images (256x256 pixels or larger)</li>
+                <li>Ensure QR codes have high contrast (black on white)</li>
+                <li>Test the QR codes with your mobile device before deploying</li>
+                <li>Make sure the URLs are accessible and working</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function generateMasjidQR() {
+            const url = document.getElementById('masjidUrl').value;
+            if (!url) {
+                alert('Please enter a URL for the Masjid payment page');
+                return;
+            }
+            
+            const canvas = document.getElementById('masjidQR');
+            QRCode.toCanvas(canvas, url, {
+                width: 256,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, function (error) {
+                if (error) {
+                    console.error(error);
+                    alert('Error generating QR code: ' + error);
+                } else {
+                    canvas.style.display = 'block';
+                    document.getElementById('downloadMasjid').style.display = 'inline-block';
+                }
+            });
+        }
+
+        function generateLaunchgoodQR() {
+            const url = document.getElementById('launchgoodUrl').value;
+            if (!url) {
+                alert('Please enter a URL for the Launchgood campaign');
+                return;
+            }
+            
+            const canvas = document.getElementById('launchgoodQR');
+            QRCode.toCanvas(canvas, url, {
+                width: 256,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, function (error) {
+                if (error) {
+                    console.error(error);
+                    alert('Error generating QR code: ' + error);
+                } else {
+                    canvas.style.display = 'block';
+                    document.getElementById('downloadLaunchgood').style.display = 'inline-block';
+                }
+            });
+        }
+
+        function downloadQR(type) {
+            const canvas = document.getElementById(type + 'QR');
+            const link = document.createElement('a');
+            link.download = type === 'masjid' ? 'masjid-payment-qr.png' : 'launchgood-qr.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

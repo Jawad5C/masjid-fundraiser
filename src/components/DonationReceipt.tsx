@@ -138,7 +138,7 @@ export default function DonationReceipt({
             </h4>
             <div className="text-sm text-purple-700 space-y-1">
               <p><strong>Organization:</strong> Waterbury Islamic Cultural Center (WICC)</p>
-              <p><strong>Tax ID:</strong> [Your 501(c)(3) EIN will be displayed here]</p>
+              <p><strong>Tax ID:</strong> 83-3099502</p>
               <p><strong>Deductible Amount:</strong> ${finalAmount}</p>
               <p className="text-xs italic mt-2">
                 WICC is a registered 501(c)(3) non-profit organization. 
@@ -163,7 +163,7 @@ export default function DonationReceipt({
           <div className="text-center text-sm text-slate-600 border-t pt-4">
             <p><strong>Waterbury Islamic Cultural Center</strong></p>
             <p>For questions about this receipt, please contact us at:</p>
-            <p>Email: info@wicc.org | Phone: (203) XXX-XXXX</p>
+            <p>Email: info@waterburyicc.org | Phone: (203) 510-0400</p>
             <p className="text-xs mt-2">
               This receipt was generated on {new Date().toLocaleString()}
             </p>
