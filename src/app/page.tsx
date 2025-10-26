@@ -206,44 +206,33 @@ function HomeContent() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
-        {/* Minaret Thermometer with Pulsing Text */}
-        <div className="flex items-center justify-center mb-8 sm:mb-16 relative z-20 mt-12 sm:mt-20">
-          {/* Left Side - Masjid Fundraiser */}
-          <div className="absolute left-0 top-1/4 transform -translate-y-1/2 -translate-x-4 sm:-translate-x-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-cyan-200 whitespace-nowrap" style={{
-              textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
-              fontFamily: '"Playfair Display", "Georgia", "serif"',
-              letterSpacing: '0.05em',
-              fontWeight: '700',
-              animation: 'star-emerge-flash-away 8s ease-in-out infinite 0s',
-              filter: 'brightness(1.5) contrast(1.3) saturate(1.8)'
-            }}>
-              Masjid Fundraiser
-            </h1>
-          </div>
-
-          {/* Center - Minaret Thermometer */}
-          <div className="relative">
+        {/* Minaret Thermometer - Moved Up */}
+        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-4 sm:mt-8">
+          <div className="relative flex flex-col items-center scale-100 sm:scale-125">
             <MinaretThermometer 
               currentAmount={totalRaised}
               goalAmount={goalAmount}
-              className="scale-100 sm:scale-125"
             />
           </div>
+        </div>
 
-          {/* Right Side - Building Our Community Together */}
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 sm:translate-x-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-pink-200 whitespace-nowrap" style={{
-              textShadow: '0 0 50px rgba(244, 114, 182, 1), 0 0 100px rgba(244, 114, 182, 1), 0 0 150px rgba(244, 114, 182, 0.8), 0 0 200px rgba(244, 114, 182, 0.6), 0 0 250px rgba(244, 114, 182, 0.4), 0 0 300px rgba(244, 114, 182, 0.2)',
-              fontFamily: '"Playfair Display", "Georgia", "serif"',
-              letterSpacing: '0.05em',
-              fontWeight: '700',
-              animation: 'star-emerge-burn-away 8s ease-in-out infinite 4s',
-              filter: 'brightness(1.5) contrast(1.3) saturate(1.8)'
-            }}>
-              Masjid Fundraiser
-            </h1>
-          </div>
+        {/* Animated Masjid Fundraiser Text */}
+        <div className="text-center mb-8 relative z-10">
+          <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse" style={{
+            textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
+            fontFamily: '"Playfair Display", "Georgia", "serif"',
+            letterSpacing: '0.05em',
+            fontWeight: '700',
+            animation: 'intense-glow-emerge 6s ease-in-out infinite',
+            filter: 'brightness(1.8) contrast(1.5) saturate(2.0)',
+            background: 'linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff)',
+            backgroundSize: '400% 400%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'gradient-shift 3s ease-in-out infinite, intense-glow-emerge 6s ease-in-out infinite'
+          }}>
+            Masjid Fundraiser
+          </h1>
         </div>
 
 
