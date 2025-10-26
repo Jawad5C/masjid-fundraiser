@@ -23,7 +23,6 @@ export interface Donation {
   donorPhone?: string;
   type: 'donation' | 'pledge';
   paymentMethod?: string;
-  stripePaymentId?: string;
   status: 'pending' | 'completed' | 'failed' | 'cancelled';
   notes?: string;
   pledgeDate?: Date;

@@ -18,6 +18,24 @@ export default function GeneralDonation() {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Format phone number to (xxxx) xxx-xxxx
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-numeric characters
+    const phoneNumber = value.replace(/\D/g, '');
+    
+    // Format based on length
+    if (phoneNumber.length === 0) return '';
+    if (phoneNumber.length <= 3) return `(${phoneNumber}`;
+    if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  };
+
+  // Handle phone number change with formatting
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setDonorInfo({...donorInfo, phone: formatted});
+  };
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +44,7 @@ export default function GeneralDonation() {
     // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
-      // Here you would integrate with a payment processor like Stripe
+      // Payment will be processed through external payment center
       alert('Thank you for your donation! A tax receipt will be emailed to you.');
     }, 2000);
   };
@@ -137,9 +155,10 @@ export default function GeneralDonation() {
                 />
                 <input
                   type="tel"
-                  placeholder="Phone Number"
+                  placeholder="Phone Number (xxx) xxx-xxxx"
                   value={donorInfo.phone}
-                  onChange={(e) => setDonorInfo({...donorInfo, phone: e.target.value})}
+                  onChange={handlePhoneChange}
+                  maxLength={14}
                   className="p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-amber-400 focus:border-amber-300 focus:outline-none"
                 />
                 <input

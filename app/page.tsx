@@ -150,7 +150,7 @@ function HomeContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
         {/* Minaret Thermometer - Moved Up */}
-        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-4 sm:mt-8">
+        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-12 sm:mt-16">
           <div className="relative flex flex-col items-center scale-100 sm:scale-125">
             <MinaretThermometer 
               currentAmount={totalRaised}
@@ -159,31 +159,29 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Animated Masjid Fundraiser Text */}
-        <div className="text-center mb-8 relative z-10">
-          <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse" style={{
-            textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
-            fontFamily: '"Playfair Display", "Georgia", "serif"',
-            letterSpacing: '0.05em',
-            fontWeight: '700',
-            animation: 'intense-glow-emerge 6s ease-in-out infinite',
-            filter: 'brightness(1.8) contrast(1.5) saturate(2.0)',
-            background: 'linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff)',
-            backgroundSize: '400% 400%',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            animation: 'gradient-shift 3s ease-in-out infinite, intense-glow-emerge 6s ease-in-out infinite'
+        {/* Single Animated Masjid Fundraiser Text - Moving to Random Positions */}
+        <div className="absolute inset-0 pointer-events-none z-30">
+          <div className="absolute" style={{
+            animation: 'random-position-glow 32s ease-in-out infinite',
+            left: '4rem',
+            top: '4rem'
           }}>
-            Masjid Fundraiser
-          </h1>
+            <h1 className="text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400" style={{
+              textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
+              fontFamily: '"Playfair Display", "Georgia", "serif"',
+              letterSpacing: '0.05em',
+              fontWeight: '700',
+              filter: 'brightness(1.8) contrast(1.5) saturate(2.0)',
+              background: 'linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff)',
+              backgroundSize: '400% 400%',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              animation: 'gradient-shift 3s ease-in-out infinite'
+            }}>
+              Masjid Fundraiser
+            </h1>
+          </div>
         </div>
-          
-        </div>
-
-
-
-
-
         
         {/* Help Us Reach Our Goal - In Starry Space */}
         <div className="text-center mb-8 relative z-10 mt-16 sm:mt-32">
@@ -371,7 +369,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=25'}
                 className="w-40 sm:w-48 h-24 sm:h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(5deg) rotateY(-2deg)',
@@ -410,7 +408,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=100'}
                 className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(5deg) rotateY(2deg)',
@@ -445,7 +443,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=500'}
                 className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(-5deg) rotateY(-2deg)',
@@ -480,7 +478,7 @@ function HomeContent() {
             <div className="relative flex flex-col items-center">
               {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
               <QuranicRecitation 
-                onDonationClick={() => window.location.href = '/donate'}
+                onDonationClick={() => window.location.href = '/donate?amount=1000'}
                 className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block"
                 style={{
                 transform: 'perspective(1000px) rotateX(-5deg) rotateY(2deg)',

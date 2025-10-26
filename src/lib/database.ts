@@ -6,8 +6,7 @@ export interface Donation {
   donorEmail: string;
   donorPhone?: string;
   type: 'donation' | 'pledge';
-  paymentMethod: 'stripe' | 'pledge';
-  stripePaymentId?: string;
+  paymentMethod: 'card' | 'pledge' | 'qr1' | 'qr2';
   status: 'pending' | 'completed' | 'failed' | 'cancelled';
   date: Date;
   notes?: string;

@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import StarryBackground from '@/components/StarryBackground';
 import DonationReceipt from '@/components/DonationReceipt';
-import StripePayment from '@/components/StripePayment';
 import PledgeForm from '@/components/PledgeForm';
 import { useDonations } from '@/contexts/DonationContext';
 
-export default function UnifiedDonation() {
+function UnifiedDonationContent() {
   const { addDonation } = useDonations();
+  const searchParams = useSearchParams();
   const [donorInfo, setDonorInfo] = useState({
     name: '',
     email: '',
@@ -25,16 +26,58 @@ export default function UnifiedDonation() {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
-  const [showStripeForm, setShowStripeForm] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [paymentError, setPaymentError] = useState('');
+
+  // Set the donation amount from URL parameter
+  useEffect(() => {
+    const amount = searchParams.get('amount');
+    if (amount) {
+      setDonationAmount(amount);
+    }
+  }, [searchParams]);
+
+  // Format phone number to (xxxx) xxx-xxxx
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-numeric characters
+    const phoneNumber = value.replace(/\D/g, '');
+    
+    // Format based on length
+    if (phoneNumber.length === 0) return '';
+    if (phoneNumber.length <= 3) return `(${phoneNumber}`;
+    if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  };
+
+  // Handle phone number change with formatting
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setDonorInfo({...donorInfo, phone: formatted});
+  };
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (paymentMethod === 'card') {
-      setShowStripeForm(true);
+      // Redirect to external payment center
+      const paymentUrl = `https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1`;
+      window.open(paymentUrl, '_blank');
+      
+      // Record the donation immediately
+      const amount = parseInt(donationAmount || customAmount || '0');
+      await addDonation({
+        amount,
+        donorName: donorInfo.name,
+        donorEmail: donorInfo.email,
+        donorPhone: donorInfo.phone,
+        type: 'donation',
+        paymentMethod: 'card',
+        status: 'pending' // Pending until payment center processes
+      });
+      
+      // Redirect to main page to show updated minaret
+      window.location.href = '/';
     } else if (paymentMethod === 'pledge') {
       setShowPledgeForm(true);
     } else {
@@ -57,27 +100,6 @@ export default function UnifiedDonation() {
     }
   };
 
-  // Handle successful payment
-  const handlePaymentSuccess = async () => {
-    const amount = parseInt(donationAmount || customAmount || '0');
-    await addDonation({
-      amount,
-      donorName: donorInfo.name,
-      donorEmail: donorInfo.email,
-      donorPhone: donorInfo.phone,
-      type: 'donation',
-      paymentMethod: 'stripe',
-      status: 'completed'
-    });
-    setShowStripeForm(false);
-    setShowReceipt(true);
-  };
-
-  // Handle payment error
-  const handlePaymentError = (error: string) => {
-    setPaymentError(error);
-    setShowStripeForm(false);
-  };
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
@@ -164,9 +186,10 @@ export default function UnifiedDonation() {
                 />
                 <input
                   type="tel"
-                  placeholder="Phone Number"
+                  placeholder="Phone Number (xxx) xxx-xxxx"
                   value={donorInfo.phone}
-                  onChange={(e) => setDonorInfo({...donorInfo, phone: e.target.value})}
+                  onChange={handlePhoneChange}
+                  maxLength={14}
                   className="p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-amber-400 focus:border-amber-300 focus:outline-none"
                 />
                 <input
@@ -197,38 +220,19 @@ export default function UnifiedDonation() {
             <div>
               <h3 className="text-white text-xl font-semibold mb-4">Payment Method</h3>
               <div className="space-y-3">
-                <label className="flex items-center space-x-3 cursor-pointer">
+                <label className="flex items-start space-x-3 cursor-pointer">
                   <input
                     type="radio"
                     name="payment"
                     value="card"
                     checked={paymentMethod === 'card'}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-5 h-5 text-purple-600"
+                    className="w-5 h-5 text-purple-600 mt-1"
                   />
-                  <span className="text-white">Credit/Debit Card</span>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="bank"
-                    checked={paymentMethod === 'bank'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-5 h-5 text-purple-600"
-                  />
-                  <span className="text-white">Bank Transfer</span>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="check"
-                    checked={paymentMethod === 'check'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-5 h-5 text-purple-600"
-                  />
-                  <span className="text-white">Check (Mail-in)</span>
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium">Credit/Debit Card</span>
+                    <span className="text-amber-300 text-sm mt-1">(You will be redirected to the Masjid Payment Processing Page)</span>
+                  </div>
                 </label>
                 <label className="flex items-center space-x-3 cursor-pointer">
                   <input
@@ -241,6 +245,47 @@ export default function UnifiedDonation() {
                   />
                   <span className="text-white">Pledge (Commit to donate later)</span>
                 </label>
+              </div>
+            </div>
+
+            {/* QR Code Display Areas - Always Visible */}
+            <div className="bg-gradient-to-br from-purple-900 to-purple-800 rounded-xl p-6 border-2 border-purple-500" style={{
+              boxShadow: '0 0 20px rgba(168, 85, 247, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+            }}>
+              <h3 className="text-xl font-bold text-purple-200 mb-6 flex items-center justify-center">
+                <span className="text-2xl mr-3">📱</span>
+                QR Code Payment Options
+              </h3>
+              
+              {/* Two QR Codes Side by Side */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Masjid Payment QR Code */}
+                <div className="text-center">
+                  <div className="bg-white p-4 rounded-lg border-2 border-green-300">
+                    <img 
+                      src="/qr-codes/masjid-payment-qr.png" 
+                      alt="Masjid Payment QR Code" 
+                      className="w-48 h-48 mx-auto rounded-lg"
+                    />
+                  </div>
+                  <p className="text-green-100 text-sm mt-3">
+                    Masjid Payment QR
+                  </p>
+                </div>
+
+                {/* LaunchGood QR Code */}
+                <div className="text-center">
+                  <div className="bg-white p-4 rounded-lg border-2 border-blue-300">
+                    <img 
+                      src="/qr-codes/launchgood-qr.png" 
+                      alt="LaunchGood QR Code" 
+                      className="w-48 h-48 mx-auto rounded-lg"
+                    />
+                  </div>
+                  <p className="text-blue-100 text-sm mt-3">
+                    LaunchGood QR
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -281,55 +326,21 @@ export default function UnifiedDonation() {
                 boxShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.3)'
               }}
             >
-              {isProcessing ? 'Processing Donation...' : `Donate $${donationAmount || customAmount || '0'} to WICC`}
+              {isProcessing ? (
+                'Processing Donation...'
+              ) : paymentMethod === 'card' ? (
+                <div className="flex flex-col items-center">
+                  <span>Donate ${donationAmount || customAmount || '0'} to WICC</span>
+                  <span className="text-amber-200 text-sm font-normal mt-1">(You will be redirected to the Masjid Payment Processing Page)</span>
+                </div>
+              ) : (
+                `Donate $${donationAmount || customAmount || '0'} to WICC`
+              )}
             </button>
           </form>
         </div>
       </div>
 
-      {/* Stripe Payment Modal */}
-      {showStripeForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="bg-gradient-to-r from-green-600 to-green-700 text-white p-6 rounded-t-2xl">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                    <Image 
-                      src="/logo.jpeg" 
-                      alt="WICC Logo" 
-                      width={64}
-                      height={64}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold">Secure Payment</h2>
-                    <p className="text-green-100">Complete your donation to WICC</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowStripeForm(false)}
-                  className="text-white hover:text-green-200 transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <StripePayment
-                amount={parseInt(donationAmount || customAmount || '0')}
-                donorInfo={donorInfo}
-                onSuccess={handlePaymentSuccess}
-                onError={handlePaymentError}
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Pledge Form Modal */}
       {showPledgeForm && (
@@ -352,5 +363,15 @@ export default function UnifiedDonation() {
         />
       )}
     </div>
+  );
+}
+
+export default function UnifiedDonation() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="text-white text-xl">Loading donation form...</div>
+    </div>}>
+      <UnifiedDonationContent />
+    </Suspense>
   );
 }
