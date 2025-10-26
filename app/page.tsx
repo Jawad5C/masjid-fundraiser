@@ -144,28 +144,39 @@ function HomeContent() {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="bg-transparent shadow-lg relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-white mb-2">Masjid Fundraiser</h1>
-              <p className="text-amber-200">Building Our Community Together</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Header removed - text moved under minaret */}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
-        {/* Minaret Thermometer */}
-        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-8 sm:mt-16">
-          <MinaretThermometer 
-            currentAmount={totalRaised}
-            goalAmount={goalAmount}
-            className="scale-100 sm:scale-125"
-          />
+        {/* Minaret Thermometer - Moved Up */}
+        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-4 sm:mt-8">
+          <div className="relative flex flex-col items-center scale-100 sm:scale-125">
+            <MinaretThermometer 
+              currentAmount={totalRaised}
+              goalAmount={goalAmount}
+            />
+          </div>
+        </div>
+
+        {/* Animated Masjid Fundraiser Text */}
+        <div className="text-center mb-8 relative z-10">
+          <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse" style={{
+            textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
+            fontFamily: '"Playfair Display", "Georgia", "serif"',
+            letterSpacing: '0.05em',
+            fontWeight: '700',
+            animation: 'intense-glow-emerge 6s ease-in-out infinite',
+            filter: 'brightness(1.8) contrast(1.5) saturate(2.0)',
+            background: 'linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff)',
+            backgroundSize: '400% 400%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'gradient-shift 3s ease-in-out infinite, intense-glow-emerge 6s ease-in-out infinite'
+          }}>
+            Masjid Fundraiser
+          </h1>
+        </div>
           
         </div>
 
