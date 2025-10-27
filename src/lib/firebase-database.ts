@@ -112,12 +112,58 @@ export class FirebaseDonationService {
     }
   }
 
+  // Get all pledges specifically
+  static async getPledges(): Promise<Donation[]> {
+    if (!db) {
+      // Return demo data if Firebase not configured
+      return [];
+    }
+
+    try {
+      const snapshot = await getDocs(query(this.getDonationsRef()!, orderBy('createdAt', 'desc')));
+      return snapshot.docs
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate() || new Date(),
+          updatedAt: doc.data().updatedAt?.toDate() || new Date()
+        }))
+        .filter(donation => donation.type === 'pledge') as Donation[];
+    } catch (error) {
+      console.error('Error getting pledges:', error);
+      return [];
+    }
+  }
+
+  // Get all completed donations (non-pledges)
+  static async getCompletedDonations(): Promise<Donation[]> {
+    if (!db) {
+      // Return demo data if Firebase not configured
+      return [];
+    }
+
+    try {
+      const snapshot = await getDocs(query(this.getDonationsRef()!, orderBy('createdAt', 'desc')));
+      return snapshot.docs
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate() || new Date(),
+          updatedAt: doc.data().updatedAt?.toDate() || new Date()
+        }))
+        .filter(donation => donation.type === 'donation') as Donation[];
+    } catch (error) {
+      console.error('Error getting completed donations:', error);
+      return [];
+    }
+  }
+
   // Get donation stats
   static async getStats(): Promise<DonationStats> {
     if (!db) {
       // Return demo stats if Firebase not configured
       return {
-        totalRaised: 523361.93,
+        totalRaised: 717361,
         totalDonations: 1,
         totalPledges: 0,
         goalAmount: 1000000,
@@ -139,7 +185,7 @@ export class FirebaseDonationService {
       } else {
         // Initialize stats if they don't exist
         const initialStats = {
-          totalRaised: 523361.93,
+          totalRaised: 717361,
           totalDonations: 1,
           totalPledges: 0,
           goalAmount: 1000000,
@@ -147,7 +193,7 @@ export class FirebaseDonationService {
         };
         await setDoc(this.getStatsRef()!, initialStats);
         return {
-          totalRaised: 523361.93,
+          totalRaised: 717361,
           totalDonations: 1,
           totalPledges: 0,
           goalAmount: 1000000,
@@ -157,7 +203,7 @@ export class FirebaseDonationService {
     } catch (error) {
       console.error('Error getting stats:', error);
       return {
-        totalRaised: 523361.93,
+        totalRaised: 717361,
         totalDonations: 1,
         totalPledges: 0,
         goalAmount: 1000000,
@@ -200,28 +246,42 @@ export class FirebaseDonationService {
 
   // Update stats when donation is added
   private static async updateStats(amount: number, type: 'donation' | 'pledge', status: string) {
-    if (!db) return;
+    if (!db) {
+      console.log('📊 updateStats: No database connection');
+      return;
+    }
 
     try {
+      console.log(`📊 updateStats: Updating stats for ${type} with amount ${amount} and status ${status}`);
       const statsSnap = await getDoc(this.getStatsRef()!);
       if (statsSnap.exists()) {
         const currentStats = statsSnap.data();
+        console.log('📊 updateStats: Current stats:', currentStats);
         const updates: Record<string, FieldValue | number> = {
           lastUpdated: serverTimestamp()
         };
 
         if (type === 'donation' && (status === 'completed' || status === 'pending')) {
-          updates.totalRaised = (currentStats.totalRaised || 0) + amount;
+          const newTotalRaised = (currentStats.totalRaised || 0) + amount;
+          updates.totalRaised = newTotalRaised;
           updates.totalDonations = (currentStats.totalDonations || 0) + 1;
+          console.log(`📊 updateStats: Adding ${amount} to totalRaised. New total: ${newTotalRaised}`);
         } else if (type === 'pledge') {
-          updates.totalRaised = (currentStats.totalRaised || 0) + amount;
+          const newTotalRaised = (currentStats.totalRaised || 0) + amount;
+          updates.totalRaised = newTotalRaised;
           updates.totalPledges = (currentStats.totalPledges || 0) + 1;
+          console.log(`📊 updateStats: Adding ${amount} to totalRaised for pledge. New total: ${newTotalRaised}`);
         }
 
-               await updateDoc(this.getStatsRef()!, updates);
+        console.log('📊 updateStats: About to update with:', updates);
+        await updateDoc(this.getStatsRef()!, updates);
+        console.log('📊 updateStats: Stats updated successfully');
+      } else {
+        console.log('📊 updateStats: Stats document does not exist');
       }
     } catch (error) {
-      console.error('Error updating stats:', error);
+      console.error('📊 updateStats: Error updating stats:', error);
+      console.error('📊 updateStats: Error details:', error.message);
     }
   }
 
@@ -248,7 +308,7 @@ export class FirebaseDonationService {
     }
   }
 
-  // Set initial stats with the current raised amount
+  // Set initial stats with the current raised amount - ONLY if stats don't exist
   static async setInitialStats(): Promise<void> {
     if (!db) {
       console.warn('Firebase not initialized - cannot set initial stats');
@@ -256,8 +316,16 @@ export class FirebaseDonationService {
     }
 
     try {
+      // Check if stats already exist
+      const statsSnap = await getDoc(this.getStatsRef()!);
+      if (statsSnap.exists()) {
+        console.log('✅ Stats already exist - not overwriting');
+        return;
+      }
+
+      // Only set initial stats if they don't exist
       const initialStats = {
-        totalRaised: 523361.93,
+        totalRaised: 717361,
         totalDonations: 1,
         totalPledges: 0,
         goalAmount: 1000000,
@@ -265,7 +333,7 @@ export class FirebaseDonationService {
       };
 
       await setDoc(this.getStatsRef()!, initialStats);
-      console.log('✅ Initial stats set in Firebase');
+      console.log('✅ Initial stats set in Firebase (first time only)');
     } catch (error) {
       console.error('Error setting initial stats:', error);
       throw error;
@@ -277,7 +345,7 @@ export class FirebaseDonationService {
     if (!db) {
       // Return demo stats if Firebase not configured
       const demoStats = {
-        totalRaised: 523361.93,
+        totalRaised: 717361,
         totalDonations: 1,
         totalPledges: 0,
         goalAmount: 1000000,

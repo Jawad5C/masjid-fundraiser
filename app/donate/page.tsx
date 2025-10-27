@@ -10,6 +10,7 @@ import PledgeForm from '@/components/PledgeForm';
 import { useDonations } from '@/contexts/DonationContext';
 
 function UnifiedDonationContent() {
+  console.log('📄 UnifiedDonationContent: Component loaded');
   const { addDonation } = useDonations();
   const searchParams = useSearchParams();
   const [donorInfo, setDonorInfo] = useState({
@@ -23,19 +24,35 @@ function UnifiedDonationContent() {
   });
   const [donationAmount, setDonationAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentMethod, setPaymentMethod] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [paymentError, setPaymentError] = useState('');
+  const [qr1DonationAmount, setQr1DonationAmount] = useState('');
+  const [qr2DonationAmount, setQr2DonationAmount] = useState('');
+  const [showQrConfirmation, setShowQrConfirmation] = useState(false);
+  const [qrConfirmationData, setQrConfirmationData] = useState({ amount: 0, qrType: '' });
 
   // Set the donation amount from URL parameter
   useEffect(() => {
     const amount = searchParams.get('amount');
+    console.log('🔗 URL amount parameter:', amount);
     if (amount) {
       setDonationAmount(amount);
+      console.log('🔗 Set donation amount to:', amount);
     }
   }, [searchParams]);
+
+  // Auto-populate QR amount fields when QR payment method is selected
+  useEffect(() => {
+    if (paymentMethod === 'qr1' && donationAmount && !qr1DonationAmount) {
+      setQr1DonationAmount(donationAmount);
+    }
+    if (paymentMethod === 'qr2' && donationAmount && !qr2DonationAmount) {
+      setQr2DonationAmount(donationAmount);
+    }
+  }, [paymentMethod, donationAmount, qr1DonationAmount, qr2DonationAmount]);
 
   // Format phone number to (xxxx) xxx-xxxx
   const formatPhoneNumber = (value: string) => {
@@ -55,17 +72,50 @@ function UnifiedDonationContent() {
     setDonorInfo({...donorInfo, phone: formatted});
   };
 
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // QR Code donation handler - Independent of payment method selection
+  const handleQrDonation = async (qrType: 'qr1' | 'qr2') => {
+    const amount = parseInt(qrType === 'qr1' ? qr1DonationAmount : qr2DonationAmount);
     
-    if (paymentMethod === 'card') {
-      // Redirect to external payment center
-      const paymentUrl = `https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1`;
-      window.open(paymentUrl, '_blank');
+    if (amount <= 0) {
+      alert('Please enter a valid donation amount');
+      return;
+    }
+    
+    try {
+      await addDonation({
+        amount,
+        donorName: donorInfo.name || 'QR Code Donor',
+        donorEmail: donorInfo.email || 'qr@masjid.com',
+        donorPhone: donorInfo.phone || '',
+        type: 'donation',
+        paymentMethod: qrType,
+        status: 'completed',
+        notes: `QR Code Payment - ${qrType === 'qr1' ? 'Masjid Payment QR' : 'LaunchGood QR'}`
+      });
       
-      // Record the donation immediately
-      const amount = parseInt(donationAmount || customAmount || '0');
+      // Show professional confirmation modal
+      setQrConfirmationData({ amount, qrType });
+      setShowQrConfirmation(true);
+      
+      // Clear the specific QR code amount
+      if (qrType === 'qr1') {
+        setQr1DonationAmount('');
+      } else {
+        setQr2DonationAmount('');
+      }
+      
+    } catch (error) {
+      console.error('Error submitting QR donation:', error);
+      alert('Failed to submit donation. Please try again.');
+    }
+  };
+
+  // Credit/Debit Card donation handler - Using EXACT same logic as pledge
+  const handleCardDonation = async () => {
+    const amount = parseInt(donationAmount || customAmount || '0');
+    
+    try {
+      // EXACT same logic as pledge - this works perfectly
       await addDonation({
         amount,
         donorName: donorInfo.name,
@@ -73,11 +123,64 @@ function UnifiedDonationContent() {
         donorPhone: donorInfo.phone,
         type: 'donation',
         paymentMethod: 'card',
-        status: 'pending' // Pending until payment center processes
+        status: 'completed',
+        notes: 'Payment via WICC Payment Center'
       });
       
-      // Redirect to main page to show updated minaret
-      window.location.href = '/';
+      // Redirect to payment page AFTER donation is recorded (like pledge)
+      window.open('https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1', '_blank');
+      
+      // Redirect to main page to show updated tower
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Error submitting card donation:', error);
+      alert('Failed to submit donation. Please try again.');
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!paymentMethod) {
+      alert('Please select a payment method');
+      return;
+    }
+    
+    if (paymentMethod === 'card') {
+      await handleCardDonation();
+    } else if (paymentMethod === 'qr1' || paymentMethod === 'qr2') {
+      // Handle QR code donations through form submission
+      const amount = parseInt(donationAmount || customAmount || '0');
+      
+      if (amount <= 0) {
+        alert('Please enter a valid donation amount');
+        return;
+      }
+      
+      try {
+        await addDonation({
+          amount,
+          donorName: donorInfo.name,
+          donorEmail: donorInfo.email,
+          donorPhone: donorInfo.phone,
+          type: 'donation',
+          paymentMethod: paymentMethod,
+          status: 'completed',
+          notes: `QR Code Payment - ${paymentMethod === 'qr1' ? 'Masjid Payment QR' : 'LaunchGood QR'}`
+        });
+        
+        // Show professional confirmation modal
+        setQrConfirmationData({ amount, qrType: paymentMethod });
+        setShowQrConfirmation(true);
+        
+      } catch (error) {
+        console.error('Error submitting QR donation:', error);
+        alert('Failed to submit donation. Please try again.');
+      }
     } else if (paymentMethod === 'pledge') {
       setShowPledgeForm(true);
     } else {
@@ -90,7 +193,8 @@ function UnifiedDonationContent() {
         donorPhone: donorInfo.phone,
         type: 'donation',
         paymentMethod: 'other',
-        status: 'completed'
+        status: 'completed',
+        notes: ''
       });
       setIsProcessing(true);
       setTimeout(() => {
@@ -120,7 +224,10 @@ function UnifiedDonationContent() {
         <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl shadow-2xl p-8 border border-amber-400" style={{
           boxShadow: '0 0 30px rgba(255, 255, 255, 0.3), 0 0 60px rgba(255, 255, 255, 0.1)'
         }}>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={(e) => {
+            console.log('📝 Form onSubmit triggered');
+            handleSubmit(e);
+          }} className="space-y-6">
             {/* Donation Amount */}
             <div>
               <label className="block text-white text-lg font-semibold mb-4">Donation Amount</label>
@@ -234,6 +341,37 @@ function UnifiedDonationContent() {
                     <span className="text-amber-300 text-sm mt-1">(You will be redirected to the Masjid Payment Processing Page)</span>
                   </div>
                 </label>
+                
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="qr1"
+                    checked={paymentMethod === 'qr1'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-5 h-5 text-purple-600 mt-1"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium">Masjid Payment QR Code</span>
+                    <span className="text-green-300 text-sm mt-1">(Scan QR code to complete payment)</span>
+                  </div>
+                </label>
+                
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="qr2"
+                    checked={paymentMethod === 'qr2'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-5 h-5 text-purple-600 mt-1"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium">LaunchGood QR Code</span>
+                    <span className="text-blue-300 text-sm mt-1">(Scan QR code to complete payment)</span>
+                  </div>
+                </label>
+                
                 <label className="flex items-center space-x-3 cursor-pointer">
                   <input
                     type="radio"
@@ -271,6 +409,23 @@ function UnifiedDonationContent() {
                   <p className="text-green-100 text-sm mt-3">
                     Masjid Payment QR
                   </p>
+                  
+                  {/* QR Donation Amount Field */}
+                  <div className="mt-4">
+                    <input
+                      type="number"
+                      placeholder="Amount"
+                      value={qr1DonationAmount}
+                      onChange={(e) => setQr1DonationAmount(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/10 border border-green-300/50 rounded-lg text-white placeholder-green-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                    <button
+                      onClick={() => handleQrDonation('qr1')}
+                      className="w-full mt-2 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition-colors"
+                    >
+                      Record Donation
+                    </button>
+                  </div>
                 </div>
 
                 {/* LaunchGood QR Code */}
@@ -285,6 +440,23 @@ function UnifiedDonationContent() {
                   <p className="text-blue-100 text-sm mt-3">
                     LaunchGood QR
                   </p>
+                  
+                  {/* QR Donation Amount Field */}
+                  <div className="mt-4">
+                    <input
+                      type="number"
+                      placeholder="Amount"
+                      value={qr2DonationAmount}
+                      onChange={(e) => setQr2DonationAmount(e.target.value)}
+                      className="w-full px-3 py-2 bg-white/10 border border-blue-300/50 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                    <button
+                      onClick={() => handleQrDonation('qr2')}
+                      className="w-full mt-2 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-colors"
+                    >
+                      Record Donation
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -321,6 +493,16 @@ function UnifiedDonationContent() {
             <button
               type="submit"
               disabled={isProcessing || (!donationAmount && !customAmount)}
+              onClick={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (paymentMethod === 'card') {
+                  await handleCardDonation();
+                } else {
+                  handleSubmit(e);
+                }
+              }}
               className="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold text-xl rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
               style={{
                 boxShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.3)'
@@ -361,6 +543,66 @@ function UnifiedDonationContent() {
           paymentMethod={paymentMethod}
           onClose={() => setShowReceipt(false)}
         />
+      )}
+
+      {/* Professional QR Confirmation Modal */}
+      {showQrConfirmation && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-green-900 to-green-800 rounded-2xl shadow-2xl max-w-md w-full border-2 border-green-500" style={{
+            boxShadow: '0 0 30px rgba(34, 197, 94, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+          }}>
+            <div className="p-8 text-center">
+              {/* Success Icon */}
+              <div className="mb-6">
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4" style={{
+                  boxShadow: '0 0 20px rgba(34, 197, 94, 0.6)'
+                }}>
+                  <span className="text-4xl">✅</span>
+                </div>
+              </div>
+
+              {/* Title */}
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Donation Recorded Successfully!
+              </h2>
+
+              {/* Amount */}
+              <div className="bg-white/10 rounded-xl p-4 mb-6 border border-green-400/30">
+                <p className="text-green-100 text-lg mb-2">Donation Amount</p>
+                <p className="text-3xl font-bold text-white">
+                  ${qrConfirmationData.amount.toLocaleString()}
+                </p>
+              </div>
+
+              {/* QR Code Info */}
+              <div className="bg-white/10 rounded-xl p-4 mb-6 border border-green-400/30">
+                <p className="text-green-100 text-sm mb-2">Payment Method</p>
+                <p className="text-white font-semibold">
+                  {qrConfirmationData.qrType === 'qr1' ? 'Masjid Payment QR Code' : 'LaunchGood QR Code'}
+                </p>
+              </div>
+
+              {/* Instructions */}
+              <div className="bg-white/5 rounded-xl p-4 mb-6 border border-green-400/20">
+                <p className="text-green-200 text-sm leading-relaxed">
+                  <span className="font-semibold text-white">Next Steps:</span><br/>
+                  Please scan the QR code above to complete your payment. Your donation has been recorded and will be reflected on the fundraising thermometer.
+                </p>
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setShowQrConfirmation(false)}
+                className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors duration-300"
+                style={{
+                  boxShadow: '0 0 15px rgba(34, 197, 94, 0.4)'
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

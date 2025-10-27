@@ -34,9 +34,10 @@ export default function QuranicRecitation({ onDonationClick, children, className
            // setCurrentRecitation(randomVerse.id);
            setIsPlaying(true);
 
-           // Create audio element
-           const audio = new Audio(randomVerse.audio);
-           audioRef.current = audio;
+          // Create audio element
+          const audio = new Audio(randomVerse.audio);
+          audioRef.current = audio;
+          audio.playbackRate = 1.40; // Play 40% faster
 
            audio.onended = () => {
              setIsPlaying(false);

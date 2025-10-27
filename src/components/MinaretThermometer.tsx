@@ -158,7 +158,7 @@ export default function MinaretThermometer({
             of {formatCurrency(goalAmount)}
           </div>
           <div className="hidden sm:block whitespace-nowrap">
-            {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} goal
+            {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} Goal
           </div>
         </div>
         <div className="text-xl sm:text-2xl font-bold text-red-600">

@@ -27,6 +27,8 @@ if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
     db = getFirestore(app);
     auth = getAuth(app);
     console.log('✅ Firebase initialized successfully');
+    console.log('✅ Firebase Project ID:', firebaseConfig.projectId);
+    console.log('✅ Firebase API Key:', firebaseConfig.apiKey.substring(0, 10) + '...');
   } catch (error) {
     console.warn('⚠️ Firebase initialization failed:', error);
   }

@@ -31,11 +31,12 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
 
   // Load initial data and set up real-time listeners
   useEffect(() => {
-    // Set initial stats in Firebase if needed
-    FirebaseDonationService.setInitialStats().catch(console.error);
+    // DON'T set initial stats on every refresh - only when stats don't exist
+    // FirebaseDonationService.setInitialStats().catch(console.error);
 
     // Set up real-time listener for stats immediately
     const unsubscribeStats = FirebaseDonationService.onStatsUpdate((newStats) => {
+      console.log('🔄 DonationContext: Real-time stats update received:', newStats);
       setStats(newStats);
     });
 
@@ -75,19 +76,22 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
 
   const addDonation = async (donationData: Partial<Donation>) => {
     try {
+      console.log('🎯 DonationContext: addDonation called with data:', donationData);
       setError(null);
       
       await FirebaseDonationService.addDonation({
         amount: donationData.amount!,
         donorName: donationData.donorName!,
         donorEmail: donationData.donorEmail!,
-        donorPhone: donationData.donorPhone,
+        donorPhone: donationData.donorPhone!,
         type: donationData.type!,
-        paymentMethod: donationData.paymentMethod,
-        status: donationData.status || 'pending',
-        notes: donationData.notes
+        paymentMethod: donationData.paymentMethod!,
+        status: donationData.status!,
+        notes: donationData.notes!
       });
+      console.log('🎯 DonationContext: addDonation completed successfully');
     } catch (err) {
+      console.error('🎯 DonationContext: addDonation error:', err);
       setError(err instanceof Error ? err.message : 'Failed to submit donation');
       throw err;
     }
