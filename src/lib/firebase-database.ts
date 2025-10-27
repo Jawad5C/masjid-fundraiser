@@ -41,8 +41,8 @@ export interface DonationStats {
 
 export class FirebaseDonationService {
   private static demoStats: DonationStats = {
-    totalRaised: 717361,
-    totalDonations: 1,
+    totalRaised: 0,
+    totalDonations: 0,
     totalPledges: 0,
     goalAmount: 1000000,
     lastUpdated: new Date()
@@ -55,16 +55,40 @@ export class FirebaseDonationService {
       if (savedStats) {
         try {
           const parsed = JSON.parse(savedStats);
+          
+          // Check if this contains old preset data and clear it
+          if (parsed.totalRaised >= 717361 && parsed.totalDonations >= 1) {
+            console.log('📊 Detected old preset data, clearing and starting fresh');
+            localStorage.removeItem('masjid-demo-stats');
+            this.resetToDefault();
+            return;
+          }
+          
           this.demoStats = {
             ...parsed,
             lastUpdated: new Date(parsed.lastUpdated)
           };
           console.log('📊 Loaded demo stats from localStorage:', this.demoStats);
         } catch (error) {
-          console.log('📊 Using default demo stats');
+          console.log('📊 Error parsing saved stats, using default');
+          this.resetToDefault();
         }
+      } else {
+        console.log('📊 Starting fresh with $0 - no saved data');
+        this.resetToDefault();
       }
     }
+  }
+
+  // Reset to default $0 stats
+  private static resetToDefault() {
+    this.demoStats = {
+      totalRaised: 0,
+      totalDonations: 0,
+      totalPledges: 0,
+      goalAmount: 1000000,
+      lastUpdated: new Date()
+    };
   }
 
   // Save demo stats to localStorage
@@ -230,29 +254,29 @@ export class FirebaseDonationService {
           goalAmount: data.goalAmount || 1000000,
           lastUpdated: data.lastUpdated?.toDate() || new Date()
         };
-      } else {
-        // Initialize stats if they don't exist
-        const initialStats = {
-          totalRaised: 717361,
-          totalDonations: 1,
-          totalPledges: 0,
-          goalAmount: 1000000,
-          lastUpdated: serverTimestamp()
-        };
-        await setDoc(this.getStatsRef()!, initialStats);
-        return {
-          totalRaised: 717361,
-          totalDonations: 1,
-          totalPledges: 0,
-          goalAmount: 1000000,
-          lastUpdated: new Date()
-        };
-      }
+             } else {
+               // Initialize stats if they don't exist
+               const initialStats = {
+                 totalRaised: 0,
+                 totalDonations: 0,
+                 totalPledges: 0,
+                 goalAmount: 1000000,
+                 lastUpdated: serverTimestamp()
+               };
+               await setDoc(this.getStatsRef()!, initialStats);
+               return {
+                 totalRaised: 0,
+                 totalDonations: 0,
+                 totalPledges: 0,
+                 goalAmount: 1000000,
+                 lastUpdated: new Date()
+               };
+             }
     } catch (error) {
       console.error('Error getting stats:', error);
       return {
-        totalRaised: 717361,
-        totalDonations: 1,
+        totalRaised: 0,
+        totalDonations: 0,
         totalPledges: 0,
         goalAmount: 1000000,
         lastUpdated: new Date()
@@ -371,14 +395,14 @@ export class FirebaseDonationService {
         return;
       }
 
-      // Only set initial stats if they don't exist
-      const initialStats = {
-        totalRaised: 717361,
-        totalDonations: 1,
-        totalPledges: 0,
-        goalAmount: 1000000,
-        lastUpdated: serverTimestamp()
-      };
+               // Only set initial stats if they don't exist
+               const initialStats = {
+                 totalRaised: 0,
+                 totalDonations: 0,
+                 totalPledges: 0,
+                 goalAmount: 1000000,
+                 lastUpdated: serverTimestamp()
+               };
 
       await setDoc(this.getStatsRef()!, initialStats);
       console.log('✅ Initial stats set in Firebase (first time only)');
@@ -401,7 +425,7 @@ export class FirebaseDonationService {
       // Set up a simple interval to check for updates in demo mode
       const interval = setInterval(() => {
         callback(this.demoStats);
-      }, 1000);
+      }, 5000); // Reduced frequency to every 5 seconds
       
       return () => clearInterval(interval); // Return cleanup function
     }

@@ -35,10 +35,9 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
     // FirebaseDonationService.setInitialStats().catch(console.error);
 
     // Set up real-time listener for stats immediately
-    const unsubscribeStats = FirebaseDonationService.onStatsUpdate((newStats) => {
-      console.log('🔄 DonationContext: Real-time stats update received:', newStats);
-      setStats(newStats);
-    });
+        const unsubscribeStats = FirebaseDonationService.onStatsUpdate((newStats) => {
+          setStats(newStats);
+        });
 
     // Set up real-time listener for donations
     const unsubscribeDonations = FirebaseDonationService.onRecentDonationsUpdate((newDonations) => {
