@@ -40,6 +40,41 @@ export interface DonationStats {
 }
 
 export class FirebaseDonationService {
+  private static demoStats: DonationStats = {
+    totalRaised: 717361,
+    totalDonations: 1,
+    totalPledges: 0,
+    goalAmount: 1000000,
+    lastUpdated: new Date()
+  };
+
+  // Initialize demo stats from localStorage if available
+  private static initializeDemoStats() {
+    if (typeof window !== 'undefined') {
+      const savedStats = localStorage.getItem('masjid-demo-stats');
+      if (savedStats) {
+        try {
+          const parsed = JSON.parse(savedStats);
+          this.demoStats = {
+            ...parsed,
+            lastUpdated: new Date(parsed.lastUpdated)
+          };
+          console.log('📊 Loaded demo stats from localStorage:', this.demoStats);
+        } catch (error) {
+          console.log('📊 Using default demo stats');
+        }
+      }
+    }
+  }
+
+  // Save demo stats to localStorage
+  private static saveDemoStats() {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('masjid-demo-stats', JSON.stringify(this.demoStats));
+      console.log('📊 Saved demo stats to localStorage:', this.demoStats);
+    }
+  }
+
   private static getDonationsRef() {
     if (!db) {
       console.warn('Firebase not initialized - using demo data');
@@ -59,8 +94,24 @@ export class FirebaseDonationService {
   // Add new donation
   static async addDonation(donationData: Omit<Donation, 'id' | 'createdAt' | 'updatedAt'>): Promise<Donation> {
     if (!db) {
-      // Return demo data if Firebase not configured
-      console.log('Using demo mode - donation not saved to database');
+      // Initialize demo stats from localStorage
+      this.initializeDemoStats();
+      
+      // Update demo stats if Firebase not configured
+      console.log('Using demo mode - updating demo stats');
+      this.demoStats.totalRaised += donationData.amount;
+      if (donationData.type === 'donation') {
+        this.demoStats.totalDonations += 1;
+      } else if (donationData.type === 'pledge') {
+        this.demoStats.totalPledges += 1;
+      }
+      this.demoStats.lastUpdated = new Date();
+      
+      // Save to localStorage
+      this.saveDemoStats();
+      
+      console.log('📊 Updated demo stats:', this.demoStats);
+      
       return {
         ...donationData,
         id: `demo_${Date.now()}`,
@@ -161,14 +212,11 @@ export class FirebaseDonationService {
   // Get donation stats
   static async getStats(): Promise<DonationStats> {
     if (!db) {
-      // Return demo stats if Firebase not configured
-      return {
-        totalRaised: 717361,
-        totalDonations: 1,
-        totalPledges: 0,
-        goalAmount: 1000000,
-        lastUpdated: new Date()
-      };
+      // Initialize demo stats from localStorage
+      this.initializeDemoStats();
+      // Return persistent demo stats if Firebase not configured
+      console.log('📊 Using persistent demo stats:', this.demoStats);
+      return this.demoStats;
     }
 
     try {
@@ -343,16 +391,19 @@ export class FirebaseDonationService {
   // Real-time listener for stats
   static onStatsUpdate(callback: (stats: DonationStats) => void) {
     if (!db) {
-      // Return demo stats if Firebase not configured
-      const demoStats = {
-        totalRaised: 717361,
-        totalDonations: 1,
-        totalPledges: 0,
-        goalAmount: 1000000,
-        lastUpdated: new Date()
-      };
-      callback(demoStats);
-      return () => {}; // Return empty unsubscribe function
+      // Initialize demo stats from localStorage
+      this.initializeDemoStats();
+      
+      // Return persistent demo stats if Firebase not configured
+      console.log('📊 Using persistent demo stats for real-time updates:', this.demoStats);
+      callback(this.demoStats);
+      
+      // Set up a simple interval to check for updates in demo mode
+      const interval = setInterval(() => {
+        callback(this.demoStats);
+      }, 1000);
+      
+      return () => clearInterval(interval); // Return cleanup function
     }
 
     return onSnapshot(this.getStatsRef()!, (doc) => {

@@ -91,6 +91,16 @@ export async function POST(request: NextRequest) {
 
     // Send email using Brevo (if configured) or log for now
     if (process.env.BREVO_API_KEY) {
+      console.log('📧 Sending email to Brevo API...');
+      console.log('📧 Email data:', {
+        sender: { email: fromEmail, name: 'WICC Fundraising System' },
+        to: [
+          { email: masjidEmail, name: 'WICC Masjid' },
+          { email: personalEmail, name: 'Jawad Ashraf' }
+        ],
+        subject: emailSubject
+      });
+
       const response = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
@@ -109,6 +119,9 @@ export async function POST(request: NextRequest) {
         })
       });
 
+      console.log('📧 Brevo API response status:', response.status);
+      console.log('📧 Brevo API response headers:', Object.fromEntries(response.headers.entries()));
+
       if (response.ok) {
         console.log('📧 Pledge notification email sent successfully via Brevo');
         const responseData = await response.json();
@@ -116,6 +129,7 @@ export async function POST(request: NextRequest) {
       } else {
         const error = await response.text();
         console.error('Brevo API error:', error);
+        console.error('Brevo API error status:', response.status);
       }
     } else {
       // Log the email content for development/testing
