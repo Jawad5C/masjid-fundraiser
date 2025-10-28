@@ -55,15 +55,6 @@ export class FirebaseDonationService {
       if (savedStats) {
         try {
           const parsed = JSON.parse(savedStats);
-          
-          // Check if this contains old preset data and clear it
-          if (parsed.totalRaised >= 717361 && parsed.totalDonations >= 1) {
-            console.log('📊 Detected old preset data, clearing and starting fresh');
-            localStorage.removeItem('masjid-demo-stats');
-            this.resetToDefault();
-            return;
-          }
-          
           this.demoStats = {
             ...parsed,
             lastUpdated: new Date(parsed.lastUpdated)
