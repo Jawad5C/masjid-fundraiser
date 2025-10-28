@@ -233,7 +233,6 @@ function HomeContent() {
             fontFamily: '"Playfair Display", "Georgia", "serif"',
             letterSpacing: '0.05em',
             fontWeight: '700',
-            animation: 'intense-glow-emerge 6s ease-in-out infinite',
             filter: 'brightness(1.8) contrast(1.5) saturate(2.0)',
             background: 'linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ff00, #ff0080, #8000ff, #00ffff)',
             backgroundSize: '400% 400%',
