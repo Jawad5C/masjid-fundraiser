@@ -37,6 +37,7 @@ function UnifiedDonationContent() {
   const [showReceipt, setShowReceipt] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
   const [paymentError, setPaymentError] = useState('');
   const [receiptPreferences, setReceiptPreferences] = useState({
     print: false
@@ -108,6 +109,35 @@ function UnifiedDonationContent() {
       }
     } else if (paymentMethod === 'pledge') {
       setShowPledgeForm(true);
+    } else if (paymentMethod === 'qr1' || paymentMethod === 'qr2') {
+      // Handle QR code donations
+      const amount = parseInt(donationAmount || customAmount || '0');
+      
+      if (amount <= 0) {
+        alert('Please enter a valid donation amount');
+        return;
+      }
+      
+      try {
+        // Record the donation immediately
+        await addDonation({
+          amount,
+          donorName: donorInfo.name,
+          donorEmail: donorInfo.email,
+          donorPhone: donorInfo.phone,
+          type: 'donation',
+          paymentMethod: paymentMethod,
+          status: 'completed',
+          notes: `QR Code Payment - ${paymentMethod === 'qr1' ? 'Masjid Payment QR' : 'LaunchGood QR'}`
+        });
+        
+        // Show QR modal
+        setShowQrModal(true);
+        
+      } catch (error) {
+        console.error('Error submitting QR donation:', error);
+        alert('Failed to submit donation. Please try again.');
+      }
     }
   };
 
@@ -271,6 +301,34 @@ function UnifiedDonationContent() {
                   />
                   <span className="text-white">Pledge (Commit to donate later)</span>
                 </label>
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="qr1"
+                    checked={paymentMethod === 'qr1'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-5 h-5 text-purple-600 mt-1"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium">Masjid Payment QR Code</span>
+                    <span className="text-green-300 text-sm mt-1">Press "Donate to WICC" button below to get QR code</span>
+                  </div>
+                </label>
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="qr2"
+                    checked={paymentMethod === 'qr2'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-5 h-5 text-purple-600 mt-1"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium">LaunchGood QR Code</span>
+                    <span className="text-blue-300 text-sm mt-1">Press "Donate to WICC" button below to get QR code</span>
+                  </div>
+                </label>
               </div>
             </div>
 
@@ -290,61 +348,6 @@ function UnifiedDonationContent() {
               </div>
             </div>
 
-            {/* QR Code Section */}
-            <div className="bg-gradient-to-br from-amber-900 to-amber-800 rounded-xl p-6 border-2 border-amber-500" style={{
-              boxShadow: '0 0 20px rgba(245, 158, 11, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1)'
-            }}>
-              <h4 className="text-white text-lg font-bold mb-4 flex items-center">
-                <span className="text-2xl mr-2">📱</span>
-                Quick Donate with QR Codes
-              </h4>
-              
-              {/* Two QR Codes Side by Side */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Masjid Custom Payment QR */}
-                <div className="text-center">
-                  <div className="bg-white p-4 rounded-lg mb-3">
-                    <Image
-                      src="/qr-codes/masjid-payment-qr.png"
-                      alt="Masjid Payment QR Code"
-                      width={128}
-                      height={128}
-                      className="w-32 h-32 rounded-lg"
-                    />
-                  </div>
-                  <h5 className="text-white font-semibold mb-2">Masjid Payment Page</h5>
-                  <p className="text-amber-100 text-sm">
-                    Direct payment to WICC&apos;s custom donation system
-                  </p>
-                </div>
-
-                {/* Launchgood QR */}
-                <div className="text-center">
-                  <div className="bg-white p-4 rounded-lg mb-3">
-                    <Image
-                      src="/qr-codes/launchgood-qr.png"
-                      alt="Launchgood QR Code"
-                      width={128}
-                      height={128}
-                      className="w-32 h-32 rounded-lg"
-                    />
-                  </div>
-                  <h5 className="text-white font-semibold mb-2">Launchgood Platform</h5>
-                  <p className="text-amber-100 text-sm">
-                    Donate through Launchgood&apos;s trusted platform
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 text-center">
-                <p className="text-amber-100 text-sm">
-                  <strong className="text-white">Scan either QR code to donate instantly!</strong> Use your phone&apos;s camera to scan for quick mobile donations.
-                </p>
-                <p className="text-amber-200 text-xs mt-2">
-                  Compatible with Apple Pay, Google Pay, and other mobile payment apps.
-                </p>
-              </div>
-            </div>
 
             {/* Tax Receipt Info */}
             <div className="bg-gradient-to-br from-purple-900 to-purple-800 rounded-xl p-6 border-2 border-purple-500" style={{
@@ -529,6 +532,80 @@ function UnifiedDonationContent() {
                        className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                      >
                        Cancel
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             )}
+
+             {/* QR Code Modal */}
+             {showQrModal && (
+               <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+                 <div className="bg-gradient-to-br from-green-900 to-green-800 rounded-2xl shadow-2xl max-w-2xl w-full border-2 border-green-500" style={{
+                   boxShadow: '0 0 30px rgba(34, 197, 94, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+                 }}>
+                   <div className="p-8 text-center">
+                     {/* Success Icon */}
+                     <div className="mb-6">
+                       <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4" style={{
+                         boxShadow: '0 0 20px rgba(34, 197, 94, 0.6)'
+                       }}>
+                         <span className="text-4xl">✅</span>
+                       </div>
+                     </div>
+
+                     {/* Title */}
+                     <h2 className="text-2xl font-bold text-white mb-4">
+                       Donation Recorded Successfully!
+                     </h2>
+
+                     {/* Amount */}
+                     <div className="bg-white/10 rounded-xl p-4 mb-6 border border-green-400/30">
+                       <p className="text-green-100 text-lg mb-2">Donation Amount</p>
+                       <p className="text-3xl font-bold text-white">
+                         ${donationAmount || customAmount}
+                       </p>
+                     </div>
+
+                     {/* QR Code Display */}
+                     <div className="bg-white/10 rounded-xl p-6 mb-6 border border-green-400/30">
+                       <p className="text-green-100 text-sm mb-4">Scan QR Code to Complete Payment</p>
+                       <div className="bg-white p-4 rounded-lg inline-block">
+                         <Image
+                           src={paymentMethod === 'qr1' ? '/qr-codes/masjid-payment-qr.png' : '/qr-codes/launchgood-qr.png'}
+                           alt={paymentMethod === 'qr1' ? 'Masjid Payment QR Code' : 'LaunchGood QR Code'}
+                           width={200}
+                           height={200}
+                           className="w-48 h-48 rounded-lg"
+                         />
+                       </div>
+                       <p className="text-white font-semibold mt-4">
+                         {paymentMethod === 'qr1' ? 'Masjid Payment QR Code' : 'LaunchGood QR Code'}
+                       </p>
+                     </div>
+
+                     {/* Instructions */}
+                     <div className="bg-white/5 rounded-xl p-4 mb-6 border border-green-400/20">
+                       <p className="text-green-200 text-sm leading-relaxed">
+                         <span className="font-semibold text-white">Instructions:</span><br/>
+                         1. Use your phone&apos;s camera to scan the QR code above<br/>
+                         2. Complete the payment through the mobile app<br/>
+                         3. Your donation has been recorded and will be reflected on the fundraising thermometer
+                       </p>
+                     </div>
+
+                     {/* Close Button */}
+                     <button
+                       onClick={() => {
+                         setShowQrModal(false);
+                         window.location.href = '/';
+                       }}
+                       className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors duration-300"
+                       style={{
+                         boxShadow: '0 0 15px rgba(34, 197, 94, 0.4)'
+                       }}
+                     >
+                       Close & Return to Main Page
                      </button>
                    </div>
                  </div>

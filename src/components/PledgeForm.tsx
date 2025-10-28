@@ -156,7 +156,10 @@ export default function PledgeForm({
                 </div>
               </div>
               <button
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  window.location.href = '/';
+                }}
                 className="text-white hover:text-amber-200 transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,10 +292,13 @@ export default function PledgeForm({
               Print Pledge
             </button>
             <button
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                window.location.href = '/';
+              }}
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
             >
-              Close
+              Close & Return to Main Page
             </button>
           </div>
         </div>
@@ -369,7 +375,6 @@ export default function PledgeForm({
                 >
                   <option value="">Select payment method</option>
                   <option value="check">Check (Mail-in)</option>
-                  <option value="bank">Bank Transfer</option>
                   <option value="card">Credit/Debit Card (Online)</option>
                   <option value="cash">Cash (In-person)</option>
                 </select>
