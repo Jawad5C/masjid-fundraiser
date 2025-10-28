@@ -381,13 +381,13 @@ function UnifiedDonationContent() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isProcessing || (!donationAmount && !customAmount)}
+              disabled={!donationAmount && !customAmount}
               className="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold text-xl rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
               style={{
                 boxShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.3)'
               }}
             >
-              {isProcessing ? 'Processing Donation...' : `Donate $${donationAmount || customAmount || '0'} to WICC`}
+              {`Donate $${donationAmount || customAmount || '0'} to WICC`}
             </button>
           </form>
         </div>
