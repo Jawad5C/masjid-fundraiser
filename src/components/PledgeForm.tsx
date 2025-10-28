@@ -67,6 +67,7 @@ export default function PledgeForm({
     console.log('🔧 PledgeForm: Pledge details:', pledgeDetails);
     
     try {
+      console.log('🔧 PledgeForm: About to call addDonation');
       await addDonation({
         amount,
         donorName: donorInfo.name,
@@ -77,6 +78,7 @@ export default function PledgeForm({
         status: 'completed',
         notes: `Pledge for ${pledgeDetails.pledgeDate} via ${pledgeDetails.paymentMethod}. ${pledgeDetails.notes}`
       });
+      console.log('🔧 PledgeForm: addDonation completed successfully');
 
       // Save pledge to localStorage for admin dashboard
       const pledgeData = {
@@ -106,7 +108,8 @@ export default function PledgeForm({
       console.log('🔧 PledgeForm: Pledge saved successfully');
       setIsSubmitted(true);
     } catch (error) {
-      console.error('Error submitting pledge:', error);
+      console.error('🔧 PledgeForm: Error submitting pledge:', error);
+      console.error('🔧 PledgeForm: Error details:', error);
       alert('Failed to submit pledge. Please try again.');
     }
   };
