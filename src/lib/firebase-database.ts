@@ -392,7 +392,7 @@ export class FirebaseDonationService {
       }
     } catch (error) {
       console.error('📊 updateStats: Error updating stats:', error);
-      console.error('📊 updateStats: Error details:', error.message);
+      console.error('📊 updateStats: Error details:', error instanceof Error ? error.message : 'Unknown error');
     }
   }
 
