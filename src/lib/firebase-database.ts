@@ -247,13 +247,25 @@ export class FirebaseDonationService {
     try {
       const snapshot = await getDocs(query(this.getDonationsRef()!, orderBy('createdAt', 'desc')));
       return snapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate() || new Date(),
-          updatedAt: doc.data().updatedAt?.toDate() || new Date()
-        }))
-        .filter(donation => donation.type === 'donation') as Donation[];
+        .map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            amount: data.amount,
+            donorName: data.donorName,
+            donorEmail: data.donorEmail,
+            donorPhone: data.donorPhone,
+            type: data.type,
+            paymentMethod: data.paymentMethod,
+            status: data.status,
+            notes: data.notes,
+            pledgeDate: data.pledgeDate?.toDate(),
+            pledgeMethod: data.pledgeMethod,
+            createdAt: data.createdAt?.toDate() || new Date(),
+            updatedAt: data.updatedAt?.toDate() || new Date()
+          } as Donation;
+        })
+        .filter(donation => donation.type === 'donation');
     } catch (error) {
       console.error('Error getting completed donations:', error);
       return [];
