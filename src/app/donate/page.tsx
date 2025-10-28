@@ -33,7 +33,6 @@ function UnifiedDonationContent() {
   const [donationAmount, setDonationAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
-  const [isProcessing] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);

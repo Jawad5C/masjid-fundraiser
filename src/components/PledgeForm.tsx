@@ -35,17 +35,14 @@ export default function PledgeForm({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Format phone number to (xxxx) xxx-xxxx
-  const formatPhoneNumber = (value: string) => {
-    // Remove all non-numeric characters
-    const phoneNumber = value.replace(/\D/g, '');
-    
-    // Format based on length
-    if (phoneNumber.length === 0) return '';
-    if (phoneNumber.length <= 3) return `(${phoneNumber}`;
-    if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
-  };
+  // Format phone number to (xxxx) xxx-xxxx (unused - phone formatting handled in parent)
+  // const formatPhoneNumber = (value: string) => {
+  //   const phoneNumber = value.replace(/\D/g, '');
+  //   if (phoneNumber.length === 0) return '';
+  //   if (phoneNumber.length <= 3) return `(${phoneNumber}`;
+  //   if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+  //   return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  // };
 
   // Handle phone number change with formatting (unused - phone formatting handled in parent)
   // const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -84,7 +84,7 @@ export class FirebaseDonationService {
             lastUpdated: new Date(parsed.lastUpdated)
           };
           console.log('📊 Loaded demo stats from localStorage:', this.demoStats);
-        } catch (error) {
+        } catch {
           console.log('📊 Error parsing saved stats, using default');
           this.resetToDefault();
         }

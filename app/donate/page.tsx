@@ -25,14 +25,11 @@ function UnifiedDonationContent() {
   const [donationAmount, setDonationAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [showPledgeForm, setShowPledgeForm] = useState(false);
   const [paymentError, setPaymentError] = useState('');
   const [qr1DonationAmount, setQr1DonationAmount] = useState('');
   const [qr2DonationAmount, setQr2DonationAmount] = useState('');
-  const [showQrConfirmation, setShowQrConfirmation] = useState(false);
-  const [qrConfirmationData, setQrConfirmationData] = useState({ amount: 0, qrType: '' });
   const [showQrModal, setShowQrModal] = useState(false);
 
   // Set the donation amount from URL parameter
@@ -73,43 +70,7 @@ function UnifiedDonationContent() {
     setDonorInfo({...donorInfo, phone: formatted});
   };
 
-  // QR Code donation handler - Independent of payment method selection
-  const handleQrDonation = async (qrType: 'qr1' | 'qr2') => {
-    const amount = parseInt(qrType === 'qr1' ? qr1DonationAmount : qr2DonationAmount);
-    
-    if (amount <= 0) {
-      alert('Please enter a valid donation amount');
-      return;
-    }
-    
-    try {
-      await addDonation({
-        amount,
-        donorName: donorInfo.name || 'QR Code Donor',
-        donorEmail: donorInfo.email || 'qr@masjid.com',
-        donorPhone: donorInfo.phone || '',
-        type: 'donation',
-        paymentMethod: qrType,
-        status: 'completed',
-        notes: `QR Code Payment - ${qrType === 'qr1' ? 'Masjid Payment QR' : 'LaunchGood QR'}`
-      });
-      
-      // Show professional confirmation modal
-      setQrConfirmationData({ amount, qrType });
-      setShowQrConfirmation(true);
-      
-      // Clear the specific QR code amount
-      if (qrType === 'qr1') {
-        setQr1DonationAmount('');
-      } else {
-        setQr2DonationAmount('');
-      }
-      
-    } catch (error) {
-      console.error('Error submitting QR donation:', error);
-      alert('Failed to submit donation. Please try again.');
-    }
-  };
+  // QR Code donation handler removed - functionality moved to Donate to WICC button
 
   // Credit/Debit Card donation handler - Using EXACT same logic as pledge
   const handleCardDonation = async () => {
