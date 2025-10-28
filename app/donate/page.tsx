@@ -378,9 +378,7 @@ function UnifiedDonationContent() {
                 boxShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.3)'
               }}
             >
-              {isProcessing ? (
-                'Processing Donation...'
-              ) : paymentMethod === 'card' ? (
+              {paymentMethod === 'card' ? (
                 <div className="flex flex-col items-center">
                   <span>Donate ${donationAmount || customAmount || '0'} to WICC</span>
                   <span className="text-amber-200 text-sm font-normal mt-1">(You will be redirected to the Masjid Payment Processing Page)</span>
