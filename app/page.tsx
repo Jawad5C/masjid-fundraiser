@@ -563,20 +563,33 @@ function HomeContent() {
             <p className="text-slate-300 mb-4 text-sm sm:text-base">
               © 2025 Masjid Fundraiser. Building our community together.
             </p>
-            <div className="text-xs sm:text-sm text-slate-400 border-t border-slate-700 pt-4">
-              <p className="mb-2">Website Design & Development</p>
-              <p className="text-slate-300">
-                <span className="text-amber-300 font-semibold">Jawad Ashraf</span> • 
+            <div className="text-xs sm:text-sm text-slate-400 border-t border-slate-700 pt-4 relative">
+              {/* Admin Dashboard - Bottom Right */}
+              <div className="absolute bottom-0 right-0">
                 <a 
-                  href="mailto:jawad.ashraf.nyc@gmail.com" 
-                  className="text-amber-300 hover:text-amber-200 transition-colors duration-200 ml-1 break-all sm:break-normal"
+                  href="/admin" 
+                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-200 font-medium"
                 >
-                  jawad.ashraf.nyc@gmail.com
+                  Admin Dashboard
                 </a>
-              </p>
-              <p className="text-slate-300 mt-1">
-                <span className="text-amber-300">Text</span> <span className="text-amber-300">(860) 796-3837</span>
-              </p>
+              </div>
+              
+              {/* Contact Info - Centered */}
+              <div className="text-center">
+                <p className="mb-2">Website Design & Development</p>
+                <p className="text-slate-300">
+                  <span className="text-amber-300 font-semibold">Jawad Ashraf</span> • 
+                  <a 
+                    href="mailto:jawad.ashraf.nyc@gmail.com" 
+                    className="text-amber-300 hover:text-amber-200 transition-colors duration-200 ml-1 break-all sm:break-normal"
+                  >
+                    jawad.ashraf.nyc@gmail.com
+                  </a>
+                </p>
+                <p className="text-slate-300 mt-1">
+                  <span className="text-amber-300">Text</span> <span className="text-amber-300">(860) 796-3837</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>

@@ -25,7 +25,7 @@ export default function PledgeForm({
   customAmount, 
   onClose 
 }: PledgeFormProps) {
-  console.log('PledgeForm - Component mounted');
+  console.log('🔧 PledgeForm: Component loaded/rendered');
   const { addDonation } = useDonations();
   console.log('PledgeForm - addDonation from context:', addDonation);
   const [pledgeDetails, setPledgeDetails] = useState({
@@ -62,6 +62,7 @@ export default function PledgeForm({
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('🔧 PledgeForm: handleSubmit called');
     e.preventDefault();
     const amount = parseInt(donationAmount || customAmount || '0');
     
@@ -76,12 +77,32 @@ export default function PledgeForm({
         status: 'completed',
         notes: `Pledge for ${pledgeDetails.pledgeDate} via ${pledgeDetails.paymentMethod}. ${pledgeDetails.notes}`
       });
+
+      // Save pledge to localStorage for admin dashboard
+      const pledgeData = {
+        id: `pledge-${Date.now()}`,
+        donorName: donorInfo.name,
+        donorEmail: donorInfo.email,
+        donorPhone: donorInfo.phone,
+        donorAddress: donorInfo.address,
+        donorCity: donorInfo.city,
+        donorState: donorInfo.state,
+        donorZip: donorInfo.zip,
+        pledgeAmount: amount,
+        pledgeDate: pledgeDetails.pledgeDate,
+        paymentMethod: pledgeDetails.paymentMethod,
+        notes: pledgeDetails.notes,
+        pledgeNumber: pledgeNumber,
+        status: 'pending' as const,
+        createdAt: new Date().toISOString()
+      };
+
+      // Get existing pledges and add new one
+      const existingPledges = JSON.parse(localStorage.getItem('adminPledges') || '[]');
+      existingPledges.push(pledgeData);
+      localStorage.setItem('adminPledges', JSON.stringify(existingPledges));
       
-      // Send receipt for pledge
-      await sendPledgeReceipt();
-      
-      // Send notification email to masjid
-      await sendPledgeNotification();
+      // Pledge saved successfully
       
       setIsSubmitted(true);
     } catch (error) {
@@ -90,44 +111,6 @@ export default function PledgeForm({
     }
   };
 
-  const sendPledgeReceipt = async () => {
-    // Receipt delivery simplified - only print option available
-    console.log('📄 Pledge receipt - print option available for tax purposes');
-  };
-
-  const sendPledgeNotification = async () => {
-    try {
-      const response = await fetch('/api/send-pledge-notification', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          donorName: donorInfo.name,
-          donorEmail: donorInfo.email,
-          donorPhone: donorInfo.phone,
-          donorAddress: donorInfo.address,
-          donorCity: donorInfo.city,
-          donorState: donorInfo.state,
-          donorZip: donorInfo.zip,
-          pledgeAmount: finalAmount,
-          pledgeDate: pledgeDetails.pledgeDate,
-          paymentMethod: pledgeDetails.paymentMethod,
-          notes: pledgeDetails.notes,
-          pledgeNumber: pledgeNumber
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to send pledge notification');
-      }
-
-      console.log('📧 Pledge notification sent to masjid successfully');
-    } catch (error) {
-      console.error('Error sending pledge notification:', error);
-      // Don't fail the pledge submission if email fails
-    }
-  };
 
   const handlePrint = () => {
     window.print();

@@ -203,6 +203,16 @@ function HomeContent() {
 
       {/* Header removed - text moved under minaret */}
 
+      {/* Admin Link */}
+      <div className="absolute top-4 right-4 z-50">
+        <a 
+          href="/admin" 
+          className="bg-slate-800/50 hover:bg-slate-700/50 text-white text-xs px-3 py-1 rounded-full border border-slate-600/50 transition-colors duration-200"
+        >
+          Admin
+        </a>
+      </div>
+
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
@@ -233,6 +243,16 @@ function HomeContent() {
           }}>
             Masjid Fundraiser
           </h1>
+          
+          {/* Admin Button - Prominent Location */}
+          <div className="mt-6">
+            <a 
+              href="/admin" 
+              className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg"
+            >
+              🔧 Admin Dashboard
+            </a>
+          </div>
         </div>
 
 
@@ -624,6 +644,14 @@ function HomeContent() {
                 </a>
                 <span className="text-amber-300 ml-2">(Text Preferred)</span>
               </p>
+              <div className="mt-4">
+                <a 
+                  href="/admin" 
+                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-200 font-medium"
+                >
+                  Admin Dashboard
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -11,6 +11,24 @@ interface DonationStats {
   lastUpdated: Date;
 }
 
+interface Pledge {
+  id: string;
+  donorName: string;
+  donorEmail: string;
+  donorPhone: string;
+  donorAddress: string;
+  donorCity: string;
+  donorState: string;
+  donorZip: string;
+  pledgeAmount: number;
+  pledgeDate: string;
+  paymentMethod: string;
+  notes: string;
+  pledgeNumber: string;
+  status: 'pending' | 'paid' | 'cancelled';
+  createdAt: string;
+}
+
 interface DonationContextType {
   donations: Donation[];
   stats: DonationStats | null;
@@ -19,6 +37,8 @@ interface DonationContextType {
   addDonation: (donationData: Partial<Donation>) => Promise<void>;
   refreshStats: () => Promise<void>;
   resetStats: () => Promise<void>;
+  getPledges: () => Promise<Pledge[]>;
+  updatePledgeStatus: (pledgeId: string, status: 'pending' | 'paid' | 'cancelled') => Promise<void>;
 }
 
 const DonationContext = createContext<DonationContextType | undefined>(undefined);
@@ -113,6 +133,35 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const getPledges = async (): Promise<Pledge[]> => {
+    try {
+      // For demo mode, get pledges from localStorage
+      const storedPledges = localStorage.getItem('adminPledges');
+      if (storedPledges) {
+        return JSON.parse(storedPledges);
+      }
+      return [];
+    } catch (error) {
+      console.error('Error getting pledges:', error);
+      return [];
+    }
+  };
+
+  const updatePledgeStatus = async (pledgeId: string, status: 'pending' | 'paid' | 'cancelled'): Promise<void> => {
+    try {
+      const storedPledges = localStorage.getItem('adminPledges');
+      if (storedPledges) {
+        const pledges = JSON.parse(storedPledges);
+        const updatedPledges = pledges.map((pledge: Pledge) => 
+          pledge.id === pledgeId ? { ...pledge, status } : pledge
+        );
+        localStorage.setItem('adminPledges', JSON.stringify(updatedPledges));
+      }
+    } catch (error) {
+      console.error('Error updating pledge status:', error);
+    }
+  };
+
   return (
     <DonationContext.Provider value={{
       donations,
@@ -121,7 +170,9 @@ export function DonationProvider({ children }: { children: React.ReactNode }) {
       error,
       addDonation,
       refreshStats,
-      resetStats
+      resetStats,
+      getPledges,
+      updatePledgeStatus
     }}>
       {children}
     </DonationContext.Provider>
