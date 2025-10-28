@@ -40,21 +40,22 @@ export default function AdminDashboard() {
     }
   };
 
-  // Load pledges
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadPledges();
-    }
-  }, [isAuthenticated, loadPledges]);
-
-  const loadPledges = async () => {
+  // Load pledges function
+  const loadPledges = useCallback(async () => {
     try {
       const pledgeData = await getPledges();
       setPledges(pledgeData);
     } catch (error) {
       console.error('Error loading pledges:', error);
     }
-  };
+  }, [getPledges]);
+
+  // Load pledges
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadPledges();
+    }
+  }, [isAuthenticated, loadPledges]);
 
   const updatePledgeStatus = async (pledgeId: string, newStatus: 'pending' | 'paid' | 'cancelled') => {
     try {
