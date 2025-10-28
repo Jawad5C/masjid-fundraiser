@@ -44,7 +44,7 @@ export default function AdminDashboard() {
     if (isAuthenticated) {
       loadPledges();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loadPledges]);
 
   const loadPledges = async () => {
     try {

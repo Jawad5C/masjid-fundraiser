@@ -312,7 +312,7 @@ function UnifiedDonationContent() {
                   />
                   <div className="flex flex-col">
                     <span className="text-white font-medium">Masjid Payment QR Code</span>
-                    <span className="text-green-300 text-sm mt-1">Press "Donate to WICC" button below to get QR code</span>
+                    <span className="text-green-300 text-sm mt-1">Press &quot;Donate to WICC&quot; button below to get QR code</span>
                   </div>
                 </label>
                 <label className="flex items-start space-x-3 cursor-pointer">
@@ -326,7 +326,7 @@ function UnifiedDonationContent() {
                   />
                   <div className="flex flex-col">
                     <span className="text-white font-medium">LaunchGood QR Code</span>
-                    <span className="text-blue-300 text-sm mt-1">Press "Donate to WICC" button below to get QR code</span>
+                    <span className="text-blue-300 text-sm mt-1">Press &quot;Donate to WICC&quot; button below to get QR code</span>
                   </div>
                 </label>
               </div>
