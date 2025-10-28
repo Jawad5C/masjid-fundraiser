@@ -47,11 +47,11 @@ export default function PledgeForm({
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   };
 
-  // Handle phone number change with formatting
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhoneNumber(e.target.value);
-    setDonorInfo({...donorInfo, phone: formatted});
-  };
+  // Handle phone number change with formatting (unused - phone formatting handled in parent)
+  // const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const formatted = formatPhoneNumber(e.target.value);
+  //   setDonorInfo({...donorInfo, phone: formatted});
+  // };
   
   const finalAmount = donationAmount || customAmount;
   const pledgeNumber = `PLEDGE-${Date.now().toString().slice(-6)}`;
