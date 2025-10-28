@@ -128,6 +128,7 @@ export default function AdminDashboard() {
                     <th className="text-left py-3 px-4">Pledge #</th>
                     <th className="text-left py-3 px-4">Donor</th>
                     <th className="text-left py-3 px-4">Amount</th>
+                    <th className="text-left py-3 px-4">Payment Method</th>
                     <th className="text-left py-3 px-4">Date</th>
                     <th className="text-left py-3 px-4">Status</th>
                     <th className="text-left py-3 px-4">Actions</th>
@@ -145,6 +146,14 @@ export default function AdminDashboard() {
                         </div>
                       </td>
                       <td className="py-3 px-4 font-medium">${pledge.pledgeAmount.toLocaleString()}</td>
+                      <td className="py-3 px-4">
+                        <span className="text-sm">
+                          {pledge.paymentMethod === 'check' ? 'Check (Mail-in)' :
+                           pledge.paymentMethod === 'card' ? 'Credit/Debit Card (Online)' :
+                           pledge.paymentMethod === 'cash' ? 'Cash (In-person)' :
+                           pledge.paymentMethod || 'Not specified'}
+                        </span>
+                      </td>
                       <td className="py-3 px-4">{new Date(pledge.pledgeDate).toLocaleDateString()}</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
