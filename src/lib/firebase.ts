@@ -17,11 +17,13 @@ let app: ReturnType<typeof initializeApp> | null = null;
 let db: ReturnType<typeof getFirestore> | null = null;
 let auth: ReturnType<typeof getAuth> | null = null;
 
-// Only initialize if we have real Firebase keys
+// Only initialize if we have real Firebase keys (not placeholder values)
 if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && 
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'demo-key' &&
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== 'your_api_k...' &&
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID !== 'demo-project') {
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID !== 'demo-project' &&
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID !== 'your_project_id') {
   try {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
