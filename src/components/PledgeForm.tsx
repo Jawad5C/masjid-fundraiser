@@ -62,6 +62,9 @@ export default function PledgeForm({
     console.log('🔧 PledgeForm: handleSubmit called');
     e.preventDefault();
     const amount = parseInt(donationAmount || customAmount || '0');
+    console.log('🔧 PledgeForm: Amount:', amount);
+    console.log('🔧 PledgeForm: Donor info:', donorInfo);
+    console.log('🔧 PledgeForm: Pledge details:', pledgeDetails);
     
     try {
       await addDonation({
@@ -100,7 +103,7 @@ export default function PledgeForm({
       localStorage.setItem('adminPledges', JSON.stringify(existingPledges));
       
       // Pledge saved successfully
-      
+      console.log('🔧 PledgeForm: Pledge saved successfully');
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting pledge:', error);
