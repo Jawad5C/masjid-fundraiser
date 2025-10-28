@@ -51,17 +51,28 @@ export class FirebaseDonationService {
   // Initialize demo stats from localStorage if available
   private static initializeDemoStats() {
     if (typeof window !== 'undefined') {
-      // Check deployment version - clear data if version changed
-      const currentVersion = 'v1.0.0'; // Update this for fresh deployments
+      // Check deployment version - only clear on MAJOR version changes
+      const currentVersion = '1.0.0'; // Only change this for MAJOR resets
       const savedVersion = localStorage.getItem('masjid-app-version');
       
-      if (savedVersion !== currentVersion) {
-        console.log('📊 New deployment version detected - clearing all data');
-        localStorage.removeItem('masjid-demo-stats');
-        localStorage.removeItem('adminPledges');
+      // Only clear data if this is a MAJOR version change (not minor updates)
+      if (savedVersion && savedVersion !== currentVersion) {
+        const [savedMajor] = savedVersion.split('.');
+        const [currentMajor] = currentVersion.split('.');
+        
+        if (savedMajor !== currentMajor) {
+          console.log('📊 MAJOR version change detected - clearing all data');
+          localStorage.removeItem('masjid-demo-stats');
+          localStorage.removeItem('adminPledges');
+          localStorage.setItem('masjid-app-version', currentVersion);
+          this.resetToDefault();
+          return;
+        }
+      }
+      
+      // Set version if not exists (first visit)
+      if (!savedVersion) {
         localStorage.setItem('masjid-app-version', currentVersion);
-        this.resetToDefault();
-        return;
       }
       
       const savedStats = localStorage.getItem('masjid-demo-stats');
