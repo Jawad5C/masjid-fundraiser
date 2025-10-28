@@ -362,7 +362,7 @@ function UnifiedDonationContent() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isProcessing || (!donationAmount && !customAmount)}
+              disabled={!donationAmount && !customAmount}
               onClick={async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
