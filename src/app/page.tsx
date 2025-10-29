@@ -226,7 +226,7 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Animated Masjid Fundraiser Text */}
+        {/* Animated Masjid Assalam Fundraising Text */}
         <div className="text-center mb-8 relative z-10">
           <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse" style={{
             textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
@@ -621,7 +621,7 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-slate-300 mb-4 text-sm sm:text-base">
-              © 2025 Masjid Fundraiser. Building our community together.
+              © 2025 Masjid Assalam Fundraising. Building our community together.
             </p>
             <div className="text-xs sm:text-sm text-slate-400 border-t border-slate-700 pt-4">
               <p className="mb-2">Website Design & Development</p>

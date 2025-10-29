@@ -169,7 +169,7 @@ function UnifiedDonationContent() {
         <Link href="/" className="text-amber-400 hover:text-amber-300 text-lg mb-4 inline-block">
           ← Back to Fundraiser
         </Link>
-        <h1 className="text-4xl font-bold text-white mb-4">🕌 Masjid Fundraiser</h1>
+        <h1 className="text-4xl font-bold text-white mb-4">🕌 Masjid Assalam Fundraising</h1>
         <p className="text-amber-200 text-lg mb-8">Supporting the Waterbury Islamic Cultural Center</p>
       </div>
 
