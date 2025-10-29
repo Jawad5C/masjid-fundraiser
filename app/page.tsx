@@ -165,7 +165,7 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Single Animated Masjid Fundraiser Text - Moving to Random Positions */}
+        {/* Single Animated Masjid Assalam Fundraising Text - Moving to Random Positions */}
         <div className="absolute inset-0 pointer-events-none z-30">
           <div className="absolute" style={{
             animation: 'random-position-glow 32s ease-in-out infinite',
@@ -184,7 +184,7 @@ function HomeContent() {
               WebkitTextFillColor: 'transparent',
               animation: 'gradient-shift 3s ease-in-out infinite'
             }}>
-              Masjid Fundraiser
+              Masjid Assalam Fundraising
             </h1>
           </div>
         </div>
@@ -561,7 +561,7 @@ function HomeContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-slate-300 mb-4 text-sm sm:text-base">
-              © 2025 Masjid Fundraiser. Building our community together.
+              © 2025 Masjid Assalam Fundraising. Building our community together.
             </p>
             <div className="text-xs sm:text-sm text-slate-400 border-t border-slate-700 pt-4 relative">
               {/* Admin Dashboard - Bottom Right */}
