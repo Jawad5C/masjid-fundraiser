@@ -240,7 +240,7 @@ function HomeContent() {
             WebkitTextFillColor: 'transparent',
             animation: 'gradient-shift 3s ease-in-out infinite, intense-glow-emerge 6s ease-in-out infinite'
           }}>
-            Masjid Fundraiser
+            Masjid Assalam Fundraising
           </h1>
           
           {/* Admin Button - Prominent Location */}
