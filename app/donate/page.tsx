@@ -31,6 +31,7 @@ function UnifiedDonationContent() {
   const [qr1DonationAmount, setQr1DonationAmount] = useState('');
   const [qr2DonationAmount, setQr2DonationAmount] = useState('');
   const [showQrModal, setShowQrModal] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   // Set the donation amount from URL parameter
   useEffect(() => {
@@ -70,6 +71,48 @@ function UnifiedDonationContent() {
     setDonorInfo({...donorInfo, phone: formatted});
   };
 
+  // Play Quranic recitation audio
+  const playQuranicRecitation = (): Promise<void> => {
+    return new Promise((resolve) => {
+      if (isPlayingAudio) {
+        resolve();
+        return;
+      }
+
+      setIsPlayingAudio(true);
+
+      // Quranic verse from your project
+      const quranicVerse = {
+        audio: '/audio/test-quran-2-273.mp3',
+        arabic: 'مَّن ذَا ٱلَّذِى يُقۡرِضُ ٱللَّهَ قَرۡضًا حَسَنًۭا فَيُضَـٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجۡرٌۭ كَرِيمٌۭ',
+        translation: 'Who is it that would loan Allah a goodly loan so He will multiply it for him and he will have a noble reward?',
+        source: "Qur'an 57:11",
+        reciter: 'Zain Abu Kautsar'
+      };
+
+      // Create audio element
+      const audio = new Audio(quranicVerse.audio);
+      audio.playbackRate = 1.40; // Play 40% faster
+
+      audio.onended = () => {
+        setIsPlayingAudio(false);
+        resolve();
+      };
+
+      audio.onerror = () => {
+        // If audio file doesn't exist, continue immediately
+        setIsPlayingAudio(false);
+        resolve();
+      };
+
+      audio.play().catch(() => {
+        // If audio fails, continue immediately
+        setIsPlayingAudio(false);
+        resolve();
+      });
+    });
+  };
+
   // QR Code donation handler removed - functionality moved to Donate to WICC button
 
   // Credit/Debit Card donation handler - Using EXACT same logic as pledge
@@ -103,7 +146,7 @@ function UnifiedDonationContent() {
     }
   };
 
-  // Handle form submission
+  // Handle form submission with audio
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -111,6 +154,15 @@ function UnifiedDonationContent() {
       alert('Please select a payment method');
       return;
     }
+
+    // For pledges, show form immediately (no audio)
+    if (paymentMethod === 'pledge') {
+      setShowPledgeForm(true);
+      return;
+    }
+    
+    // Play audio before processing donation (except for pledges)
+    await playQuranicRecitation();
     
     if (paymentMethod === 'card') {
       await handleCardDonation();
@@ -143,8 +195,6 @@ function UnifiedDonationContent() {
         console.error('Error submitting QR donation:', error);
         alert('Failed to submit donation. Please try again.');
       }
-    } else if (paymentMethod === 'pledge') {
-      setShowPledgeForm(true);
     }
   };
 
@@ -362,17 +412,8 @@ function UnifiedDonationContent() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!donationAmount && !customAmount}
-              onClick={async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                if (paymentMethod === 'card') {
-                  await handleCardDonation();
-                } else {
-                  handleSubmit(e);
-                }
-              }}
+              disabled={(!donationAmount && !customAmount) || isPlayingAudio}
+              onClick={handleSubmit}
               className="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold text-xl rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
               style={{
                 boxShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.3)'
@@ -482,6 +523,37 @@ function UnifiedDonationContent() {
               >
                 Close & Return to Main Page
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Audio Overlay - Shows during Quranic recitation */}
+      {isPlayingAudio && (
+        <div className="fixed inset-0 bg-gradient-to-br from-green-900/90 via-emerald-800/90 to-teal-900/90 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="text-center text-white">
+            <div className="mb-8">
+              <div className="text-6xl mb-4 animate-pulse">🕌</div>
+              <div className="text-2xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                مَّن ذَا ٱلَّذِى يُقۡرِضُ ٱللَّهَ قَرۡضًا حَسَنًۭا فَيُضَـٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجۡرٌۭ كَرِيمٌۭ
+              </div>
+              <div className="text-lg opacity-90 mb-4">
+                Who is it that would loan Allah a goodly loan so He will multiply it for him and he will have a noble reward?
+              </div>
+              <div className="text-sm font-semibold">
+                Qur&apos;an 57:11 • Recited by Zain Abu Kautsar
+              </div>
+            </div>
+            
+            {/* Animated loading dots */}
+            <div className="flex justify-center space-x-2">
+              <div className="w-3 h-3 bg-white rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+            
+            <div className="mt-4 text-sm opacity-75">
+              Preparing your donation...
             </div>
           </div>
         </div>
