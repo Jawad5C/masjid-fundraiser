@@ -519,15 +519,19 @@ export default function AdminDashboard() {
                       </td>
                              <td className="py-3 px-4">
                                <div className="flex flex-wrap gap-1.5 items-center" style={{ minWidth: '350px' }}>
-                                 {pledge.notes && (
-                                   <button
-                                     onClick={() => showNotes(pledge.notes)}
-                                     className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition-colors"
-                                     style={{ width: '90px' }}
-                                   >
-                                     View Notes
-                                   </button>
-                                 )}
+                                 <button
+                                   onClick={() => {
+                                     if (pledge.notes) {
+                                       showNotes(pledge.notes);
+                                     } else {
+                                       alert('No notes available for this pledge.');
+                                     }
+                                   }}
+                                   className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                                   style={{ width: '90px' }}
+                                 >
+                                   View Notes
+                                 </button>
                                  {pledge.status === 'pending' && (
                                    <button
                                      onClick={() => updatePledgeStatus(pledge.id, 'paid')}
