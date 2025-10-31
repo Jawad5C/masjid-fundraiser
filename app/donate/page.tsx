@@ -119,8 +119,13 @@ function UnifiedDonationContent() {
   const handleCardDonation = async () => {
     const amount = parseInt(donationAmount || customAmount || '0');
     
+    if (amount <= 0) {
+      alert('Please enter a valid donation amount');
+      return;
+    }
+    
     try {
-      // EXACT same logic as pledge - this works perfectly
+      // Record card donation when Donate to WICC button is clicked
       await addDonation({
         amount,
         donorName: donorInfo.name,
@@ -132,13 +137,19 @@ function UnifiedDonationContent() {
         notes: 'Payment via WICC Payment Center'
       });
       
-      // Redirect to payment page AFTER donation is recorded (like pledge)
-      window.open('https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1', '_blank');
+      // Open payment page in new tab
+      const paymentWindow = window.open('https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1', '_blank');
       
-      // Redirect to main page to show updated tower
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1000);
+      // If popup was blocked, try redirecting in same window
+      if (!paymentWindow || paymentWindow.closed || typeof paymentWindow.closed === 'undefined') {
+        // Popup was blocked, redirect in same window
+        window.location.href = 'https://payments.madinaapps.com/WICC/9409fc5e-b6c0-4203-907b-2fe1ad4e3bd1';
+      } else {
+        // Popup opened successfully, redirect main page after a short delay
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
+      }
       
     } catch (error) {
       console.error('Error submitting card donation:', error);
@@ -161,12 +172,12 @@ function UnifiedDonationContent() {
       return;
     }
     
-    // Play audio before processing donation (except for pledges)
-    await playQuranicRecitation();
-    
     if (paymentMethod === 'card') {
+      // Play audio before processing card donation
+      await playQuranicRecitation();
       await handleCardDonation();
     } else if (paymentMethod === 'qr1' || paymentMethod === 'qr2') {
+      // For QR payments, don't play audio here - it will play when closing the QR modal
       // Handle QR code donations
       const amount = parseInt(donationAmount || customAmount || '0');
       
@@ -176,7 +187,7 @@ function UnifiedDonationContent() {
       }
       
       try {
-        // Record the donation immediately
+        // Record the donation immediately with verification status (default: not_verified)
         await addDonation({
           amount,
           donorName: donorInfo.name,
@@ -185,7 +196,8 @@ function UnifiedDonationContent() {
           type: 'donation',
           paymentMethod: paymentMethod,
           status: 'completed',
-          notes: `QR Code Payment - ${paymentMethod === 'qr1' ? 'Masjid Payment QR' : 'LaunchGood QR'}`
+          notes: `QR Code Payment - ${paymentMethod === 'qr1' ? 'Masjid Payment QR' : 'LaunchGood QR'}`,
+          verificationStatus: 'not_verified' as const
         });
         
         // Show QR modal
@@ -411,7 +423,7 @@ function UnifiedDonationContent() {
 
             {/* Submit Button */}
             <button
-              type="submit"
+              type="button"
               disabled={(!donationAmount && !customAmount) || isPlayingAudio}
               onClick={handleSubmit}
               className="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold text-xl rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
@@ -440,6 +452,7 @@ function UnifiedDonationContent() {
           donationAmount={donationAmount}
           customAmount={customAmount}
           onClose={() => setShowPledgeForm(false)}
+          playQuranicRecitation={playQuranicRecitation}
         />
       )}
 
@@ -512,8 +525,10 @@ function UnifiedDonationContent() {
 
               {/* Close Button */}
               <button
-                onClick={() => {
+                onClick={async () => {
                   setShowQrModal(false);
+                  // Play audio before returning to main page
+                  await playQuranicRecitation();
                   window.location.href = '/';
                 }}
                 className="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors duration-300"

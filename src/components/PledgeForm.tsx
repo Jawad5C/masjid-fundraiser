@@ -17,13 +17,15 @@ interface PledgeFormProps {
   donationAmount: string;
   customAmount: string;
   onClose: () => void;
+  playQuranicRecitation?: () => Promise<void>;
 }
 
 export default function PledgeForm({ 
   donorInfo, 
   donationAmount, 
   customAmount, 
-  onClose 
+  onClose,
+  playQuranicRecitation
 }: PledgeFormProps) {
   console.log('🔧 PledgeForm: Component loaded/rendered');
   const { addDonation } = useDonations();
@@ -34,6 +36,7 @@ export default function PledgeForm({
     notes: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   // Format phone number to (xxxx) xxx-xxxx (unused - phone formatting handled in parent)
   // const formatPhoneNumber = (value: string) => {
@@ -278,11 +281,18 @@ export default function PledgeForm({
               Print Pledge
             </button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 onClose();
+                // Play audio before returning to main page (if audio function is provided)
+                if (playQuranicRecitation) {
+                  setIsPlayingAudio(true);
+                  await playQuranicRecitation();
+                  setIsPlayingAudio(false);
+                }
                 window.location.href = '/';
               }}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              disabled={isPlayingAudio}
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Close & Return to Main Page
             </button>
@@ -293,7 +303,38 @@ export default function PledgeForm({
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <>
+      {/* Audio Overlay - Shows during Quranic recitation */}
+      {isPlayingAudio && (
+        <div className="fixed inset-0 bg-gradient-to-br from-green-900/90 via-emerald-800/90 to-teal-900/90 backdrop-blur-sm z-[60] flex items-center justify-center">
+          <div className="text-center text-white">
+            <div className="mb-8">
+              <div className="text-6xl mb-4 animate-pulse">🕌</div>
+              <div className="text-2xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                مَّن ذَا ٱلَّذِى يُقۡرِضُ ٱللَّهَ قَرۡضًا حَسَنًۭا فَيُضَـٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجۡرٌۭ كَرِيمٌۭ
+              </div>
+              <div className="text-lg opacity-90 mb-4">
+                Who is it that would loan Allah a goodly loan so He will multiply it for him and he will have a noble reward?
+              </div>
+              <div className="text-sm font-semibold">
+                Qur&apos;an 57:11 • Recited by Zain Abu Kautsar
+              </div>
+            </div>
+            
+            {/* Animated loading dots */}
+            <div className="flex justify-center space-x-2">
+              <div className="w-3 h-3 bg-white rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-3 h-3 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+            <div className="mt-4 text-sm opacity-75">
+              Preparing your return...
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Pledge Form Header */}
         <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-6 rounded-t-2xl">
@@ -394,5 +435,6 @@ export default function PledgeForm({
         </div>
       </div>
     </div>
+    </>
   );
 }

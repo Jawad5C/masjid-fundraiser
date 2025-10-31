@@ -64,19 +64,21 @@ function HomeContent() {
       {/* Moon with Circular Wrapped Text */}
       <div className="relative pt-8 sm:pt-16 pb-4 sm:pb-8 z-30 flex items-center justify-center">
         {/* Moon Logo - Center */}
-        <div className="relative w-24 h-24 sm:w-32 sm:h-32 z-20" style={{
+        <div className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 z-20" style={{
           filter: 'drop-shadow(0 0 40px rgba(255, 255, 255, 1))'
         }}>
-          <div className="w-full h-full bg-white rounded-full flex items-center justify-center p-3 animate-pulse" style={{
+          <div className="w-full h-full bg-white rounded-full flex items-center justify-center p-1 sm:p-1.5 md:p-2 animate-pulse" style={{
             boxShadow: '0 0 40px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 255, 255, 0.8), 0 0 120px rgba(255, 255, 255, 0.6)'
           }}>
             <Image 
               src="/logo.jpeg" 
               alt="Waterbury Islamic Cultural Center Logo" 
-              width={128}
-              height={128}
-              className="w-full h-full object-contain rounded-full"
+              width={192}
+              height={192}
+              className="object-contain"
               style={{
+                width: '70%',
+                height: '70%',
                 filter: 'brightness(1.4) contrast(1.2) drop-shadow(0 0 20px rgba(255, 255, 255, 1))'
               }}
             />
@@ -89,12 +91,12 @@ function HomeContent() {
           {/* Complete Hadith Text - Split Formation */}
           <div className="relative w-72 sm:w-96 h-72 sm:h-96 flex items-center justify-center">
             {/* Left Side: First Half of Hadith */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-36 sm:-translate-x-48">
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-60 sm:-translate-x-80">
               <div className="text-center animate-bounce" style={{
                 animationDuration: '8s',
-                animationDelay: '0s'
+                animationDelay: '3s'
               }}>
-                <div className="text-sm sm:text-lg md:text-xl text-white font-bold italic animate-pulse mb-1 sm:mb-2" style={{
+                <div className="text-base sm:text-xl md:text-2xl text-white font-bold italic animate-pulse mb-1 sm:mb-2" style={{
                   textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -102,7 +104,7 @@ function HomeContent() {
                 }}>
                   Whoever builds a Masjid for Allah,
                 </div>
-                <div className="text-sm sm:text-lg md:text-xl text-white font-bold italic animate-pulse" style={{
+                <div className="text-base sm:text-xl md:text-2xl text-white font-bold italic animate-pulse" style={{
                   textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -114,12 +116,12 @@ function HomeContent() {
             </div>
 
             {/* Right Side: Second Half of Hadith */}
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-48 sm:translate-x-64">
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-72 sm:translate-x-96">
               <div className="text-center animate-bounce" style={{
                 animationDuration: '8s',
-                animationDelay: '2s'
+                animationDelay: '3.3s'
               }}>
-                <div className="text-sm sm:text-lg md:text-xl text-white font-bold italic animate-pulse mb-1 sm:mb-2" style={{
+                <div className="text-base sm:text-xl md:text-2xl text-white font-bold italic animate-pulse mb-1 sm:mb-2" style={{
                   textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -127,7 +129,7 @@ function HomeContent() {
                 }}>
                   a house like it in Paradise
                 </div>
-                <div className="text-sm sm:text-lg md:text-xl text-amber-200 font-bold italic animate-pulse" style={{
+                <div className="text-base sm:text-xl md:text-2xl text-amber-200 font-bold italic animate-pulse" style={{
                   textShadow: '0 0 20px rgba(245, 158, 11, 1), 0 0 40px rgba(245, 158, 11, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 1))',
@@ -142,7 +144,7 @@ function HomeContent() {
 
         {/* Glowing Halo Effect */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-48 h-48 rounded-full" style={{
+          <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 rounded-full" style={{
             background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, transparent 80%)',
             animation: 'pulse 3s ease-in-out infinite'
           }}></div>
@@ -155,12 +157,155 @@ function HomeContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
         {/* Minaret Thermometer - Moved Up */}
-        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-12 sm:mt-16">
+        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-16 sm:mt-20">
           <div className="relative flex flex-col items-center scale-100 sm:scale-125">
             <MinaretThermometer 
               currentAmount={totalRaised}
               goalAmount={goalAmount}
             />
+          </div>
+        </div>
+
+        {/* Donation Options - Mosque Domes - Visible at all times */}
+        <div className="sticky top-0 text-center mb-8 sm:mb-16 relative z-50 pt-4 sm:pt-6 pb-4 sm:pb-6 -mt-4">
+          <h3 className="text-2xl sm:text-4xl font-bold text-purple-300 mb-4 sm:mb-8 px-4" style={{
+            textShadow: '0 0 10px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 30px rgba(196, 181, 253, 0.4), 0 0 40px rgba(196, 181, 253, 0.2)',
+            fontFamily: '"Playfair Display", "Georgia", "serif"',
+            letterSpacing: '0.05em',
+            fontWeight: '700',
+            background: 'linear-gradient(45deg, #a855f7, #c084fc, #e879f9, #f0abfc, #a855f7)',
+            backgroundSize: '400% 400%',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'gradientShift 3s ease-in-out infinite, slide-side-to-side 4s ease-in-out infinite',
+            filter: 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.8))',
+            display: 'inline-block'
+          }}>Make a Donation</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 px-4">
+            <div className="relative flex flex-col items-center">
+              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
+              <button
+                onClick={() => window.location.href = '/donate?amount=25'}
+                className="w-full max-w-40 sm:max-w-48 h-14 sm:h-16 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
+                style={{
+                transform: 'perspective(1000px) rotateX(5deg) rotateY(-2deg)',
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
+                border: '2px solid rgba(34, 197, 94, 0.8)'
+              }}>
+                {/* Dome Content */}
+                <div className="text-center z-10">
+                  <div className="text-xl sm:text-2xl font-bold text-green-800">$25</div>
+                </div>
+                
+                {/* Dome Button */}
+                <div className="absolute bottom-2 text-cyan-300 py-2 px-4 text-xs sm:text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
+                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
+                  borderRadius: '20px 5px 20px 5px',
+                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
+                  border: '2px solid rgba(255, 255, 255, 0.8)',
+                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
+                  filter: 'brightness(1.3) contrast(1.2)',
+                  fontFamily: 'monospace',
+                  letterSpacing: '0.1em'
+                }}>
+                  DONATE
+                </div>
+              </button>
+            </div>
+
+            <div className="relative flex flex-col items-center">
+              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
+              <button
+                onClick={() => window.location.href = '/donate?amount=100'}
+                className="w-full max-w-40 sm:max-w-48 h-14 sm:h-16 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
+                style={{
+                transform: 'perspective(1000px) rotateX(5deg) rotateY(2deg)',
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
+                border: '2px solid rgba(34, 197, 94, 0.8)'
+              }}>
+                {/* Dome Content */}
+                <div className="text-center z-10">
+                  <div className="text-xl sm:text-2xl font-bold text-amber-800">$100</div>
+                </div>
+                
+                {/* Dome Button */}
+                <div className="absolute bottom-2 text-cyan-300 py-2 px-4 text-xs sm:text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
+                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
+                  borderRadius: '20px 5px 20px 5px',
+                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
+                  border: '2px solid rgba(255, 255, 255, 0.8)',
+                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
+                  filter: 'brightness(1.3) contrast(1.2)',
+                  fontFamily: 'monospace',
+                  letterSpacing: '0.1em'
+                }}>
+                  DONATE
+                </div>
+              </button>
+            </div>
+
+            <div className="relative flex flex-col items-center">
+              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
+              <button
+                onClick={() => window.location.href = '/donate?amount=500'}
+                className="w-full max-w-40 sm:max-w-48 h-14 sm:h-16 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
+                style={{
+                transform: 'perspective(1000px) rotateX(-5deg) rotateY(-2deg)',
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
+                border: '2px solid rgba(34, 197, 94, 0.8)'
+              }}>
+                {/* Dome Content */}
+                <div className="text-center z-10">
+                  <div className="text-xl sm:text-2xl font-bold text-amber-800">$500</div>
+                </div>
+                
+                {/* Dome Button */}
+                <div className="absolute bottom-2 text-cyan-300 py-2 px-4 text-xs sm:text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
+                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
+                  borderRadius: '20px 5px 20px 5px',
+                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
+                  border: '2px solid rgba(255, 255, 255, 0.8)',
+                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
+                  filter: 'brightness(1.3) contrast(1.2)',
+                  fontFamily: 'monospace',
+                  letterSpacing: '0.1em'
+                }}>
+                  DONATE
+                </div>
+              </button>
+            </div>
+
+            <div className="relative flex flex-col items-center">
+              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
+              <button
+                onClick={() => window.location.href = '/donate?amount=1000'}
+                className="w-full max-w-40 sm:max-w-48 h-14 sm:h-16 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
+                style={{
+                transform: 'perspective(1000px) rotateX(-5deg) rotateY(2deg)',
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
+                border: '2px solid rgba(34, 197, 94, 0.8)'
+              }}>
+                {/* Dome Content */}
+                <div className="text-center z-10">
+                  <div className="text-xl sm:text-2xl font-bold text-amber-800">$1000</div>
+                </div>
+                
+                {/* Dome Button */}
+                <div className="absolute bottom-2 text-cyan-300 py-2 px-4 text-xs sm:text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
+                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
+                  borderRadius: '20px 5px 20px 5px',
+                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
+                  border: '2px solid rgba(255, 255, 255, 0.8)',
+                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
+                  filter: 'brightness(1.3) contrast(1.2)',
+                  fontFamily: 'monospace',
+                  letterSpacing: '0.1em'
+                }}>
+                  DONATE
+                </div>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -171,7 +316,7 @@ function HomeContent() {
             left: '4rem',
             top: '4rem'
           }}>
-            <h1 className="text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400" style={{
+            <h1 className="text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 text-center" style={{
               textShadow: '0 0 50px rgba(34, 211, 238, 1), 0 0 100px rgba(34, 211, 238, 1), 0 0 150px rgba(34, 211, 238, 0.8), 0 0 200px rgba(34, 211, 238, 0.6), 0 0 250px rgba(34, 211, 238, 0.4), 0 0 300px rgba(34, 211, 238, 0.2)',
               fontFamily: '"Playfair Display", "Georgia", "serif"',
               letterSpacing: '0.05em',
@@ -181,9 +326,15 @@ function HomeContent() {
               backgroundSize: '400% 400%',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              animation: 'gradient-shift 3s ease-in-out infinite'
+              animation: 'gradient-shift 3s ease-in-out infinite',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
-              Masjid Assalam Fundraising
+              <span>Masjid</span>
+              <span>Assalam</span>
+              <span>Fundraiser</span>
             </h1>
           </div>
         </div>
@@ -390,167 +541,6 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Donation Options - Mosque Domes */}
-        <div className="text-center mb-8 sm:mb-16 relative z-10 mt-16 sm:mt-48">
-          <h3 className="text-3xl sm:text-5xl font-bold text-purple-300 mb-8 sm:mb-16 animate-pulse px-4" style={{
-            textShadow: '0 0 10px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 30px rgba(196, 181, 253, 0.4), 0 0 40px rgba(196, 181, 253, 0.2)',
-            fontFamily: '"Playfair Display", "Georgia", "serif"',
-            letterSpacing: '0.05em',
-            fontWeight: '700',
-            background: 'linear-gradient(45deg, #a855f7, #c084fc, #e879f9, #f0abfc, #a855f7)',
-            backgroundSize: '400% 400%',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            animation: 'gradientShift 3s ease-in-out infinite, pulse 2s ease-in-out infinite',
-            filter: 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.8))'
-          }}>Make a Donation</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 px-4">
-            <div className="relative flex flex-col items-center">
-              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <button
-                onClick={() => window.location.href = '/donate?amount=25'}
-                className="w-40 sm:w-48 h-24 sm:h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
-                style={{
-                transform: 'perspective(1000px) rotateX(5deg) rotateY(-2deg)',
-                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
-                border: '2px solid rgba(34, 197, 94, 0.8)'
-              }}>
-                {/* Dome Finial */}
-                <div className="absolute -top-2 text-2xl">🌙</div>
-                
-                {/* Dome Content */}
-                <div className="text-center z-10 -mt-2">
-                  <div className="text-xl sm:text-2xl font-bold text-green-800 mb-1">$25</div>
-                  <p className="text-red-300 text-xs font-bold" style={{
-                    textShadow: '0 0 10px rgba(252, 165, 165, 1), 0 0 20px rgba(248, 113, 113, 1), 0 0 30px rgba(239, 68, 68, 0.9), 0 0 40px rgba(220, 38, 38, 0.7)',
-                    animation: 'pulse 1.5s ease-in-out infinite',
-                    filter: 'brightness(1.5) contrast(1.3) drop-shadow(0 0 15px rgba(252, 165, 165, 0.8))'
-                  }}>Basic</p>
-                </div>
-                
-                {/* Dome Button */}
-                <div className="absolute bottom-2 text-cyan-300 py-3 px-6 text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
-                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
-                  borderRadius: '20px 5px 20px 5px',
-                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
-                  border: '2px solid rgba(255, 255, 255, 0.8)',
-                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
-                  filter: 'brightness(1.3) contrast(1.2)',
-                  fontFamily: 'monospace',
-                  letterSpacing: '0.1em'
-                }}>
-                  DONATE
-                </div>
-              </button>
-            </div>
-
-            <div className="relative flex flex-col items-center">
-              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <button
-                onClick={() => window.location.href = '/donate?amount=100'}
-                className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
-                style={{
-                transform: 'perspective(1000px) rotateX(5deg) rotateY(2deg)',
-                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
-                border: '2px solid rgba(34, 197, 94, 0.8)'
-              }}>
-                {/* Dome Finial */}
-                <div className="absolute -top-2 text-2xl">🌙</div>
-                
-                {/* Dome Content */}
-                <div className="text-center z-10">
-                  <div className="text-2xl font-bold text-amber-800 mb-1">$100</div>
-                  <p className="text-amber-700 text-xs font-medium">Generous</p>
-                </div>
-                
-                {/* Dome Button */}
-                <div className="absolute bottom-2 text-cyan-300 py-3 px-6 text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
-                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
-                  borderRadius: '20px 5px 20px 5px',
-                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
-                  border: '2px solid rgba(255, 255, 255, 0.8)',
-                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
-                  filter: 'brightness(1.3) contrast(1.2)',
-                  fontFamily: 'monospace',
-                  letterSpacing: '0.1em'
-                }}>
-                  DONATE
-                </div>
-              </button>
-            </div>
-
-            <div className="relative flex flex-col items-center">
-              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <button
-                onClick={() => window.location.href = '/donate?amount=500'}
-                className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
-                style={{
-                transform: 'perspective(1000px) rotateX(-5deg) rotateY(-2deg)',
-                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
-                border: '2px solid rgba(34, 197, 94, 0.8)'
-              }}>
-                {/* Dome Finial */}
-                <div className="absolute -top-2 text-2xl">🌙</div>
-                
-                {/* Dome Content */}
-                <div className="text-center z-10">
-                  <div className="text-2xl font-bold text-amber-800 mb-1">$500</div>
-                  <p className="text-amber-700 text-xs font-medium">Major</p>
-                </div>
-                
-                {/* Dome Button */}
-                <div className="absolute bottom-2 text-cyan-300 py-3 px-6 text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
-                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
-                  borderRadius: '20px 5px 20px 5px',
-                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
-                  border: '2px solid rgba(255, 255, 255, 0.8)',
-                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
-                  filter: 'brightness(1.3) contrast(1.2)',
-                  fontFamily: 'monospace',
-                  letterSpacing: '0.1em'
-                }}>
-                  DONATE
-                </div>
-              </button>
-            </div>
-
-            <div className="relative flex flex-col items-center">
-              {/* Mosque Dome - Rounded Rectangle - Entirely Clickable */}
-              <button
-                onClick={() => window.location.href = '/donate?amount=1000'}
-                className="w-48 h-32 bg-gradient-to-br from-green-200 to-green-400 rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center relative overflow-hidden block cursor-pointer"
-                style={{
-                transform: 'perspective(1000px) rotateX(-5deg) rotateY(2deg)',
-                boxShadow: '0 0 30px rgba(34, 197, 94, 0.8), 0 0 60px rgba(34, 197, 94, 0.6), 0 0 90px rgba(34, 197, 94, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.1)',
-                border: '2px solid rgba(34, 197, 94, 0.8)'
-              }}>
-                {/* Dome Finial */}
-                <div className="absolute -top-2 text-2xl">🌙</div>
-                
-                {/* Dome Content */}
-                <div className="text-center z-10">
-                  <div className="text-2xl font-bold text-amber-800 mb-1">$1000</div>
-                  <p className="text-amber-700 text-xs font-medium">Leadership</p>
-                </div>
-                
-                {/* Dome Button */}
-                <div className="absolute bottom-2 text-cyan-300 py-3 px-6 text-sm font-bold shadow-2xl transition-all duration-300 animate-pulse" style={{
-                  background: 'linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff)',
-                  borderRadius: '20px 5px 20px 5px',
-                  boxShadow: '0 0 20px rgba(255, 0, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.3)',
-                  border: '2px solid rgba(255, 255, 255, 0.8)',
-                  textShadow: '0 0 5px rgba(34, 211, 238, 1), 0 0 10px rgba(34, 211, 238, 1), 0 0 15px rgba(34, 211, 238, 1), 0 0 20px rgba(34, 211, 238, 0.8), 0 0 25px rgba(34, 211, 238, 0.6)',
-                  filter: 'brightness(1.3) contrast(1.2)',
-                  fontFamily: 'monospace',
-                  letterSpacing: '0.1em'
-                }}>
-                  DONATE
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
 
       </main>
 

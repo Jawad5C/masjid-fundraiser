@@ -4,6 +4,7 @@ import {
   addDoc, 
   getDocs, 
   updateDoc, 
+  deleteDoc,
   onSnapshot, 
   query, 
   orderBy, 
@@ -27,6 +28,7 @@ export interface Donation {
   notes?: string;
   pledgeDate?: Date;
   pledgeMethod?: string;
+  verificationStatus?: 'verified' | 'not_verified'; // For QR payments
   createdAt: Date;
   updatedAt: Date;
 }
@@ -352,6 +354,93 @@ export class FirebaseDonationService {
     } catch (error) {
       console.error('Error updating donation status:', error);
       return null;
+    }
+  }
+
+  // Update verification status for QR payments
+  static async updateVerificationStatus(id: string, verificationStatus: 'verified' | 'not_verified'): Promise<boolean> {
+    if (!db) {
+      console.warn('Firebase not initialized - cannot update verification status');
+      return false;
+    }
+
+    try {
+      const donationRef = doc(this.getDonationsRef()!, id);
+      await updateDoc(donationRef, {
+        verificationStatus,
+        updatedAt: serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.error('Error updating verification status:', error);
+      return false;
+    }
+  }
+
+  // Delete a donation
+  static async deleteDonation(id: string): Promise<boolean> {
+    if (!db) {
+      console.warn('Firebase not initialized - cannot delete donation');
+      return false;
+    }
+
+    try {
+      // Get the donation first to update stats
+      const donationRef = doc(this.getDonationsRef()!, id);
+      const donationSnap = await getDoc(donationRef);
+      
+      if (!donationSnap.exists()) {
+        return false;
+      }
+
+      const donationData = donationSnap.data();
+      
+      // Delete the donation
+      await deleteDoc(donationRef);
+
+      // Update stats by subtracting the donation amount
+      if (donationData.type === 'donation' && (donationData.status === 'completed' || donationData.status === 'pending')) {
+        await this.decrementStats(donationData.amount, 'donation');
+      } else if (donationData.type === 'pledge') {
+        await this.decrementStats(donationData.amount, 'pledge');
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error deleting donation:', error);
+      return false;
+    }
+  }
+
+  // Decrement stats when donation is deleted
+  private static async decrementStats(amount: number, type: 'donation' | 'pledge') {
+    if (!db) {
+      console.log('📊 decrementStats: No database connection');
+      return;
+    }
+
+    try {
+      const statsSnap = await getDoc(this.getStatsRef()!);
+      if (statsSnap.exists()) {
+        const currentStats = statsSnap.data();
+        const updates: Record<string, FieldValue | number> = {
+          lastUpdated: serverTimestamp()
+        };
+
+        if (type === 'donation') {
+          const newTotalRaised = Math.max(0, (currentStats.totalRaised || 0) - amount);
+          updates.totalRaised = newTotalRaised;
+          updates.totalDonations = Math.max(0, (currentStats.totalDonations || 0) - 1);
+        } else if (type === 'pledge') {
+          const newTotalRaised = Math.max(0, (currentStats.totalRaised || 0) - amount);
+          updates.totalRaised = newTotalRaised;
+          updates.totalPledges = Math.max(0, (currentStats.totalPledges || 0) - 1);
+        }
+
+        await updateDoc(this.getStatsRef()!, updates);
+      }
+    } catch (error) {
+      console.error('📊 decrementStats: Error updating stats:', error);
     }
   }
 

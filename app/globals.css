@@ -193,3 +193,182 @@ body {
     filter: brightness(2);
   }
 }
+
+/* Orbital animations for text around moon - similar to train track orbit */
+@keyframes orbit-rotate-left {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes counter-rotate-left {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes orbit-rotate-right {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes counter-rotate-right {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+@keyframes fade-in-after-orbit {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-text {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out-orbit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-word {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-side-to-side {
+  0%, 100% {
+    transform: translateX(-20%);
+  }
+  50% {
+    transform: translateX(20%);
+  }
+}
+
+/* Spiral animation for left text - spirals counter-clockwise outward */
+@keyframes spiral-in-left {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(0px) rotate(-360deg) scale(0.5);
+  }
+  25% {
+    opacity: 0.5;
+    transform: translateY(calc(-50% - 1.5rem)) translateX(-2rem) rotate(-270deg) scale(0.6);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(calc(-50% - 2rem)) translateX(-4.5rem) rotate(-180deg) scale(0.75);
+  }
+  75% {
+    opacity: 0.9;
+    transform: translateY(calc(-50% - 1rem)) translateX(-7rem) rotate(-90deg) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(-12rem) rotate(0deg) scale(1);
+  }
+}
+
+/* Spiral animation for right text - spirals clockwise outward */
+@keyframes spiral-in-right {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(0px) rotate(360deg) scale(0.5);
+  }
+  25% {
+    opacity: 0.5;
+    transform: translateY(calc(-50% - 1.5rem)) translateX(2rem) rotate(270deg) scale(0.6);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(calc(-50% - 2rem)) translateX(6rem) rotate(180deg) scale(0.75);
+  }
+  75% {
+    opacity: 0.9;
+    transform: translateY(calc(-50% - 1rem)) translateX(9rem) rotate(90deg) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(16rem) rotate(0deg) scale(1);
+  }
+}
+
+/* Responsive spiral adjustments for larger screens */
+@media (min-width: 640px) {
+  @keyframes spiral-in-left {
+    0% {
+      opacity: 0;
+      transform: translateY(-50%) translateX(0px) rotate(-360deg) scale(0.5);
+    }
+    25% {
+      opacity: 0.5;
+      transform: translateY(calc(-50% - 1.5rem)) translateX(-3rem) rotate(-270deg) scale(0.6);
+    }
+    50% {
+      opacity: 0.7;
+      transform: translateY(calc(-50% - 2rem)) translateX(-6rem) rotate(-180deg) scale(0.75);
+    }
+    75% {
+      opacity: 0.9;
+      transform: translateY(calc(-50% - 1rem)) translateX(-9rem) rotate(-90deg) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-50%) translateX(-16rem) rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes spiral-in-right {
+    0% {
+      opacity: 0;
+      transform: translateY(-50%) translateX(0px) rotate(360deg) scale(0.5);
+    }
+    25% {
+      opacity: 0.5;
+      transform: translateY(calc(-50% - 1.5rem)) translateX(3rem) rotate(270deg) scale(0.6);
+    }
+    50% {
+      opacity: 0.7;
+      transform: translateY(calc(-50% - 2rem)) translateX(8rem) rotate(180deg) scale(0.75);
+    }
+    75% {
+      opacity: 0.9;
+      transform: translateY(calc(-50% - 1rem)) translateX(12rem) rotate(90deg) scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-50%) translateX(20rem) rotate(0deg) scale(1);
+    }
+  }
+}
