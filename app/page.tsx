@@ -185,7 +185,7 @@ function HomeContent() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
         {/* Minaret Thermometer - Moved Up */}
-        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-16 sm:mt-20">
+        <div className="flex justify-center mb-8 sm:mb-16 relative z-20 mt-28 sm:mt-20">
           <div className="relative flex flex-col items-center scale-100 sm:scale-125">
             <MinaretThermometer 
               currentAmount={totalRaised}
