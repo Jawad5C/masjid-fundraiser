@@ -553,18 +553,8 @@ function HomeContent() {
               © 2025 Masjid Assalam Fundraising. Building our community together.
             </p>
             <div className="text-xs sm:text-sm text-slate-400 border-t border-slate-700 pt-4 relative">
-              {/* Admin Dashboard - Bottom Right */}
-              <div className="absolute bottom-0 right-0">
-                <a 
-                  href="/admin" 
-                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-200 font-medium"
-                >
-                  Admin Dashboard
-                </a>
-              </div>
-              
               {/* Contact Info - Centered */}
-              <div className="text-center">
+              <div className="text-center mb-3 sm:mb-0">
                 <p className="mb-2">Website Design & Development</p>
                 <p className="text-slate-300">
                   <span className="text-amber-300 font-semibold">Jawad Ashraf</span> • 
@@ -578,6 +568,16 @@ function HomeContent() {
                 <p className="text-slate-300 mt-1">
                   <span className="text-amber-300">Text</span> <span className="text-amber-300">(860) 796-3837</span>
                 </p>
+              </div>
+              
+              {/* Admin Dashboard - Below contact info on mobile, absolute right on larger screens */}
+              <div className="text-center sm:absolute sm:bottom-0 sm:right-0 sm:text-right mt-3 sm:mt-0">
+                <a 
+                  href="/admin" 
+                  className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors duration-200 font-medium"
+                >
+                  Admin Dashboard
+                </a>
               </div>
             </div>
           </div>
