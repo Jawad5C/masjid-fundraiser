@@ -518,11 +518,12 @@ export default function AdminDashboard() {
                         </span>
                       </td>
                              <td className="py-3 px-4">
-                               <div className="flex flex-wrap gap-2">
+                               <div className="flex flex-wrap gap-1.5 items-center" style={{ minWidth: '350px' }}>
                                  {pledge.notes && (
                                    <button
                                      onClick={() => showNotes(pledge.notes)}
                                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                                     style={{ width: '90px' }}
                                    >
                                      View Notes
                                    </button>
@@ -531,6 +532,7 @@ export default function AdminDashboard() {
                                    <button
                                      onClick={() => updatePledgeStatus(pledge.id, 'paid')}
                                      className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                                     style={{ width: '85px' }}
                                    >
                                      Mark Paid
                                    </button>
@@ -539,6 +541,7 @@ export default function AdminDashboard() {
                                    <button
                                      onClick={() => updatePledgeStatus(pledge.id, 'pending')}
                                      className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                                     style={{ width: '105px' }}
                                    >
                                      Mark Pending
                                    </button>
@@ -547,6 +550,7 @@ export default function AdminDashboard() {
                                    <button
                                      onClick={() => updatePledgeStatus(pledge.id, 'pending')}
                                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                                     style={{ width: '85px' }}
                                    >
                                      Reactivate
                                    </button>
@@ -554,12 +558,14 @@ export default function AdminDashboard() {
                                  <button
                                    onClick={() => updatePledgeStatus(pledge.id, 'cancelled')}
                                    className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                                   style={{ width: '70px' }}
                                  >
                                    Cancel
                                  </button>
                                  <button
                                    onClick={() => deleteDonation(pledge.id)}
                                    className="bg-red-800 hover:bg-red-900 text-white text-xs px-3 py-1 rounded transition-colors"
+                                   style={{ width: '65px' }}
                                  >
                                    Delete
                                  </button>
