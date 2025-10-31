@@ -86,17 +86,45 @@ function HomeContent() {
         </div>
 
 
-        {/* Prophet Muhammad (PBUH) Statement - Split on Opposite Sides of Moon */}
-        <div className="absolute top-12 sm:top-20 left-0 right-0 h-24 sm:h-32 flex items-center justify-center pointer-events-none z-50">
-          {/* Complete Hadith Text - Split Formation */}
-          <div className="relative w-full sm:w-96 h-72 sm:h-96 flex items-center justify-center px-2">
+        {/* Prophet Muhammad (PBUH) Statement - Below Moon on Mobile, Sides on Larger Screens */}
+        <div className="absolute top-12 sm:top-20 left-0 right-0 flex items-center justify-center pointer-events-none z-50">
+          {/* Mobile View: Text Below Moon */}
+          <div className="sm:hidden mt-36 text-center px-4">
+            <div className="text-xs text-white font-bold italic animate-pulse mb-1" style={{
+              textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
+              fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
+              filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
+              zIndex: 50
+            }}>
+              Whoever builds a Masjid for Allah,
+            </div>
+            <div className="text-xs text-white font-bold italic animate-pulse mb-1" style={{
+              textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
+              fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
+              filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
+              zIndex: 50
+            }}>
+              Allah will build for him a house like it in Paradise
+            </div>
+            <div className="text-xs text-amber-200 font-bold italic animate-pulse" style={{
+              textShadow: '0 0 20px rgba(245, 158, 11, 1), 0 0 40px rgba(245, 158, 11, 0.8)',
+              fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
+              filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 1))',
+              zIndex: 50
+            }}>
+              — Prophet Muhammad (Peace Be Upon Him)
+            </div>
+          </div>
+
+          {/* Desktop View: Text on Sides of Moon */}
+          <div className="hidden sm:block relative w-96 h-96 flex items-center justify-center">
             {/* Left Side: First Half of Hadith */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-24 sm:-translate-x-80">
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-80">
               <div className="text-center animate-bounce" style={{
                 animationDuration: '8s',
                 animationDelay: '3s'
               }}>
-                <div className="text-xs sm:text-xl md:text-2xl text-white font-bold italic animate-pulse mb-1 sm:mb-2" style={{
+                <div className="text-xl md:text-2xl text-white font-bold italic animate-pulse mb-2" style={{
                   textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -104,7 +132,7 @@ function HomeContent() {
                 }}>
                   Whoever builds a Masjid for Allah,
                 </div>
-                <div className="text-xs sm:text-xl md:text-2xl text-white font-bold italic animate-pulse" style={{
+                <div className="text-xl md:text-2xl text-white font-bold italic animate-pulse" style={{
                   textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -116,12 +144,12 @@ function HomeContent() {
             </div>
 
             {/* Right Side: Second Half of Hadith */}
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-24 sm:translate-x-96">
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-96">
               <div className="text-center animate-bounce" style={{
                 animationDuration: '8s',
                 animationDelay: '3.3s'
               }}>
-                <div className="text-xs sm:text-xl md:text-2xl text-white font-bold italic animate-pulse mb-1 sm:mb-2" style={{
+                <div className="text-xl md:text-2xl text-white font-bold italic animate-pulse mb-2" style={{
                   textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -129,7 +157,7 @@ function HomeContent() {
                 }}>
                   a house like it in Paradise
                 </div>
-                <div className="text-xs sm:text-xl md:text-2xl text-amber-200 font-bold italic animate-pulse" style={{
+                <div className="text-xl md:text-2xl text-amber-200 font-bold italic animate-pulse" style={{
                   textShadow: '0 0 20px rgba(245, 158, 11, 1), 0 0 40px rgba(245, 158, 11, 0.8)',
                   fontFamily: '"Edwardian Script ITC", "Brush Script MT", cursive',
                   filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 1))',
