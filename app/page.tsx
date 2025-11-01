@@ -407,12 +407,12 @@ function HomeContent() {
                   href="/FINAL%20WICC%20PDF%202025.pdf" 
             target="_blank"
             rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold py-2.5 sm:py-4 px-6 sm:px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg whitespace-nowrap"
+                  className="inline-block bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold py-2.5 sm:py-4 px-4 sm:px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-lg whitespace-normal sm:whitespace-nowrap"
                   style={{
                     boxShadow: '0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3)'
                   }}
                 >
-                  📄 View New Masjid Building
+                  📄 <span className="hidden sm:inline">View New Masjid Building</span><span className="sm:hidden">View New Masjid Bldg.</span>
                 </a>
               </div>
             </div>
