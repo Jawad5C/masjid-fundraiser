@@ -407,12 +407,12 @@ function HomeContent() {
                   href="/FINAL%20WICC%20PDF%202025.pdf" 
             target="_blank"
             rel="noopener noreferrer"
-                  className="inline-block bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg"
+                  className="inline-block bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-bold py-2.5 sm:py-4 px-6 sm:px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-base sm:text-lg whitespace-nowrap"
                   style={{
                     boxShadow: '0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3)'
                   }}
                 >
-                  📄 View Community Document
+                  📄 View New Masjid Building
                 </a>
               </div>
             </div>
@@ -421,9 +421,9 @@ function HomeContent() {
 
         {/* Abu Huraira Hadith */}
         <div className="text-center mb-16 relative z-10 mt-16">
-          <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-6xl mx-auto px-2 sm:px-6">
             <blockquote className="text-center">
-              <p className="text-lg md:text-xl text-yellow-300 font-thin mb-4 leading-relaxed animate-pulse" style={{
+              <p className="text-sm sm:text-lg md:text-xl text-yellow-300 font-thin mb-4 leading-relaxed animate-pulse" style={{
                 textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8)',
                 fontFamily: '"Georgia", "Times New Roman", "serif"',
                 filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 1))',
@@ -432,7 +432,7 @@ function HomeContent() {
               }}>
                 &ldquo;Verily, among the good deeds that will join a believer after his death are these: knowledge which he taught and spread, a righteous child he leaves behind, a copy of the Quran he leaves for inheritance, a mosque he has built, a house he built for travelers, a well he has dug, and charity distributed from his wealth while he was alive and well. These deeds will join him after his death.&rdquo;
               </p>
-              <footer className="text-amber-200 font-light italic animate-pulse" style={{
+              <footer className="text-xs sm:text-base text-amber-200 font-light italic animate-pulse" style={{
                 textShadow: '0 0 20px rgba(245, 158, 11, 1), 0 0 40px rgba(245, 158, 11, 0.8)',
                 fontFamily: '"Georgia", "Times New Roman", "serif"',
                 filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 1))',
@@ -446,7 +446,7 @@ function HomeContent() {
 
         {/* All Services Impact */}
         <div className="text-center mb-16 relative z-10 mt-16">
-          <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-6xl mx-auto px-2 sm:px-6">
             <h3 className="text-3xl font-bold text-white mb-12 text-center" style={{
               fontFamily: '"Playfair Display", "Georgia", "serif"',
               letterSpacing: '0.02em',
@@ -455,31 +455,31 @@ function HomeContent() {
             }}>Your Donation Supports All Our Services Envisioned For The New Masjid</h3>
             
             {/* Main Services Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-16 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 md:gap-16 mb-8 sm:mb-16">
                 {/* Prayer Services */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">🕌</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Prayer Services</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Daily prayers, Friday Jummah, and special religious observances including the 2 Eids</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">🕌</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Prayer Services</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Daily prayers, Friday Jummah, and special religious observances including the 2 Eids</p>
                 </div>
 
                 {/* Education */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">📚</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Education</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Islamic studies, Quran classes, and community learning programs</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">📚</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Education</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Islamic studies, Quran classes, and community learning programs</p>
                   
                   {/* Education Highlight */}
-                  <div className="bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-lg p-3 border border-teal-400/30 backdrop-blur-sm mt-4" style={{
+                  <div className="bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-lg p-1.5 sm:p-3 border border-teal-400/30 backdrop-blur-sm mt-1.5 sm:mt-4" style={{
                     boxShadow: '0 0 15px rgba(20, 184, 166, 0.2), 0 0 30px rgba(20, 184, 166, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.1)'
                   }}>
-                    <p className="text-white text-sm font-bold">
+                    <p className="text-white text-xs sm:text-sm font-bold">
                       🌟 Over 35 students in Huffaz classes<br/>
                       📖 Nearly 300 students in Islamic School
                     </p>
@@ -487,82 +487,73 @@ function HomeContent() {
                 </div>
 
                 {/* Community Events */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">🍽️</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Community Events</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Iftar dinners, Eid celebrations, and community gatherings</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">🍽️</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Community Events</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Iftar dinners, Eid celebrations, and community gatherings</p>
                 </div>
 
                 {/* Janazah Services */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">🤲</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Janazah Services</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Funeral prayers, burial arrangements, and bereavement support for our community</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">🤲</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Janazah Services</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Funeral prayers, burial arrangements, and bereavement support for our community</p>
                 </div>
 
                 {/* Body Washing */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">💧</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Body Washing</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Ghusl services for deceased community members according to Islamic tradition</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">💧</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Body Washing</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Ghusl services for deceased community members according to Islamic tradition</p>
                 </div>
 
                 {/* Recreation Center */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">🏃‍♂️</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Recreation Center</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Sports facilities, fitness programs, and recreational activities for all ages</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">🏃‍♂️</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Recreation Center</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Sports facilities, fitness programs, and recreational activities for all ages</p>
                 </div>
 
                 {/* Nikah/Weddings */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">💒</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Nikah/Weddings</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Islamic marriage ceremonies, wedding planning, and matrimonial services</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">💒</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Nikah/Weddings</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Islamic marriage ceremonies, wedding planning, and matrimonial services</p>
                 </div>
 
                 {/* Social Services */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
+                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-2.5 sm:p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
                   boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
                   animation: 'neon-pulse 2s ease-in-out infinite'
                 }}>
-                  <div className="text-4xl mb-3">👥</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Social Services</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Supporting families in need and community outreach programs</p>
+                  <div className="text-2xl sm:text-4xl mb-1.5 sm:mb-3">👥</div>
+                  <h4 className="text-base sm:text-xl font-semibold text-purple-200 mb-1.5 sm:mb-3">Social Services</h4>
+                  <p className="text-purple-100 text-xs sm:text-sm leading-relaxed px-0 sm:px-0 w-full">Supporting families in need and community outreach programs</p>
                 </div>
 
-                {/* Facility Maintenance */}
-                <div className="text-center bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-6 border-2 border-purple-300/80 backdrop-blur-sm" style={{
-                  boxShadow: '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(147, 51, 234, 0.4), 0 0 0 2px rgba(196, 181, 253, 0.8), 0 0 20px rgba(196, 181, 253, 0.6), 0 0 40px rgba(196, 181, 253, 0.4)',
-                  animation: 'neon-pulse 2s ease-in-out infinite'
-                }}>
-                  <div className="text-4xl mb-3">🏠</div>
-                  <h4 className="text-xl font-semibold text-purple-200 mb-3">Facility Maintenance</h4>
-                  <p className="text-purple-100 text-sm leading-relaxed">Keeping our community center clean, safe, and welcoming</p>
-                </div>
               </div>
 
             {/* Impact Statement */}
-            <div className="text-center bg-gradient-to-br from-purple-900/15 to-purple-800/15 rounded-xl p-6 border-2 border-purple-400/30 backdrop-blur-sm" style={{
+            <div className="text-center bg-gradient-to-br from-purple-900/15 to-purple-800/15 rounded-xl p-3 sm:p-6 border-2 border-purple-400/30 backdrop-blur-sm mt-24 sm:mt-16 mb-8 sm:mb-16" style={{
               boxShadow: '0 0 15px rgba(147, 51, 234, 0.2), 0 0 30px rgba(147, 51, 234, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.1)'
             }}>
-              <h4 className="text-xl font-bold text-white mb-3">🌟 Building Our Community Together</h4>
-              <p className="text-purple-100 leading-relaxed">
+              <h4 className="text-base sm:text-xl font-bold text-white mb-2 sm:mb-3">🌟 Building Our Community Together</h4>
+              <p className="text-sm sm:text-base text-purple-100 leading-relaxed">
                 Every donation, regardless of amount, directly supports the Waterbury Islamic Cultural Center&apos;s mission to serve our community through faith, education, and service. Your contribution helps us maintain our facilities, expand our programs, and continue building bonds that strengthen our community.
               </p>
             </div>
@@ -574,7 +565,7 @@ function HomeContent() {
 
 
       {/* Footer */}
-      <footer className="bg-slate-800 text-white py-6 sm:py-8 mt-8 sm:mt-16">
+      <footer className="bg-slate-800 text-white py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <p className="text-slate-300 mb-4 text-sm sm:text-base">
