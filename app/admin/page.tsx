@@ -928,6 +928,123 @@ export default function AdminDashboard() {
           )}
         </div>
 
+        {/* Zelle Donations */}
+        <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-white">Zelle Donations</h2>
+            {donations.filter(d => d.paymentMethod === 'zelle' && d.type === 'donation').length > 0 && (
+              <div className="flex items-center space-x-2">
+                {selectedDonations.size > 0 && (
+                  <button
+                    onClick={bulkDeleteDonations}
+                    className="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded transition-colors"
+                  >
+                    Delete Selected ({selectedDonations.size})
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+          
+          {donations.filter(d => d.paymentMethod === 'zelle' && d.type === 'donation').length === 0 ? (
+            <p className="text-white/80">No Zelle donations found.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-white">
+                <thead>
+                  <tr className="border-b border-white/20">
+                    <th className="text-left py-3 px-4 w-12">
+                      <input
+                        type="checkbox"
+                        checked={(() => {
+                          const zelleDonations = donations.filter(d => d.paymentMethod === 'zelle' && d.type === 'donation');
+                          return zelleDonations.length > 0 && zelleDonations.every(d => selectedDonations.has(d.id));
+                        })()}
+                        onChange={() => {
+                          const zelleDonations = donations.filter(d => d.paymentMethod === 'zelle' && d.type === 'donation');
+                          const zelleIds = new Set(zelleDonations.map(d => d.id));
+                          const allSelected = zelleDonations.every(d => selectedDonations.has(d.id));
+                          const newSelected = new Set(selectedDonations);
+                          if (allSelected) {
+                            zelleIds.forEach(id => newSelected.delete(id));
+                          } else {
+                            zelleIds.forEach(id => newSelected.add(id));
+                          }
+                          setSelectedDonations(newSelected);
+                        }}
+                        className="w-4 h-4 cursor-pointer"
+                      />
+                    </th>
+                    <th className="text-left py-3 px-4">Donor</th>
+                    <th className="text-left py-3 px-4">Amount</th>
+                    <th className="text-left py-3 px-4">Date</th>
+                    <th className="text-left py-3 px-4">Verification</th>
+                    <th className="text-left py-3 px-4">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donations.filter(d => d.paymentMethod === 'zelle' && d.type === 'donation').map((donation) => (
+                    <tr key={donation.id} className="border-b border-white/10">
+                      <td className="py-3 px-4">
+                        <input
+                          type="checkbox"
+                          checked={selectedDonations.has(donation.id)}
+                          onChange={() => toggleDonationSelection(donation.id)}
+                          className="w-4 h-4 cursor-pointer"
+                        />
+                      </td>
+                      <td className="py-3 px-4">
+                        <div>
+                          <div className="font-medium">{donation.donorName}</div>
+                          <div className="text-sm text-white/70">{donation.donorEmail}</div>
+                          {donation.donorPhone && (
+                            <div className="text-sm text-white/70">{donation.donorPhone}</div>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 font-medium">${donation.amount.toLocaleString()}</td>
+                      <td className="py-3 px-4">
+                        {new Date(donation.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-4">
+                        <button
+                          onClick={() => updateVerificationStatus(donation.id, (donation.verificationStatus || 'not_verified') === 'verified' ? 'not_verified' : 'verified')}
+                          className={`text-sm px-4 py-2 rounded transition-colors font-semibold ${
+                            (donation.verificationStatus || 'not_verified') === 'verified' 
+                              ? 'bg-green-600 hover:bg-green-700 text-white' 
+                              : 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                          }`}
+                          title={(donation.verificationStatus || 'not_verified') === 'verified' ? 'Click to mark as not verified' : 'Click to verify Zelle payment'}
+                        >
+                          {(donation.verificationStatus || 'not_verified') === 'verified' ? '✓ Verified' : 'Verify Payment'}
+                        </button>
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex space-x-2">
+                          {donation.notes && (
+                            <button
+                              onClick={() => showNotes(donation.notes || '')}
+                              className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                            >
+                              View Notes
+                            </button>
+                          )}
+                          <button
+                            onClick={() => deleteDonation(donation.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
         {/* Recently Deleted Section */}
         <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mt-6">
           <div className="flex justify-between items-center mb-4">

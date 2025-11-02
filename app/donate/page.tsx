@@ -176,6 +176,36 @@ function UnifiedDonationContent() {
       // Play audio before processing card donation
       await playQuranicRecitation();
       await handleCardDonation();
+    } else if (paymentMethod === 'zelle') {
+      // Handle Zelle donation - record and redirect to instructions page
+      const amount = parseInt(donationAmount || customAmount || '0');
+      
+      if (amount <= 0) {
+        alert('Please enter a valid donation amount');
+        return;
+      }
+      
+      try {
+        // Record the donation immediately (similar to QR payments)
+        await addDonation({
+          amount,
+          donorName: donorInfo.name,
+          donorEmail: donorInfo.email,
+          donorPhone: donorInfo.phone,
+          type: 'donation',
+          paymentMethod: 'zelle',
+          status: 'pending',
+          notes: 'Zelle Payment - Pending verification',
+          verificationStatus: 'not_verified' as const
+        });
+        
+        // Redirect to Zelle instructions page
+        window.location.href = `/donate/zelle?amount=${amount}`;
+        
+      } catch (error) {
+        console.error('Error submitting Zelle donation:', error);
+        alert('Failed to submit donation. Please try again.');
+      }
     } else if (paymentMethod === 'qr1' || paymentMethod === 'qr2') {
       // For QR payments, don't play audio here - it will play when closing the QR modal
       // Handle QR code donations
@@ -378,6 +408,21 @@ function UnifiedDonationContent() {
                   </div>
                 </label>
                 
+                <label className="flex items-start space-x-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="zelle"
+                    checked={paymentMethod === 'zelle'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="w-5 h-5 text-purple-600 mt-1"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium">Zelle</span>
+                    <span className="text-cyan-300 text-sm mt-1">Press &quot;Donate to WICC&quot; button below to be redirected to Zelle payment information</span>
+                  </div>
+                </label>
+                
                 <label className="flex items-center space-x-3 cursor-pointer">
                   <input
                     type="radio"
@@ -435,6 +480,11 @@ function UnifiedDonationContent() {
                 <div className="flex flex-col items-center">
                   <span>Donate ${donationAmount || customAmount || '0'} to WICC</span>
                   <span className="text-amber-200 text-sm font-normal mt-1">(You will be redirected to the Masjid Payment Processing Page)</span>
+                </div>
+              ) : paymentMethod === 'zelle' ? (
+                <div className="flex flex-col items-center">
+                  <span>Donate ${donationAmount || customAmount || '0'} to WICC</span>
+                  <span className="text-cyan-200 text-sm font-normal mt-1">(You will be redirected to Zelle payment information)</span>
                 </div>
               ) : (
                 `Donate $${donationAmount || customAmount || '0'} to WICC`
