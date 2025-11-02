@@ -18,6 +18,7 @@ function HomeContent() {
 
   const totalRaised = stats?.totalRaised || 0;
   const goalAmount = stats?.goalAmount || 1000000;
+  const pledgedAmount = stats?.pledgedAmount ?? 679000;
 
   // Debug logging
   useEffect(() => {
@@ -190,6 +191,7 @@ function HomeContent() {
             <MinaretThermometer 
               currentAmount={totalRaised}
               goalAmount={goalAmount}
+              pledgedAmount={pledgedAmount}
             />
           </div>
         </div>

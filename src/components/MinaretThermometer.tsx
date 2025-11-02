@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 interface MinaretThermometerProps {
   currentAmount: number;
   goalAmount: number;
+  pledgedAmount?: number;
   className?: string;
 }
 
@@ -12,6 +13,7 @@ interface MinaretThermometerProps {
 export default function MinaretThermometer({ 
   currentAmount, 
   goalAmount, 
+  pledgedAmount = 0,
   className = '' 
 }: MinaretThermometerProps) {
   const [animatedAmount, setAnimatedAmount] = useState(0);
@@ -154,15 +156,14 @@ export default function MinaretThermometer({
       <div className="mt-4 sm:mt-6 text-center w-full max-w-xs px-2">
         <div className="text-sm sm:text-lg font-bold text-red-600 mb-2">
           <div className="block sm:hidden">
-            {formatCurrency(animatedAmount)}<br/>
-            of {formatCurrency(goalAmount)}
+            {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} *<span className="underline">Collected</span> ({progressPercentage.toFixed(1)}%)
           </div>
           <div className="hidden sm:block whitespace-nowrap">
-            {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} Goal
+            {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} Goal *<span className="underline">Collected</span> ({progressPercentage.toFixed(1)}%)
           </div>
         </div>
-        <div className="text-xl sm:text-2xl font-bold text-red-600">
-          {progressPercentage.toFixed(1)}%
+        <div className="text-xs sm:text-sm font-semibold text-green-400 mt-2">
+          *Amount Collected Including Pledged Amounts: {formatCurrency(pledgedAmount)}
         </div>
       </div>
       

@@ -38,6 +38,7 @@ export interface DonationStats {
   totalDonations: number;
   totalPledges: number;
   goalAmount: number;
+  pledgedAmount: number;
   lastUpdated: Date;
 }
 
@@ -47,6 +48,7 @@ export class FirebaseDonationService {
     totalDonations: 0,
     totalPledges: 0,
     goalAmount: 1000000,
+    pledgedAmount: 679000,
     lastUpdated: new Date()
   };
 
@@ -104,6 +106,7 @@ export class FirebaseDonationService {
       totalDonations: 0,
       totalPledges: 0,
       goalAmount: 1000000,
+      pledgedAmount: 679000,
       lastUpdated: new Date()
     };
   }
@@ -288,13 +291,15 @@ export class FirebaseDonationService {
       const docSnap = await getDoc(this.getStatsRef()!);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        return {
+        const stats: DonationStats = {
           totalRaised: data.totalRaised || 0,
           totalDonations: data.totalDonations || 0,
           totalPledges: data.totalPledges || 0,
           goalAmount: data.goalAmount || 1000000,
+          pledgedAmount: data.pledgedAmount ?? 679000,
           lastUpdated: data.lastUpdated?.toDate() || new Date()
         };
+        return stats;
              } else {
                // Initialize stats if they don't exist
                const initialStats = {
@@ -302,6 +307,7 @@ export class FirebaseDonationService {
                  totalDonations: 0,
                  totalPledges: 0,
                  goalAmount: 1000000,
+                 pledgedAmount: 679000,
                  lastUpdated: serverTimestamp()
                };
                await setDoc(this.getStatsRef()!, initialStats);
@@ -310,6 +316,7 @@ export class FirebaseDonationService {
                  totalDonations: 0,
                  totalPledges: 0,
                  goalAmount: 1000000,
+                 pledgedAmount: 679000,
                  lastUpdated: new Date()
                };
              }
@@ -320,6 +327,7 @@ export class FirebaseDonationService {
         totalDonations: 0,
         totalPledges: 0,
         goalAmount: 1000000,
+        pledgedAmount: 0,
         lastUpdated: new Date()
       };
     }
@@ -498,6 +506,7 @@ export class FirebaseDonationService {
         totalDonations: 0,
         totalPledges: 0,
         goalAmount: 1000000,
+        pledgedAmount: 0,
         lastUpdated: serverTimestamp()
       };
 
@@ -529,6 +538,7 @@ export class FirebaseDonationService {
                  totalDonations: 0,
                  totalPledges: 0,
                  goalAmount: 1000000,
+                 pledgedAmount: 679000,
                  lastUpdated: serverTimestamp()
                };
 
@@ -566,10 +576,33 @@ export class FirebaseDonationService {
           totalDonations: data.totalDonations || 0,
           totalPledges: data.totalPledges || 0,
           goalAmount: data.goalAmount || 1000000,
+          pledgedAmount: data.pledgedAmount ?? 679000,
           lastUpdated: data.lastUpdated?.toDate() || new Date()
         });
       }
     });
+  }
+
+  // Update pledged amount (manual update from admin dashboard)
+  static async updatePledgedAmount(amount: number): Promise<boolean> {
+    if (!db) {
+      // Update demo stats if Firebase not configured
+      this.initializeDemoStats();
+      this.demoStats.pledgedAmount = amount;
+      this.saveDemoStats();
+      return true;
+    }
+
+    try {
+      await updateDoc(this.getStatsRef()!, {
+        pledgedAmount: amount,
+        lastUpdated: serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.error('Error updating pledged amount:', error);
+      return false;
+    }
   }
 
   // Real-time listener for recent donations

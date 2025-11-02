@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useDonations } from '@/contexts/DonationContext';
+import { FirebaseDonationService } from '@/lib/firebase-database';
 
 interface Pledge {
   id: string;
@@ -54,6 +55,9 @@ export default function AdminDashboard() {
   const [selectedDonations, setSelectedDonations] = useState<Set<string>>(new Set());
   const [selectedPledges, setSelectedPledges] = useState<Set<string>>(new Set());
   const [recentlyDeleted, setRecentlyDeleted] = useState<DeletedItem[]>([]);
+  const [pledgedAmount, setPledgedAmount] = useState<number>(679000);
+  const [pledgedAmountInput, setPledgedAmountInput] = useState<string>('679000');
+  const [isUpdatingPledged, setIsUpdatingPledged] = useState<boolean>(false);
   const { getPledges } = useDonations();
 
   // Function to show notes in modal
@@ -140,14 +144,52 @@ export default function AdminDashboard() {
     }
   };
 
+  // Load pledged amount from stats
+  const loadPledgedAmount = useCallback(async () => {
+    try {
+      const stats = await FirebaseDonationService.getStats();
+      const amount = stats.pledgedAmount ?? 679000;
+      setPledgedAmount(amount);
+      setPledgedAmountInput(amount.toString());
+    } catch (error) {
+      console.error('Error loading pledged amount:', error);
+    }
+  }, []);
+
+  // Update pledged amount
+  const updatePledgedAmount = async () => {
+    const amount = parseFloat(pledgedAmountInput.replace(/[^0-9.]/g, ''));
+    if (isNaN(amount) || amount < 0) {
+      alert('Please enter a valid amount');
+      return;
+    }
+
+    setIsUpdatingPledged(true);
+    try {
+      const success = await FirebaseDonationService.updatePledgedAmount(amount);
+      if (success) {
+        setPledgedAmount(amount);
+        alert('Pledged amount updated successfully!');
+      } else {
+        alert('Failed to update pledged amount');
+      }
+    } catch (error) {
+      console.error('Error updating pledged amount:', error);
+      alert('Error updating pledged amount');
+    } finally {
+      setIsUpdatingPledged(false);
+    }
+  };
+
   // Load data when authenticated
   useEffect(() => {
     if (isAuthenticated) {
       loadPledges();
       loadDonations();
       loadRecentlyDeleted();
+      loadPledgedAmount();
     }
-  }, [isAuthenticated, loadPledges, loadDonations, loadRecentlyDeleted]);
+  }, [isAuthenticated, loadPledges, loadDonations, loadRecentlyDeleted, loadPledgedAmount]);
 
   // Delete donation function
   const deleteDonation = async (donationId: string) => {
@@ -439,6 +481,48 @@ export default function AdminDashboard() {
         <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
           <h1 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
           <p className="text-white/80">Manage pledges and donations</p>
+        </div>
+
+        {/* Pledged Amount Management */}
+        <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-white">Pledged Amount Management</h2>
+          </div>
+          <div className="bg-gradient-to-r from-amber-900/40 to-yellow-900/40 rounded-xl p-6 border-2 border-amber-500/50">
+            <p className="text-white/90 mb-4 text-sm">
+              Update the &quot;Amount Collected Including Pledged Amounts&quot; displayed under the fundraising thermometer.
+              This amount is separate from the total raised and does not affect the thermometer calculation.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 items-end">
+              <div className="flex-1">
+                <label className="block text-white/80 text-sm mb-2">
+                  Pledged Amount (USD)
+                </label>
+                <input
+                  type="text"
+                  value={pledgedAmountInput}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/[^0-9.]/g, '');
+                    setPledgedAmountInput(value);
+                  }}
+                  placeholder="Enter amount"
+                  className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
+              </div>
+              <button
+                onClick={updatePledgedAmount}
+                disabled={isUpdatingPledged || parseFloat(pledgedAmountInput.replace(/[^0-9.]/g, '')) === pledgedAmount}
+                className="bg-amber-600 hover:bg-amber-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-lg transition-colors"
+              >
+                {isUpdatingPledged ? 'Updating...' : 'Update Pledged Amount'}
+              </button>
+            </div>
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <p className="text-amber-300 text-sm">
+                <strong>Current Pledged Amount:</strong> ${pledgedAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Pledge Management */}
