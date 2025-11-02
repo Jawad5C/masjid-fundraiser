@@ -207,12 +207,11 @@ export default function AdminDashboard() {
 
       // Try to delete from Firebase (may fail if it doesn't exist in Firebase)
       try {
-        const response = await fetch(`/api/donations/${donationId}`, {
+        await fetch(`/api/donations/${donationId}`, {
           method: 'DELETE'
         });
-        const data = await response.json();
         // Continue even if Firebase deletion fails (localStorage-only items)
-      } catch (error) {
+      } catch {
         // Ignore Firebase errors for localStorage-only items
         console.log('Firebase deletion failed, removing from localStorage only');
       }
@@ -265,7 +264,7 @@ export default function AdminDashboard() {
           const data = await response.json();
           // Even if Firebase deletion fails, we'll still remove from localStorage
           return { id, firebaseSuccess: data.success };
-        } catch (error) {
+        } catch {
           // If API call fails, still mark for localStorage deletion
           return { id, firebaseSuccess: false };
         }
@@ -323,7 +322,7 @@ export default function AdminDashboard() {
           const data = await response.json();
           // Even if Firebase deletion fails, we'll still remove from localStorage
           return { id, firebaseSuccess: data.success };
-        } catch (error) {
+        } catch {
           // If API call fails, still mark for localStorage deletion
           return { id, firebaseSuccess: false };
         }
@@ -373,8 +372,8 @@ export default function AdminDashboard() {
     setSelectedPledges(newSelected);
   };
 
-  // Select all donations
-  const selectAllDonations = () => {
+  // Select all donations (currently unused but kept for future use)
+  const _selectAllDonations = () => {
     if (selectedDonations.size === donations.length) {
       setSelectedDonations(new Set());
     } else {

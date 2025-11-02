@@ -153,8 +153,8 @@ export default function MinaretThermometer({
       <div className="w-24 h-4 bg-amber-400 border-2 border-black shadow-lg rounded-full"></div>
       
       {/* Progress information */}
-      <div className="mt-4 sm:mt-6 text-center w-full max-w-xs px-2">
-        <div className="text-sm sm:text-lg font-bold text-red-600 mb-2">
+      <div className="mt-4 sm:mt-6 w-full flex flex-col items-center px-2 mb-6 sm:mb-8">
+        <div className="text-lg sm:text-2xl font-bold text-red-600 mb-0.5 text-center">
           <div className="block sm:hidden">
             {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} *<span className="underline">Collected</span> ({progressPercentage.toFixed(1)}%)
           </div>
@@ -162,7 +162,7 @@ export default function MinaretThermometer({
             {formatCurrency(animatedAmount)} of {formatCurrency(goalAmount)} Goal *<span className="underline">Collected</span> ({progressPercentage.toFixed(1)}%)
           </div>
         </div>
-        <div className="text-xs sm:text-sm font-semibold text-green-400 mt-2">
+        <div className="text-base sm:text-lg font-bold text-amber-400 mt-0 mb-4 sm:mb-6 text-center">
           *Amount Collected Including Pledged Amounts: {formatCurrency(pledgedAmount)}
         </div>
       </div>

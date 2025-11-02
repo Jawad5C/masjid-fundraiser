@@ -1,15 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { FirebaseDonationService, Donation } from '@/lib/firebase-database';
-
-interface DonationStats {
-  totalRaised: number;
-  totalDonations: number;
-  totalPledges: number;
-  goalAmount: number;
-  lastUpdated: Date;
-}
+import { FirebaseDonationService, Donation, DonationStats } from '@/lib/firebase-database';
 
 interface Pledge {
   id: string;
