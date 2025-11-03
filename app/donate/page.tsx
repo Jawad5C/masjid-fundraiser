@@ -286,7 +286,7 @@ function UnifiedDonationContent() {
                   </button>
                 ))}
               </div>
-              <div className="flex gap-4">
+              <div>
                 <input
                   type="number"
                   placeholder="Custom Amount"
@@ -295,15 +295,8 @@ function UnifiedDonationContent() {
                     setCustomAmount(e.target.value);
                     setDonationAmount('');
                   }}
-                  className="flex-1 p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-purple-400 focus:border-purple-300 focus:outline-none"
+                  className="w-full p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-purple-400 focus:border-purple-300 focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => setDonationAmount(customAmount)}
-                  className="px-6 py-4 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 transition-colors"
-                >
-                  Set
-                </button>
               </div>
             </div>
 

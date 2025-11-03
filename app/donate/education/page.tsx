@@ -120,7 +120,7 @@ export default function MasjidDonation() {
                   </button>
                 ))}
               </div>
-              <div className="flex gap-4">
+              <div>
                 <input
                   type="number"
                   placeholder="Custom Amount"
@@ -129,15 +129,8 @@ export default function MasjidDonation() {
                     setCustomAmount(e.target.value);
                     setDonationAmount('');
                   }}
-                  className="flex-1 p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-blue-400 focus:border-blue-300 focus:outline-none"
+                  className="w-full p-4 rounded-xl bg-slate-700 text-white placeholder-gray-400 border border-blue-400 focus:border-blue-300 focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => setDonationAmount(customAmount)}
-                  className="px-6 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
-                >
-                  Set
-                </button>
               </div>
             </div>
 

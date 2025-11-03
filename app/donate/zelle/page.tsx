@@ -88,7 +88,7 @@ function ZellePaymentContent() {
 
       {/* Zelle Payment Instructions */}
       <div className="relative z-10 max-w-3xl mx-auto px-6 pb-16">
-        <div className="bg-gradient-to-br from-cyan-900 to-blue-900 rounded-2xl shadow-2xl p-8 sm:p-12 border-2 border-cyan-400" style={{
+        <div className="bg-gradient-to-br from-cyan-900 to-blue-900 rounded-2xl shadow-2xl p-6 sm:p-10 border border-cyan-400/60" style={{
           boxShadow: '0 0 30px rgba(34, 211, 238, 0.5), 0 0 60px rgba(34, 211, 238, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)'
         }}>
           {/* Success Icon */}
@@ -108,28 +108,24 @@ function ZellePaymentContent() {
           </div>
 
           {/* Zelle Information Card */}
-          <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl p-6 sm:p-8 mb-6 border-2 border-cyan-400/50" style={{
-            boxShadow: '0 0 20px rgba(34, 211, 238, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.1)'
-          }}>
+          <div className="bg-white/5 rounded-xl p-5 sm:p-7 mb-6 border border-cyan-400/30">
             <h3 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center">
               <span className="text-3xl mr-3">💚</span>
               Zelle Payment Information
             </h3>
 
             {/* Email Address */}
-            <div className="bg-gradient-to-r from-cyan-800/40 to-blue-800/40 rounded-xl p-6 mb-6 border border-cyan-400/30">
-              <p className="text-cyan-200 text-sm font-semibold mb-3 text-center">Send Payment To:</p>
-              <div className="flex items-center justify-center gap-4 flex-wrap">
-                <div className="bg-white/10 rounded-lg px-6 py-4 border border-cyan-400/40">
+            <div className="bg-white/5 rounded-xl p-4 sm:p-5 mb-6">
+              <p className="text-cyan-200 text-sm font-semibold mb-2 text-center">Send Payment To</p>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+                <div className="bg-white/10 rounded-lg px-4 sm:px-6 py-3 sm:py-4 overflow-x-auto">
                   <p className="text-cyan-100 text-xs mb-1">Email Address</p>
-                  <p className="text-2xl font-bold text-white font-mono">Info@waterburyicc.org</p>
+                  <p className="text-sm sm:text-2xl font-bold text-white font-mono whitespace-nowrap text-center">Info@waterburyicc.org</p>
                 </div>
                 <button
                   onClick={copyEmailToClipboard}
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-4 rounded-lg font-semibold transition-colors duration-300 flex items-center gap-2"
-                  style={{
-                    boxShadow: '0 0 15px rgba(34, 211, 238, 0.4)'
-                  }}
+                  className="bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-3 sm:px-6 sm:py-4 rounded-lg font-semibold transition-colors duration-300 flex items-center justify-center gap-2"
+                  style={{ boxShadow: '0 0 15px rgba(34, 211, 238, 0.4)' }}
                 >
                   <span>📋</span>
                   <span>Copy Email</span>
@@ -138,16 +134,13 @@ function ZellePaymentContent() {
             </div>
 
             {/* Organization Name */}
-            <div className="bg-gradient-to-r from-cyan-800/40 to-blue-800/40 rounded-xl p-6 mb-6 border border-cyan-400/30">
-              <p className="text-cyan-200 text-sm font-semibold mb-3 text-center">Look For:</p>
-              <div className="bg-white/10 rounded-lg px-6 py-4 border border-cyan-400/40 text-center">
-                <p className="text-cyan-100 text-xs mb-1">Organization Name</p>
-                <p className="text-2xl font-bold text-white">Waterbury Islamic Cultural Center</p>
-              </div>
+            <div className="bg-white/5 rounded-xl p-4 sm:p-5 mb-6 text-center">
+              <p className="text-cyan-200 text-sm font-semibold mb-2">Look For</p>
+              <p className="text-lg sm:text-2xl font-bold text-white">Waterbury Islamic Cultural Center</p>
             </div>
 
             {/* Instructions */}
-            <div className="bg-white/5 rounded-xl p-6 border border-cyan-400/20">
+            <div className="bg-white/5 rounded-xl p-5 sm:p-6 border border-cyan-400/20">
               <h4 className="text-white font-bold text-lg mb-4 flex items-center">
                 <span className="text-2xl mr-2">📱</span>
                 How to Complete Your Zelle Payment
