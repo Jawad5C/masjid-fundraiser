@@ -115,12 +115,12 @@ function ZellePaymentContent() {
             </h3>
 
             {/* Email Address */}
-            <div className="bg-white/5 rounded-xl p-4 sm:p-5 mb-6">
-              <p className="text-cyan-200 text-sm font-semibold mb-2 text-center">Send Payment To</p>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
-                <div className="bg-white/10 rounded-lg px-4 sm:px-6 py-3 sm:py-4 overflow-x-auto">
-                  <p className="text-cyan-100 text-xs mb-1">Email Address</p>
-                  <p className="text-sm sm:text-2xl font-bold text-white font-mono whitespace-nowrap text-center">Info@waterburyicc.org</p>
+            <div className="mb-6">
+              <p className="text-cyan-200 text-sm font-semibold mb-3 text-center">Send Payment To</p>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 mb-3">
+                <div className="px-4 py-3">
+                  <p className="text-cyan-100 text-xs mb-1 text-center">Email Address</p>
+                  <p className="text-sm sm:text-2xl font-bold text-amber-400 font-mono whitespace-nowrap text-center overflow-x-auto">Info@waterburyicc.org</p>
                 </div>
                 <button
                   onClick={copyEmailToClipboard}
@@ -134,14 +134,14 @@ function ZellePaymentContent() {
             </div>
 
             {/* Organization Name */}
-            <div className="bg-white/5 rounded-xl p-4 sm:p-5 mb-6 text-center">
+            <div className="mb-6 text-center">
               <p className="text-cyan-200 text-sm font-semibold mb-2">Look For</p>
-              <p className="text-lg sm:text-2xl font-bold text-white">Waterbury Islamic Cultural Center</p>
+              <p className="text-lg sm:text-2xl font-bold text-amber-400">Waterbury Islamic Cultural Center</p>
             </div>
 
             {/* Instructions */}
-            <div className="bg-white/5 rounded-xl p-5 sm:p-6 border border-cyan-400/20">
-              <h4 className="text-white font-bold text-lg mb-4 flex items-center">
+            <div className="mb-6">
+              <h4 className="text-white font-bold text-lg mb-4 flex items-center justify-center">
                 <span className="text-2xl mr-2">📱</span>
                 How to Complete Your Zelle Payment
               </h4>
@@ -156,11 +156,11 @@ function ZellePaymentContent() {
                 </li>
                 <li className="flex items-start">
                   <span className="font-bold text-cyan-300 mr-2">3.</span>
-                  <span>Enter the email address: <strong className="text-white font-mono">Info@waterburyicc.org</strong></span>
+                  <span>Enter the email address: <strong className="text-amber-300 font-mono">Info@waterburyicc.org</strong></span>
                 </li>
                 <li className="flex items-start">
                   <span className="font-bold text-cyan-300 mr-2">4.</span>
-                  <span>Look for &quot;<strong className="text-white">Waterbury Islamic Cultural Center</strong>&quot; as the recipient</span>
+                  <span>Look for &quot;<strong className="text-amber-300">Waterbury Islamic Cultural Center</strong>&quot; as the recipient</span>
                 </li>
                 <li className="flex items-start">
                   <span className="font-bold text-cyan-300 mr-2">5.</span>
