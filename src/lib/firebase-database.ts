@@ -29,6 +29,7 @@ export interface Donation {
   pledgeDate?: Date;
   pledgeMethod?: string;
   verificationStatus?: 'verified' | 'not_verified'; // For QR payments
+  isHistorical?: boolean; // For pledges/donations that existed before project started
   createdAt: Date;
   updatedAt: Date;
 }
@@ -141,18 +142,20 @@ export class FirebaseDonationService {
       // Initialize demo stats from localStorage
       this.initializeDemoStats();
       
-      // Update demo stats if Firebase not configured
-      console.log('Using demo mode - updating demo stats');
-      this.demoStats.totalRaised += donationData.amount;
-      if (donationData.type === 'donation') {
-        this.demoStats.totalDonations += 1;
-      } else if (donationData.type === 'pledge') {
-        this.demoStats.totalPledges += 1;
+      // Update demo stats if Firebase not configured (but skip historical)
+      if (!donationData.isHistorical) {
+        console.log('Using demo mode - updating demo stats');
+        this.demoStats.totalRaised += donationData.amount;
+        if (donationData.type === 'donation') {
+          this.demoStats.totalDonations += 1;
+        } else if (donationData.type === 'pledge') {
+          this.demoStats.totalPledges += 1;
+        }
+        this.demoStats.lastUpdated = new Date();
+        
+        // Save to localStorage
+        this.saveDemoStats();
       }
-      this.demoStats.lastUpdated = new Date();
-      
-      // Save to localStorage
-      this.saveDemoStats();
       
       console.log('📊 Updated demo stats:', this.demoStats);
       
@@ -171,8 +174,10 @@ export class FirebaseDonationService {
         updatedAt: serverTimestamp()
       });
 
-      // Update stats
-      await this.updateStats(donationData.amount, donationData.type, donationData.status);
+      // Update stats (but skip historical donations)
+      if (!donationData.isHistorical) {
+        await this.updateStats(donationData.amount, donationData.type, donationData.status);
+      }
 
       return {
         ...donationData,

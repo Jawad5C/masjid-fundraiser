@@ -20,6 +20,7 @@ interface Pledge {
   notes: string;
   pledgeNumber: string;
   status: 'pending' | 'paid' | 'cancelled';
+  isHistorical?: boolean;
   createdAt: string;
 }
 
@@ -58,6 +59,8 @@ export default function AdminDashboard() {
   const [pledgedAmount, setPledgedAmount] = useState<number>(679000);
   const [pledgedAmountInput, setPledgedAmountInput] = useState<string>('679000');
   const [isUpdatingPledged, setIsUpdatingPledged] = useState<boolean>(false);
+  const [bulkPledgeInput, setBulkPledgeInput] = useState<string>('');
+  const [isBulkImporting, setIsBulkImporting] = useState<boolean>(false);
   const { getPledges } = useDonations();
 
   // Function to show notes in modal
@@ -178,6 +181,102 @@ export default function AdminDashboard() {
       alert('Error updating pledged amount');
     } finally {
       setIsUpdatingPledged(false);
+    }
+  };
+
+  // Bulk import historical pledges
+  const bulkImportHistoricalPledges = async () => {
+    if (!bulkPledgeInput.trim()) {
+      alert('Please enter pledge data');
+      return;
+    }
+
+    setIsBulkImporting(true);
+    try {
+      const lines = bulkPledgeInput.trim().split('\n').filter(line => line.trim());
+      const importedPledges: Pledge[] = [];
+      const errors: string[] = [];
+
+      // Parse each line (CSV format: Name,Email,Phone,Amount,Date,PaymentMethod,Status,Notes)
+      // Or simpler format: Name|Email|Phone|Amount|Date|PaymentMethod|Status|Notes
+      lines.forEach((line, index) => {
+        const lineNum = index + 1;
+        const parts = line.split(',').map(p => p.trim());
+        
+        // Try pipe separator if comma doesn't work
+        const fields = parts.length >= 4 ? parts : line.split('|').map(p => p.trim());
+
+        if (fields.length < 4) {
+          errors.push(`Line ${lineNum}: Insufficient data (need at least: Name, Email, Amount, Date)`);
+          return;
+        }
+
+        // Parse all fields: Name,Email,Phone,Amount,Date,PaymentMethod,Status,Address,City,State,Zip,Notes
+        const [name, email, phone = '', amountStr, dateStr = new Date().toISOString().split('T')[0], paymentMethod = 'check', status = 'pending', address = '', city = '', state = '', zip = '', notes = ''] = fields;
+        
+        const amount = parseFloat(amountStr.replace(/[^0-9.]/g, ''));
+        if (isNaN(amount) || amount <= 0) {
+          errors.push(`Line ${lineNum}: Invalid amount "${amountStr}"`);
+          return;
+        }
+
+        // Generate unique pledge number and ID for each pledge
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substr(2, 9);
+        const pledgeNumber = `PLG-${timestamp}-${random.toUpperCase().substr(0, 4)}`;
+        const uniqueId = `historical-pledge-${timestamp}-${index}-${random}`;
+
+        const pledge: Pledge = {
+          id: uniqueId,
+          donorName: name,
+          donorEmail: email || '',
+          donorPhone: phone || '',
+          donorAddress: address || '',
+          donorCity: city || '',
+          donorState: state || '',
+          donorZip: zip || '',
+          pledgeAmount: amount,
+          pledgeDate: dateStr,
+          paymentMethod: paymentMethod.toLowerCase(),
+          notes: notes || 'Historical pledge imported via bulk import',
+          pledgeNumber: pledgeNumber,
+          status: (status.toLowerCase() as 'pending' | 'paid' | 'cancelled') || 'pending',
+          isHistorical: true,
+          createdAt: new Date().toISOString()
+        };
+
+        importedPledges.push(pledge);
+      });
+
+      if (errors.length > 0) {
+        alert(`Errors found:\n${errors.join('\n')}\n\nPlease fix and try again.`);
+        setIsBulkImporting(false);
+        return;
+      }
+
+      if (importedPledges.length === 0) {
+        alert('No valid pledges found to import');
+        setIsBulkImporting(false);
+        return;
+      }
+
+      // Save to localStorage (since historical pledges don't go to Firebase)
+      const existingPledges = JSON.parse(localStorage.getItem('adminPledges') || '[]');
+      const updatedPledges = [...existingPledges, ...importedPledges];
+      localStorage.setItem('adminPledges', JSON.stringify(updatedPledges));
+
+      // Reload pledges
+      await loadPledges();
+      
+      // Clear input
+      setBulkPledgeInput('');
+      
+      alert(`Successfully imported ${importedPledges.length} historical pledge(s)! These will NOT affect the fundraising totals.`);
+    } catch (error) {
+      console.error('Error bulk importing pledges:', error);
+      alert('Error importing pledges. Please check the format and try again.');
+    } finally {
+      setIsBulkImporting(false);
     }
   };
 
@@ -524,6 +623,48 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Bulk Historical Pledge Import */}
+        <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-white">Bulk Historical Pledge Import</h2>
+          </div>
+          <div className="bg-gradient-to-r from-purple-900/40 to-indigo-900/40 rounded-xl p-6 border-2 border-purple-500/50">
+            <p className="text-white/90 mb-4 text-sm">
+              Import multiple historical pledges that existed before this project started. 
+              <strong className="text-white"> These pledges will NOT affect the fundraising totals.</strong>
+            </p>
+            <p className="text-purple-200 text-xs mb-4">
+              <strong>Format:</strong> One pledge per line. Use comma or pipe (|) separator.<br/>
+              <strong>Required fields:</strong> Name, Email, Phone, Amount, Date (YYYY-MM-DD), PaymentMethod, Status<br/>
+              <strong>Optional fields:</strong> Address, City, State, Zip, Notes<br/>
+              <strong>Full format:</strong> Name,Email,Phone,Amount,Date,PaymentMethod,Status,Address,City,State,Zip,Notes<br/>
+              <strong>Example:</strong> John Doe,john@example.com,555-1234,500,2024-01-15,check,pending,123 Main St,Waterbury,CT,06702,Historical pledge
+            </p>
+            <div className="mb-4">
+              <label className="block text-white/80 text-sm mb-2">
+                Paste Pledge Data (one per line)
+              </label>
+              <textarea
+                value={bulkPledgeInput}
+                  onChange={(e) => setBulkPledgeInput(e.target.value)}
+                placeholder="John Doe,john@example.com,555-1234,500,2024-01-15,check,pending,Historical pledge&#10;Jane Smith,jane@example.com,555-5678,1000,2024-01-20,card,paid,Historical pledge"
+                className="w-full h-48 px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono text-xs"
+              />
+            </div>
+            <button
+              onClick={bulkImportHistoricalPledges}
+              disabled={isBulkImporting || !bulkPledgeInput.trim()}
+              className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-2 px-6 rounded-lg transition-colors"
+            >
+              {isBulkImporting ? 'Importing...' : `Import Historical Pledges (${bulkPledgeInput.trim().split('\n').filter(l => l.trim()).length} lines)`}
+            </button>
+            <p className="text-purple-300 text-xs mt-4">
+              <strong>Note:</strong> Historical pledges will appear in the Pledge Management section below, marked as historical. 
+              They will not affect the fundraising thermometer totals.
+            </p>
+          </div>
+        </div>
+
         {/* Pledge Management */}
         <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6">
           <div className="flex justify-between items-center mb-4">
@@ -576,7 +717,14 @@ export default function AdminDashboard() {
                       <td className="py-3 px-4">{pledge.pledgeNumber}</td>
                       <td className="py-3 px-4">
                         <div>
-                          <div className="font-medium">{pledge.donorName}</div>
+                          <div className="font-medium flex items-center gap-2 flex-wrap">
+                            {pledge.donorName}
+                            {pledge.isHistorical && (
+                              <span className="text-xs bg-amber-600/30 text-amber-300 px-2 py-0.5 rounded" title="Historical pledge - does not affect totals">
+                                Historical
+                              </span>
+                            )}
+                          </div>
                           <div className="text-sm text-white/70">{pledge.donorEmail}</div>
                           <div className="text-sm text-white/70">{pledge.donorPhone}</div>
                         </div>
