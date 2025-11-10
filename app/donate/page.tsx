@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,14 +32,23 @@ function UnifiedDonationContent() {
   const [qr2DonationAmount, setQr2DonationAmount] = useState('');
   const [showQrModal, setShowQrModal] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const customAmountInputRef = useRef<HTMLInputElement>(null);
 
   // Set the donation amount from URL parameter
   useEffect(() => {
     const amount = searchParams.get('amount');
+    const isCustom = searchParams.get('custom') === 'true';
     console.log('🔗 URL amount parameter:', amount);
+    console.log('🔗 URL custom parameter:', isCustom);
     if (amount) {
       setDonationAmount(amount);
       console.log('🔗 Set donation amount to:', amount);
+    }
+    // If custom=true, focus on the custom amount input
+    if (isCustom && customAmountInputRef.current) {
+      setTimeout(() => {
+        customAmountInputRef.current?.focus();
+      }, 100);
     }
   }, [searchParams]);
 
@@ -288,6 +297,7 @@ function UnifiedDonationContent() {
               </div>
               <div>
                 <input
+                  ref={customAmountInputRef}
                   type="number"
                   placeholder="Custom Amount"
                   value={customAmount}
